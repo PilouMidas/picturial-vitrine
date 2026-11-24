@@ -32,20 +32,38 @@
 <body id="top">
   <a class="skip-link" href="#contenu">Aller au contenu</a>
 
-  <header class="site-header" id="site-header">
+  <header class="site-header site-header--overlay" id="site-header">
     <div class="container header-inner">
       <a class="brand" href="#top" aria-label="Picturial — retour en haut de page">
         <picture>
-          <source type="image/webp" srcset="assets/img/logo-picturial-long-black.webp">
-          <img src="assets/img/logo-picturial-long-black.png" alt="Picturial — production audiovisuelle &amp; cinéma" width="1696" height="244">
+          <source type="image/webp" srcset="assets/img/logo-picturial-stacked-white.webp">
+          <img src="assets/img/logo-picturial-stacked-white.png" alt="Picturial — production audiovisuelle &amp; cinéma" width="1077" height="458">
         </picture>
       </a>
     </div>
   </header>
 
   <main id="contenu" tabindex="-1">
-    <section class="hero-blank" aria-label="Arrivée">
-      <h1 class="visually-hidden">Picturial — production audiovisuelle &amp; cinéma</h1>
+    <section class="hero" aria-label="Film à la une — Tristan">
+      <picture class="hero-bg">
+        <source type="image/avif" srcset="assets/img/poster-tristan-800.avif 800w, assets/img/poster-tristan-1600.avif 1600w, assets/img/poster-tristan-1920.avif 1920w" sizes="100vw">
+        <img src="assets/img/poster-tristan-1920.webp" srcset="assets/img/poster-tristan-800.webp 800w, assets/img/poster-tristan-1600.webp 1600w, assets/img/poster-tristan-1920.webp 1920w" sizes="100vw" width="1920" height="1013" alt="Photogramme de Tristan — Marie-Luce et Bernard attablés dans leur salon" fetchpriority="high" decoding="async">
+      </picture>
+      <picture class="hero-sharp" aria-hidden="true">
+        <source type="image/avif" srcset="assets/img/poster-tristan-800.avif 800w, assets/img/poster-tristan-1600.avif 1600w, assets/img/poster-tristan-1920.avif 1920w" sizes="100vw">
+        <img src="assets/img/poster-tristan-1920.webp" srcset="assets/img/poster-tristan-800.webp 800w, assets/img/poster-tristan-1600.webp 1600w, assets/img/poster-tristan-1920.webp 1920w" sizes="100vw" width="1920" height="1013" alt="" fetchpriority="high" decoding="async">
+      </picture>
+      <div class="hero-frame">
+        <div class="hero-caption">
+          <p class="hero-caption-label">Film</p>
+          <h1>Tristan</h1>
+          <p class="hero-caption-meta">de Mallory Grolleau · fiction · 14 min · 2024</p>
+        </div>
+      </div>
+      <a class="hero-play voir-le-film" href="https://vimeo.com/picturial/tristan" data-video="1164957316" data-hash="8c1cfa0fbf" data-title="Tristan" data-url="https://vimeo.com/picturial/tristan">
+        <svg viewBox="0 0 12 14" width="11" height="13" aria-hidden="true" focusable="false"><path d="M0 0 L12 7 L0 14 Z" fill="currentColor"/></svg>
+        Voir le film — Tristan
+      </a>
     </section>
   </main>
 

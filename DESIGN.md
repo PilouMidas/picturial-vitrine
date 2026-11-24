@@ -206,3 +206,13 @@ contraste ≥ 4,5:1, pas de layout shift, mobile-first.
 **Étape 0 faite** : `index.html` réduit à une page blanche (header logo LONG seul, zone
 d'arrivée vide, footer légal complet). Les assets, les pages légales, le consentement et
 la lightbox restent prêts.
+
+**Étape 1 faite (écran d'arrivée)** : hero 100svh = vidéogramme Tristan en deux couches
+(fond flou `blur(6px) brightness(.55)`, centre net cadré par `clip-path` + filet accent
+#F8AE19 — le cadre `--frameW/--frameH` est la zone incompressible : hauteur fixe quand on
+rétrécit la fenêtre). Dans le cadre, en bas à gauche : « Film / Tristan / de Mallory
+Grolleau · fiction · 14 min · 2024 » en blanc. En haut au centre : logo **blanc empilé**
+(oiseau au-dessus du texte, `logo-picturial-stacked-white`) sur fond transparent ; en
+responsive il rétrécit progressivement (clamp) et passe en coin haut à gauche (< 860px).
+Petit bouton « Voir le film — Tristan » en bas à gauche (lightbox, consentement requis).
+Pas de menu pour l'instant.

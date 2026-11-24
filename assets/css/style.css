@@ -92,10 +92,26 @@ a:hover { text-decoration-color: var(--ink); }
   border: 0;
 }
 
-/* ---------- Étape 0 : page blanche (construction par étapes) ---------- */
+/* ---------- Header overlay (étape 1 : logo blanc centré sur l'image) ---------- */
 
-.hero-blank {
-  min-height: 70svh;
+.site-header--overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: transparent;
+  border-bottom: 0;
+  z-index: 40;
+}
+.site-header--overlay .header-inner {
+  justify-content: center;
+  min-height: 0;
+  padding-top: clamp(16px, 3.5vh, 36px);
+  padding-bottom: 8px;
+}
+.site-header--overlay .brand img {
+  height: clamp(44px, 8vh, 88px);
+  width: auto;
 }
 
 /* ---------- Header ---------- */
@@ -203,23 +219,71 @@ a:hover { text-decoration-color: var(--ink); }
   font-weight: 500;
 }
 
-/* ---------- Hero : vidéogramme plein écran ---------- */
+/* ---------- Hero étape 1 : image plein écran, cadre central net ---------- */
 
 .hero {
   position: relative;
-}
-.hero-media {
-  margin: 0;
   height: 100svh;
-  min-height: 420px;
-  background: #111;
+  min-height: 480px;
+  overflow: hidden;
+  background: #0F0F0F;
+  --frameH: min(58svh, 560px);
+  --frameW: min(88vw, calc(var(--frameH) * 16 / 9));
 }
-.hero-media picture, .hero-media img {
+.hero-bg, .hero-sharp {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
 }
-.hero-media img { object-fit: cover; }
+.hero-bg img, .hero-sharp img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-bg img { filter: blur(6px) brightness(0.55); }
+.hero-sharp img {
+  filter: brightness(0.72);
+  clip-path: inset(calc((100% - var(--frameH)) / 2) calc((100% - var(--frameW)) / 2));
+}
+.hero-frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--frameW);
+  height: var(--frameH);
+  border: 1px solid var(--accent);
+}
+.hero-caption {
+  position: absolute;
+  left: clamp(16px, 3vw, 32px);
+  right: clamp(16px, 3vw, 32px);
+  bottom: clamp(16px, 3vw, 32px);
+  color: #fff;
+  text-align: left;
+}
+.hero-caption-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.hero-caption h1 {
+  color: #fff;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+}
+.hero-caption-meta {
+  margin-top: 10px;
+  font-size: 15px;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+}
 
 .hero-play {
   position: absolute;
@@ -644,11 +708,17 @@ a:hover { text-decoration-color: var(--ink); }
 @media (max-width: 860px) {
   .main-nav, .header-cta { display: none; }
   .menu-toggle { display: inline-block; }
+  .site-header--overlay .header-inner {
+    justify-content: flex-start;
+    padding-inline: var(--pad-x);
+    padding-top: 16px;
+  }
+  .site-header--overlay .brand img { height: clamp(26px, 6vw, 44px); }
 }
 
 @media (max-width: 719px) {
   body { font-size: 16px; }
-  .hero-media { height: 72svh; }
+  .hero { --frameH: min(46svh, 420px); min-height: 420px; }
   .film-slide { width: 88vw; }
   .proof-1, .proof-2, .proof-3 { max-width: 100%; margin-left: 0; }
   .about-grid { grid-template-columns: 1fr; }
