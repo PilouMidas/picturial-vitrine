@@ -315,6 +315,148 @@
     return p;
   };
 
+  // ---------- Hero étape 2 : carrousel de films plein écran ----------
+
+  const FILMS = [
+    { slug: "tristan", title: "Tristan", meta: "de Mallory Grolleau · fiction · 14 min · 2024", video: "1164957316", hash: "8c1cfa0fbf", url: "https://vimeo.com/picturial/tristan", h: 1013, alt: "Photogramme de Tristan — Marie-Luce et Bernard en conversation dans leur salon, mur vert pâle" },
+    { slug: "ira", title: "Ira, mon amour", meta: "documentaire · 3 min · 2024 · réal. Philippe Beyer-Hirsch", video: "933198113", hash: "8300f40080", url: "https://vimeo.com/picturial/iramonamour", h: 1080, alt: "Photogramme d'Ira, mon amour : un bus bleu dans une rue de Chișinău, la nuit" },
+    { slug: "objet-retrouve", title: "Objet (re)trouvé", meta: "documentaire · 23 min · 2022 · France Design Week", video: "774185263", hash: "440a590aba", url: "https://vimeo.com/picturial/objetretrouve", h: 1080, alt: "Photogramme d'Objet (re)trouvé : des chaises rouges, le titre du film à l'écran" },
+    { slug: "blues-du-poulailler", title: "Le Blues du poulailler", meta: "documentaire · 17 min · 2023 · Assemblée nationale", video: "876004689", hash: "6995f14855", url: "https://vimeo.com/picturial/bluesdupoulailler", h: 1080, alt: "Photogramme du Blues du poulailler : un rapport sur l'épizootie aviaire devant un champ" },
+    { slug: "recreations", title: "Récréations", meta: "documentaire · 26 min · 2024 · France Design Week", video: "1006856972", hash: "69c2dffb86", url: "https://vimeo.com/picturial/recreation", h: 1080, alt: "Photogramme de Récréations : des chaises d'école empilées, le titre du film à l'écran" },
+    { slug: "murmures-de-culture", title: "Murmures de culture", meta: "documentaire · 6 min · 2025 · France Design Week", video: "1169950875", hash: "0b4518e3ef", url: "https://vimeo.com/1169950875/0b4518e3ef", h: 1080, alt: "Photogramme de Murmures de culture : des cercles colorés suspendus devant une fenêtre à vitraux" }
+  ];
+
+  const heroEl = document.getElementById("hero");
+  if (heroEl) {
+    const track = document.getElementById("frame-track");
+    const bgSlots = [document.getElementById("bg-a"), document.getElementById("bg-b")];
+    const sharpSlots = [document.getElementById("sharp-a"), document.getElementById("sharp-b")];
+    const play = document.getElementById("hero-play");
+    const playLabel = document.getElementById("hero-play-label");
+    const countEl = document.getElementById("hero-count");
+
+    FILMS.forEach((f) => {
+      const frame = document.createElement("div");
+      frame.className = "hero-frame";
+      frame.innerHTML =
+        '<div class="hero-caption">' +
+        '<p class="hero-caption-label">Film</p>' +
+        "<h2>" + f.title + "</h2>" +
+        '<p class="hero-caption-meta">' + f.meta + "</p>" +
+        "</div>";
+      track.appendChild(frame);
+    });
+    const frames = Array.from(track.children);
+
+    let cur = 0;
+    let frontSlot = 0;
+    let animating = false;
+
+    function fillSlot(slotIdx, film) {
+      [bgSlots[slotIdx], sharpSlots[slotIdx]].forEach((pic, layerIdx) => {
+        pic.innerHTML = "";
+        const src = document.createElement("source");
+        src.type = "image/avif";
+        src.srcset =
+          "assets/img/poster-" + film.slug + "-800.avif 800w, assets/img/poster-" + film.slug + "-1600.avif 1600w, assets/img/poster-" + film.slug + "-1920.avif 1920w";
+        src.sizes = "100vw";
+        const img = document.createElement("img");
+        img.src = "assets/img/poster-" + film.slug + "-1920.webp";
+        img.srcset =
+          "assets/img/poster-" + film.slug + "-800.webp 800w, assets/img/poster-" + film.slug + "-1600.webp 1600w, assets/img/poster-" + film.slug + "-1920.webp 1920w";
+        img.sizes = "100vw";
+        img.width = 1920;
+        img.height = film.h;
+        img.decoding = "async";
+        if (layerIdx === 0) {
+          img.alt = film.alt;
+          img.setAttribute("fetchpriority", "high");
+        } else {
+          img.alt = "";
+        }
+        pic.appendChild(src);
+        pic.appendChild(img);
+      });
+    }
+
+    function paint() {
+      frames.forEach((f, i) => {
+        if (f.classList.contains("is-exit-left") || f.classList.contains("is-exit-right")) return;
+        f.classList.remove("is-current", "is-next", "is-prev", "is-hidden");
+        if (i === cur) f.classList.add("is-current");
+        else if (i === (cur + 1) % FILMS.length) f.classList.add("is-next");
+        else if (i === (cur - 1 + FILMS.length) % FILMS.length) f.classList.add("is-prev");
+        else f.classList.add("is-hidden");
+      });
+      const f = FILMS[cur];
+      play.dataset.video = f.video;
+      play.dataset.hash = f.hash;
+      play.dataset.title = f.title;
+      play.dataset.url = f.url;
+      play.href = f.url;
+      playLabel.textContent = "Voir le film — " + f.title;
+      countEl.textContent = cur + 1 + " / " + FILMS.length;
+    }
+
+    function preloadNext() {
+      const n = FILMS[(cur + 1) % FILMS.length];
+      const im = new Image();
+      im.src = "assets/img/poster-" + n.slug + "-1920.webp";
+    }
+
+    function go(dir) {
+      if (animating) return;
+      animating = true;
+      const next = (cur + dir + FILMS.length) % FILMS.length;
+      const back = 1 - frontSlot;
+      fillSlot(back, FILMS[next]);
+      bgSlots[back].classList.add("front", "zoom-in");
+      sharpSlots[back].classList.add("front", "zoom-in");
+      bgSlots[frontSlot].classList.remove("front");
+      sharpSlots[frontSlot].classList.remove("front");
+      frontSlot = back;
+      const oldF = frames[cur];
+      cur = next;
+      paint();
+      oldF.classList.remove("is-hidden");
+      oldF.classList.add(dir === 1 ? "is-exit-left" : "is-exit-right");
+      const durMs = (parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--transDur")) || 0.8) * 1000;
+      setTimeout(() => {
+        bgSlots.forEach((p) => p.classList.remove("zoom-in"));
+        sharpSlots.forEach((p) => p.classList.remove("zoom-in"));
+        oldF.classList.remove("is-exit-left", "is-exit-right");
+        oldF.classList.add("is-hidden");
+        animating = false;
+        preloadNext();
+      }, durMs + 80);
+    }
+
+    fillSlot(0, FILMS[0]);
+    bgSlots[0].classList.add("front", "zoom-in");
+    sharpSlots[0].classList.add("front", "zoom-in");
+    paint();
+    preloadNext();
+    setTimeout(() => {
+      bgSlots[0].classList.remove("zoom-in");
+      sharpSlots[0].classList.remove("zoom-in");
+    }, 2500);
+
+    document.getElementById("hero-next").addEventListener("click", () => go(1));
+    document.getElementById("hero-prev").addEventListener("click", () => go(-1));
+    frames.forEach((f) => {
+      f.addEventListener("click", () => {
+        if (f.classList.contains("is-next")) go(1);
+        else if (f.classList.contains("is-prev")) go(-1);
+      });
+    });
+    document.addEventListener("keydown", (e) => {
+      const t = e.target;
+      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.tagName === "SELECT")) return;
+      if (e.key === "ArrowRight") go(1);
+      else if (e.key === "ArrowLeft") go(-1);
+    });
+  }
+
   // ---------- Mode édition visuelle du cadre : ajouter ?focus=edit à l'URL ----------
 
   const editParams = new URLSearchParams(window.location.search);
@@ -330,6 +472,8 @@
       '<label>Hauteur <input type="range" id="fe-h" min="10" max="100" step="1"><span id="fe-hv"></span></label>' +
       '<label>Logo (px) <input type="range" id="fe-logo" min="24" max="200" step="1"><span id="fe-logov"></span></label>' +
       '<label>Flou (px) <input type="range" id="fe-blur" min="0" max="20" step="0.5"><span id="fe-blurv"></span></label>' +
+      '<label>Durée (s) <input type="range" id="fe-dur" min="0.2" max="2" step="0.1"><span id="fe-durv"></span></label>' +
+      '<label>Zoom (%) <input type="range" id="fe-zoom" min="0" max="10" step="0.5"><span id="fe-zoomv"></span></label>' +
       '<div class="focus-editor-presets">' +
       '<button type="button" data-p="gauche">Gauche</button>' +
       '<button type="button" data-p="centre">Centre</button>' +
@@ -337,7 +481,7 @@
       '<button type="button" data-p="haut">Haut</button>' +
       '<button type="button" data-p="bas">Bas</button>' +
       "</div>" +
-      '<textarea id="fe-out" readonly rows="3" aria-label="Valeurs CSS"></textarea>' +
+      '<textarea id="fe-out" readonly rows="4" aria-label="Valeurs CSS"></textarea>' +
       '<button type="button" id="fe-copy" class="focus-editor-copy">Copier les valeurs CSS</button>';
     document.body.appendChild(panel);
 
@@ -347,6 +491,8 @@
     const h = panel.querySelector("#fe-h");
     const logo = panel.querySelector("#fe-logo");
     const blur = panel.querySelector("#fe-blur");
+    const dur = panel.querySelector("#fe-dur");
+    const zoom = panel.querySelector("#fe-zoom");
     const out = panel.querySelector("#fe-out");
     const labels = {
       x: panel.querySelector("#fe-xv"),
@@ -354,7 +500,9 @@
       w: panel.querySelector("#fe-wv"),
       h: panel.querySelector("#fe-hv"),
       logo: panel.querySelector("#fe-logov"),
-      blur: panel.querySelector("#fe-blurv")
+      blur: panel.querySelector("#fe-blurv"),
+      dur: panel.querySelector("#fe-durv"),
+      zoom: panel.querySelector("#fe-zoomv")
     };
     const logoImg = document.querySelector(".site-header--overlay .brand img");
 
@@ -376,6 +524,8 @@
         logo.value = Number.isNaN(lh) ? 64 : Math.min(200, Math.max(24, Math.round(lh)));
       }
       blur.value = readVar("--blur", 6);
+      dur.value = readVar("--transDur", 0.8);
+      zoom.value = Math.max(0, (readVar("--zoom", 1.05) - 1) * 100);
       paint();
     }
 
@@ -386,20 +536,25 @@
       labels.h.textContent = h.value + "%";
       labels.logo.textContent = logo.value + "px";
       labels.blur.textContent = blur.value + "px";
+      labels.dur.textContent = dur.value + "s";
+      labels.zoom.textContent = zoom.value + "%";
       out.value =
         "--focusX: " + x.value + "; --focusY: " + y.value + "; --focusW: " + w.value + "%; --focusH: " + h.value + "%;\n" +
         "--logoH: " + logo.value + "px;\n" +
-        "--blur: " + blur.value + "px;";
+        "--blur: " + blur.value + "px;\n" +
+        "--transDur: " + dur.value + "s; --zoom: " + (1 + parseFloat(zoom.value) / 100).toFixed(2) + ";";
     }
 
     function apply() {
       setFocus(parseFloat(x.value), parseFloat(y.value), w.value + "%", h.value + "%");
       document.documentElement.style.setProperty("--logoH", logo.value + "px");
       document.documentElement.style.setProperty("--blur", blur.value + "px");
+      document.documentElement.style.setProperty("--transDur", dur.value + "s");
+      document.documentElement.style.setProperty("--zoom", String(1 + parseFloat(zoom.value) / 100));
       paint();
     }
 
-    [x, y, w, h, logo, blur].forEach((s) => s.addEventListener("input", apply));
+    [x, y, w, h, logo, blur, dur, zoom].forEach((s) => s.addEventListener("input", apply));
     panel.querySelectorAll("[data-p]").forEach((b) => {
       b.addEventListener("click", () => {
         setFocus(b.dataset.p);

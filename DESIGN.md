@@ -246,3 +246,17 @@ Les valeurs copiées incluent `--logoH`. Param accepté aussi : `?edit=1`.
 **Étape 1.8** : curseur **« Flou (px) »** dans le panneau `?focus=edit` → variable `--blur`
 (défaut `6px`) sur `:root`, utilisée par `.hero-bg img { filter: blur(var(--blur)) ... }`.
 Valeur copiable incluse dans le champ CSS.
+
+**Étape 2 (carrousel de films plein écran, façon Haut et Court)** : le hero devient un carrousel
+des 6 films (tableau `FILMS` dans main.js). La carte du film suivant dépasse déjà en plus petit
+(échelle .8, opacité .55) à droite du cadre principal, cliquable. Au clic sur la flèche droite
+(bouton, carte suivante, ou touche →) : la photo du film courant fond légèrement, celle du film
+suivant (ex. Ira, mon amour) prend la place principale avec un léger zoom-in ; le cadre titre
+de Tristan sort complètement par la gauche (`translateX(-110vw)`) pendant que le titre du
+film suivant vient prendre exactement la place de Tristan (mêmes `--focus*`, même taille,
+il grandit légèrement et gagne en opacité). Compteur « n / 6 » + bouton « Voir le film — {titre} ».
+Deux nouvelles variables sur `:root` : `--transDur` (durée du fondu/zoom/exit, défaut .8s) et
+`--zoom` (zoom d'arrivée, défaut 1.05). Panneau `?focus=edit` : 8 curseurs (X/Y/L/H + logo +
+flou + **durée** + **zoom**) et les 4 lignes de valeurs CSS copiables incluent désormais
+`--transDur` / `--zoom`. Valeurs verrouillées par Philippe : `--focusX: 0.37; --focusY: 0.5;
+--focusW: 50%; --focusH: 100%; --logoH: 102px; --blur: 2px;` dans `:root`.

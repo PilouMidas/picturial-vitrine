@@ -44,26 +44,30 @@
   </header>
 
   <main id="contenu" tabindex="-1">
-    <section class="hero" aria-label="Film à la une — Tristan">
-      <picture class="hero-bg">
-        <source type="image/avif" srcset="assets/img/poster-tristan-800.avif 800w, assets/img/poster-tristan-1600.avif 1600w, assets/img/poster-tristan-1920.avif 1920w" sizes="100vw">
-        <img src="assets/img/poster-tristan-1920.webp" srcset="assets/img/poster-tristan-800.webp 800w, assets/img/poster-tristan-1600.webp 1600w, assets/img/poster-tristan-1920.webp 1920w" sizes="100vw" width="1920" height="1013" alt="Photogramme de Tristan — Marie-Luce et Bernard en conversation dans leur salon, mur vert pâle" fetchpriority="high" decoding="async">
-      </picture>
-      <picture class="hero-sharp" aria-hidden="true">
-        <source type="image/avif" srcset="assets/img/poster-tristan-800.avif 800w, assets/img/poster-tristan-1600.avif 1600w, assets/img/poster-tristan-1920.avif 1920w" sizes="100vw">
-        <img src="assets/img/poster-tristan-1920.webp" srcset="assets/img/poster-tristan-800.webp 800w, assets/img/poster-tristan-1600.webp 1600w, assets/img/poster-tristan-1920.webp 1920w" sizes="100vw" width="1920" height="1013" alt="" fetchpriority="high" decoding="async">
-      </picture>
-      <div class="hero-frame">
-        <div class="hero-caption">
-          <p class="hero-caption-label">Film</p>
-          <h1>Tristan</h1>
-          <p class="hero-caption-meta">de Mallory Grolleau · fiction · 14 min · 2024</p>
-        </div>
+    <section class="hero" id="hero" aria-label="Films à la une">
+      <h1 class="visually-hidden">Picturial — production audiovisuelle &amp; cinéma</h1>
+      <div class="hero-bg">
+        <picture class="hl" id="bg-a"></picture>
+        <picture class="hl" id="bg-b"></picture>
       </div>
-      <a class="hero-play voir-le-film" href="https://vimeo.com/picturial/tristan" data-video="1164957316" data-hash="8c1cfa0fbf" data-title="Tristan" data-url="https://vimeo.com/picturial/tristan">
+      <div class="hero-sharp" aria-hidden="true">
+        <picture class="hl" id="sharp-a"></picture>
+        <picture class="hl" id="sharp-b"></picture>
+      </div>
+      <div class="frame-track" id="frame-track"></div>
+      <a class="hero-play voir-le-film" id="hero-play" href="https://vimeo.com/picturial/tristan" data-video="1164957316" data-hash="8c1cfa0fbf" data-title="Tristan" data-url="https://vimeo.com/picturial/tristan">
         <svg viewBox="0 0 12 14" width="11" height="13" aria-hidden="true" focusable="false"><path d="M0 0 L12 7 L0 14 Z" fill="currentColor"/></svg>
-        Voir le film — Tristan
+        <span id="hero-play-label">Voir le film — Tristan</span>
       </a>
+      <div class="hero-nav">
+        <button type="button" class="hero-arrow" id="hero-prev" aria-label="Film précédent">
+          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><path d="M10 2 L4 8 L10 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <span class="hero-count" id="hero-count" aria-live="polite">1 / 6</span>
+        <button type="button" class="hero-arrow" id="hero-next" aria-label="Film suivant">
+          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><path d="M6 2 L12 8 L6 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
     </section>
   </main>
 

@@ -26,14 +26,17 @@ GitHub Pages sur `vibe/vitrine-picturial-075ffb`.
 
 **Sans console** : ouvre le site avec `?focus=edit` à la fin de l'URL, ex. en local
 `http://localhost:8000/?focus=edit` (ou `https://.../index.html?focus=edit` en ligne).
-Un panneau « Réglages hero » apparaît en bas à droite avec **6 curseurs** (X, Y, largeur,
-hauteur du cadre net + **taille du logo en px** + **flou en px** autour de la zone nette) + des boutons de préréglage
+Un panneau « Réglages hero » apparaît en bas à droite avec **8 curseurs** (X, Y, largeur,
+hauteur du cadre net + **taille du logo en px** + **flou en px** autour de la zone nette
++ **durée des transitions** en s + **zoom d'arrivée** en %) + des boutons de préréglage
 (Gauche/Centre/Droite/Haut/Bas). Le curseur logo pilote `--logoH` (taille du logo blanc
-en haut ; en responsive il repasse au coin haut gauche sous 860px). Tu bouges un
-curseur → le cadre jaune et la zone nette suivent en direct. En bas du panneau, les
+en haut ; en responsive il repasse au coin haut gauche sous 860px), le curseur durée
+pilote `--transDur` (durée du fondu/zoom au changement de film et de l'exit du cadre),
+le curseur zoom pilote `--zoom` (léger zoom-in à l'arrivée et au changement de film).
+Tu bouges un curseur → le cadre jaune et la zone nette suivent en direct. En bas du panneau, les
 valeurs CSS se génèrent toutes seules avec un bouton **« Copier les valeurs CSS »** :
 copie-les et colle-les dans `:root` de `assets/css/style.css` (ou donne-les moi, je
-pousse le commit : les `--focus*` placent le cadre, `--logoH` la taille du logo, `--blur` le flou). `F5`
+pousse le commit : les `--focus*` placent le cadre, `--logoH` la taille du logo, `--blur` le flou, `--transDur`/`--zoom` les transitions du carrousel). `F5`
 enlève le panneau.
 
 Alternative console (F12 → Console) :
@@ -81,7 +84,7 @@ Aucun build, aucune dépendance : HTML + CSS + JS vanilla.
 ## Structure
 
 ```
-index.html               page unique (hero plein écran Tristan, réalisations en carrousels imbriqués, prestations, preuve, à propos, contact)
+index.html               page unique (hero plein écran = carrousel des 6 films : flèches + compteur + clavier, fondu/zoom entre films, cadre titre qui sort à gauche, titre suivant à sa place)
 moodboard.html           moodboard interne (noindex, lien en footer — à retirer avant prod)
 mentions-legales.html    LCEN art. 6 (éditeur, hébergeur, PI)
 politique-de-confidentialite.html   RGPD (données, cookies, droits)
@@ -90,18 +93,26 @@ DESIGN.md                design brief (contexte du projet)
 assets/css/fonts.css     @font-face auto-hébergés (woff2, subsets latin / latin-ext)
 assets/css/style.css     feuille de style
 assets/js/legal-config.js  CONFIG LÉGALE CENTRALISÉE (remplie : SARL, SIRET 388 235 152 00039, OVHcloud, Christian Klein, DPO non désigné)
-assets/js/main.js        menu mobile, bandeau consentement RGPD, lightbox Vimeo (bloquée sans accord), carrousels films+vidéoogrammes, formulaire (mailto)
+assets/js/main.js        menu mobile, bandeau consentement RGPD, lightbox Vimeo (bloquée sans accord), carrousel hero des films (tableau FILMS, flèches/clavier), panneau ?focus=edit, formulaire (mailto)
 assets/fonts/            Libre Caslon Text + Instrument Sans (woff2)
 assets/img/              vidéogrammes AVIF/WebP (800w/1600w, +1920w hero), logo LONG noir WebP/PNG, favicons, og-image
 ```
 
-## Ajouter des vidéoogrammes à un film
+## Carrousel hero des films (étape 2)
 
-Chaque film est une diapositive `.film-slide` contenant un `.still-strip` (carrousel de
-vidéogrammes) : déposer `assets/img/poster-<slug>-<n>-{800,1600}.{avif,webp}` puis ajouter un
-élément `.still` dans le `.still-strip` du film dans `index.html`. Flèches et compteur du
-carrousel interne s'activent automatiquement dès qu'il y a plus d'un vidéogramme.
-```
+Le hero est un carrousel plein écran piloté par le tableau `FILMS` dans `assets/js/main.js`
+(6 films : slug, titre, méta, id/hash Vimeo, URL, hauteur source, alt). Flèche droite /
+flèche gauche (boutons `.hero-nav`, clic sur la carte suivante qui dépasse à droite, ou
+touches ← →) : la photo du film courant fond, celle du suivant prend la place principale
+avec un léger zoom-in (`--zoom`), le cadre titre du film courant sort par la gauche
+(`-110vw`) tandis que le titre du suivant prend exactement sa place (mêmes `--focus*`).
+Compteur « n / 6 » + bouton « Voir le film — {titre} » mis à jour à chaque changement.
+Durée des transitions : `--transDur` (curseur « Durée » dans `?focus=edit`).
+
+## Ajouter un film au carrousel hero
+
+Déposer `assets/img/poster-<slug>-{800,1600,1920}.{avif,webp}` et ajouter une entrée dans
+`FILMS` (main.js) : la photo du film entre automatiquement dans le carrousel hero.
 
 ## Conformité légale (LCEN / RGPD)
 
