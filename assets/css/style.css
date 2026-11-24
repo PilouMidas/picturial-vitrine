@@ -961,6 +961,89 @@ a:hover { text-decoration-color: var(--ink); }
 }
 .mood-logo img { width: min(420px, 100%); }
 
+/* ---------- Mode édition du cadre (?focus=edit) ---------- */
+
+.focus-editor {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 96;
+  width: 260px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 14px 16px;
+  font-size: 12.5px;
+  color: var(--ink);
+}
+.focus-editor-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+.focus-editor-close {
+  font: inherit;
+  font-size: 12px;
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 3px 8px;
+  cursor: pointer;
+  color: var(--ink);
+}
+.focus-editor-close:hover { background: var(--ink); color: #fff; }
+.focus-editor label {
+  display: grid;
+  grid-template-columns: 110px 1fr 44px;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+}
+.focus-editor input[type="range"] { width: 100%; accent-color: var(--accent); }
+.focus-editor label span { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
+.focus-editor-presets { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+.focus-editor-presets button {
+  font: inherit;
+  font-size: 11.5px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+  color: var(--ink);
+}
+.focus-editor-presets button:hover { border-color: var(--ink); }
+.focus-editor textarea {
+  width: 100%;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 6px 8px;
+  resize: none;
+  color: var(--ink);
+}
+.focus-editor-copy {
+  margin-top: 8px;
+  width: 100%;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  background: var(--accent);
+  color: var(--ink);
+  border: 0;
+  border-radius: 5px;
+  padding: 9px 10px;
+  cursor: pointer;
+}
+.focus-editor-copy:hover { background: var(--accent-hover); }
+
+@media (max-width: 719px) {
+  .focus-editor { left: 12px; right: 12px; bottom: 12px; width: auto; }
+}
+
 /* ---------- Lightbox : repli sans consentement ---------- */
 
 .player-fallback {

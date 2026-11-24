@@ -233,3 +233,8 @@ léger **zoom-in à l'arrivée** (`hero-zoom` 1.6s, désactivé si `prefers-redu
 ou `setFocus(x, y, w, h)` (main.js pose les `--focus*` en inline sur `:root`) ; les variables
 vivent désormais sur `:root` dans le CSS → **même position pour tous les films**. Réglage
 défaut : droite pleine hauteur (`--focusX: 1; --focusH: 100%`).
+
+**Étape 1.6 (plus simple)** : mode édition visuel du cadre — ouvrir le site avec
+**`?focus=edit`** → panneau « Cadre net » en bas à droite (4 curseurs X/Y/largeur/hauteur
++ préréglages + valeurs CSS copiables). Aucun besoin de la console. Les valeurs restent
+sur `:root` → même placement pour tous les films.

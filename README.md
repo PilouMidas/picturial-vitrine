@@ -22,7 +22,18 @@ lightbox restent en place et inertes. Chaque étape suivante (décrite par Phili
 commençant par l'écran d'arrivée) = un commit sur la branche de la PR #1, revu via
 GitHub Pages sur `vibe/vitrine-picturial-075ffb`.
 
-## Placer le surcadrage (zone nette) — depuis la console, partagé par tous les films
+## Placer le surcadrage (zone nette) — le plus simple : mode visuel `?focus=edit`
+
+**Sans console** : ouvre le site avec `?focus=edit` à la fin de l'URL, ex. en local
+`http://localhost:8000/?focus=edit` (ou `https://.../index.html?focus=edit` en ligne).
+Un panneau « Cadre net » apparaît en bas à droite avec **4 curseurs** (X, Y, largeur,
+hauteur) + des boutons de préréglage (Gauche/Centre/Droite/Haut/Bas). Tu bouges un
+curseur → le cadre jaune et la zone nette suivent en direct. En bas du panneau, les
+valeurs CSS se génèrent toutes seules avec un bouton **« Copier les valeurs CSS »** :
+copie-les et colle-les dans `:root` de `assets/css/style.css` (ou donne-les moi, je
+pousse le commit). `F5` enlève le panneau.
+
+Alternative console (F12 → Console) :
 
 Les 4 variables vivent sur `:root` (`assets/css/style.css`) : elles s'appliquent à **tous**
 les heros/films (même position partout). Pour régler **depuis la console** (F12 → Console),

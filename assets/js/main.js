@@ -315,6 +315,89 @@
     return p;
   };
 
+  // ---------- Mode édition visuelle du cadre : ajouter ?focus=edit à l'URL ----------
+
+  if (new URLSearchParams(window.location.search).get("focus") === "edit") {
+    const panel = document.createElement("aside");
+    panel.className = "focus-editor";
+    panel.setAttribute("aria-label", "Réglage du cadre net");
+    panel.innerHTML =
+      '<div class="focus-editor-head"><strong>Cadre net</strong><button type="button" class="focus-editor-close">Fermer</button></div>' +
+      '<label>X (gauche/droite) <input type="range" id="fe-x" min="0" max="1" step="0.01"><span id="fe-xv"></span></label>' +
+      '<label>Y (haut/bas) <input type="range" id="fe-y" min="0" max="1" step="0.01"><span id="fe-yv"></span></label>' +
+      '<label>Largeur <input type="range" id="fe-w" min="10" max="100" step="1"><span id="fe-wv"></span></label>' +
+      '<label>Hauteur <input type="range" id="fe-h" min="10" max="100" step="1"><span id="fe-hv"></span></label>' +
+      '<div class="focus-editor-presets">' +
+      '<button type="button" data-p="gauche">Gauche</button>' +
+      '<button type="button" data-p="centre">Centre</button>' +
+      '<button type="button" data-p="droite">Droite</button>' +
+      '<button type="button" data-p="haut">Haut</button>' +
+      '<button type="button" data-p="bas">Bas</button>' +
+      "</div>" +
+      '<textarea id="fe-out" readonly rows="2" aria-label="Valeurs CSS du cadre"></textarea>' +
+      '<button type="button" id="fe-copy" class="focus-editor-copy">Copier les valeurs CSS</button>';
+    document.body.appendChild(panel);
+
+    const x = panel.querySelector("#fe-x");
+    const y = panel.querySelector("#fe-y");
+    const w = panel.querySelector("#fe-w");
+    const h = panel.querySelector("#fe-h");
+    const out = panel.querySelector("#fe-out");
+    const labels = {
+      x: panel.querySelector("#fe-xv"),
+      y: panel.querySelector("#fe-yv"),
+      w: panel.querySelector("#fe-wv"),
+      h: panel.querySelector("#fe-hv")
+    };
+
+    function readVar(k, fallback) {
+      const v = getComputedStyle(document.documentElement).getPropertyValue(k).trim();
+      if (!v) return fallback;
+      if (v.endsWith("%")) return parseFloat(v);
+      const n = parseFloat(v);
+      return Number.isNaN(n) ? fallback : n;
+    }
+
+    function refresh() {
+      x.value = readVar("--focusX", 1);
+      y.value = readVar("--focusY", 0.5);
+      w.value = readVar("--focusW", 34);
+      h.value = readVar("--focusH", 100);
+      paint();
+    }
+
+    function paint() {
+      labels.x.textContent = x.value;
+      labels.y.textContent = y.value;
+      labels.w.textContent = w.value + "%";
+      labels.h.textContent = h.value + "%";
+      out.value = "--focusX: " + x.value + "; --focusY: " + y.value + "; --focusW: " + w.value + "%; --focusH: " + h.value + "%;";
+    }
+
+    function apply() {
+      setFocus(parseFloat(x.value), parseFloat(y.value), w.value + "%", h.value + "%");
+      paint();
+    }
+
+    [x, y, w, h].forEach((s) => s.addEventListener("input", apply));
+    panel.querySelectorAll("[data-p]").forEach((b) => {
+      b.addEventListener("click", () => {
+        setFocus(b.dataset.p);
+        refresh();
+      });
+    });
+    panel.querySelector(".focus-editor-close").addEventListener("click", () => panel.remove());
+    panel.querySelector("#fe-copy").addEventListener("click", () => {
+      out.select();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(out.value);
+      } else {
+        document.execCommand("copy");
+      }
+    });
+    refresh();
+  }
+
   // ---------- Formulaire de contact (mailto, aucune donnée stockée côté serveur) ----------
 
   const form = document.getElementById("contact-form");
