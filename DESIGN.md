@@ -242,3 +242,7 @@ sur `:root` → même placement pour tous les films.
 **Étape 1.7** : le panneau `?focus=edit` gagne un curseur **« Logo (px) »** → variable
 `--logoH` sur `:root` (défaut `clamp(44px, 8vh, 88px)`, `clamp(26px, 6vw, 44px)` < 860px).
 Les valeurs copiées incluent `--logoH`. Param accepté aussi : `?edit=1`.
+
+**Étape 1.8** : curseur **« Flou (px) »** dans le panneau `?focus=edit` → variable `--blur`
+(défaut `6px`) sur `:root`, utilisée par `.hero-bg img { filter: blur(var(--blur)) ... }`.
+Valeur copiable incluse dans le champ CSS.

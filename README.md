@@ -26,14 +26,14 @@ GitHub Pages sur `vibe/vitrine-picturial-075ffb`.
 
 **Sans console** : ouvre le site avec `?focus=edit` à la fin de l'URL, ex. en local
 `http://localhost:8000/?focus=edit` (ou `https://.../index.html?focus=edit` en ligne).
-Un panneau « Réglages hero » apparaît en bas à droite avec **5 curseurs** (X, Y, largeur,
-hauteur du cadre net + **taille du logo en px**) + des boutons de préréglage
+Un panneau « Réglages hero » apparaît en bas à droite avec **6 curseurs** (X, Y, largeur,
+hauteur du cadre net + **taille du logo en px** + **flou en px** autour de la zone nette) + des boutons de préréglage
 (Gauche/Centre/Droite/Haut/Bas). Le curseur logo pilote `--logoH` (taille du logo blanc
 en haut ; en responsive il repasse au coin haut gauche sous 860px). Tu bouges un
 curseur → le cadre jaune et la zone nette suivent en direct. En bas du panneau, les
 valeurs CSS se génèrent toutes seules avec un bouton **« Copier les valeurs CSS »** :
 copie-les et colle-les dans `:root` de `assets/css/style.css` (ou donne-les moi, je
-pousse le commit : les `--focus*` placent le cadre, `--logoH` la taille du logo). `F5`
+pousse le commit : les `--focus*` placent le cadre, `--logoH` la taille du logo, `--blur` le flou). `F5`
 enlève le panneau.
 
 Alternative console (F12 → Console) :

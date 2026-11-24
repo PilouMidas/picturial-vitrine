@@ -11,6 +11,7 @@
   --focusW: min(34vw, 520px);
   --focusH: 100%;
   --logoH: clamp(44px, 8vh, 88px);
+  --blur: 6px;
   --serif: "Libre Caslon Text", Georgia, "Times New Roman", serif;
   --sans: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
   --container: 1080px;
@@ -254,7 +255,7 @@ a:hover { text-decoration-color: var(--ink); }
 .hero-bg, .hero-sharp {
   animation: hero-zoom 1.6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
-.hero-bg img { filter: blur(6px) brightness(0.55); }
+.hero-bg img { filter: blur(var(--blur)) brightness(0.55); }
 .hero-sharp img {
   filter: brightness(0.72);
   clip-path: inset(

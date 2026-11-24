@@ -329,6 +329,7 @@
       '<label>Largeur <input type="range" id="fe-w" min="10" max="100" step="1"><span id="fe-wv"></span></label>' +
       '<label>Hauteur <input type="range" id="fe-h" min="10" max="100" step="1"><span id="fe-hv"></span></label>' +
       '<label>Logo (px) <input type="range" id="fe-logo" min="24" max="200" step="1"><span id="fe-logov"></span></label>' +
+      '<label>Flou (px) <input type="range" id="fe-blur" min="0" max="20" step="0.5"><span id="fe-blurv"></span></label>' +
       '<div class="focus-editor-presets">' +
       '<button type="button" data-p="gauche">Gauche</button>' +
       '<button type="button" data-p="centre">Centre</button>' +
@@ -345,13 +346,15 @@
     const w = panel.querySelector("#fe-w");
     const h = panel.querySelector("#fe-h");
     const logo = panel.querySelector("#fe-logo");
+    const blur = panel.querySelector("#fe-blur");
     const out = panel.querySelector("#fe-out");
     const labels = {
       x: panel.querySelector("#fe-xv"),
       y: panel.querySelector("#fe-yv"),
       w: panel.querySelector("#fe-wv"),
       h: panel.querySelector("#fe-hv"),
-      logo: panel.querySelector("#fe-logov")
+      logo: panel.querySelector("#fe-logov"),
+      blur: panel.querySelector("#fe-blurv")
     };
     const logoImg = document.querySelector(".site-header--overlay .brand img");
 
@@ -372,6 +375,7 @@
         const lh = parseFloat(getComputedStyle(logoImg).height);
         logo.value = Number.isNaN(lh) ? 64 : Math.min(200, Math.max(24, Math.round(lh)));
       }
+      blur.value = readVar("--blur", 6);
       paint();
     }
 
@@ -381,18 +385,21 @@
       labels.w.textContent = w.value + "%";
       labels.h.textContent = h.value + "%";
       labels.logo.textContent = logo.value + "px";
+      labels.blur.textContent = blur.value + "px";
       out.value =
         "--focusX: " + x.value + "; --focusY: " + y.value + "; --focusW: " + w.value + "%; --focusH: " + h.value + "%;\n" +
-        "--logoH: " + logo.value + "px;";
+        "--logoH: " + logo.value + "px;\n" +
+        "--blur: " + blur.value + "px;";
     }
 
     function apply() {
       setFocus(parseFloat(x.value), parseFloat(y.value), w.value + "%", h.value + "%");
       document.documentElement.style.setProperty("--logoH", logo.value + "px");
+      document.documentElement.style.setProperty("--blur", blur.value + "px");
       paint();
     }
 
-    [x, y, w, h, logo].forEach((s) => s.addEventListener("input", apply));
+    [x, y, w, h, logo, blur].forEach((s) => s.addEventListener("input", apply));
     panel.querySelectorAll("[data-p]").forEach((b) => {
       b.addEventListener("click", () => {
         setFocus(b.dataset.p);
