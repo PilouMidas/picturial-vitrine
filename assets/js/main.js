@@ -398,9 +398,20 @@
     }
 
     function preloadNext() {
-      const n = FILMS[(cur + 1) % FILMS.length];
-      const im = new Image();
-      im.src = "assets/img/poster-" + n.slug + "-1920.webp";
+      [(cur + 1) % FILMS.length, (cur - 1 + FILMS.length) % FILMS.length].forEach((idx) => {
+        const base = "assets/img/poster-" + FILMS[idx].slug + "-";
+        const av = document.createElement("link");
+        av.rel = "preload";
+        av.as = "image";
+        av.type = "image/avif";
+        av.imagesrcset = base + "800.avif 800w, " + base + "1600.avif 1600w, " + base + "1920.avif 1920w";
+        av.imagesizes = "100vw";
+        document.head.appendChild(av);
+        const im = new Image();
+        im.srcset = base + "800.webp 800w, " + base + "1600.webp 1600w, " + base + "1920.webp 1920w";
+        im.sizes = "100vw";
+        im.src = base + "1920.webp";
+      });
     }
 
     function go(dir) {
@@ -433,12 +444,15 @@
     fillSlot(0, FILMS[0]);
     bgSlots[0].classList.add("front", "zoom-in");
     sharpSlots[0].classList.add("front", "zoom-in");
+    frames[0].classList.add("is-entering");
     paint();
     preloadNext();
+    const enterMs = (parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--transDur")) || 0.8) * 1500 + 120;
     setTimeout(() => {
       bgSlots[0].classList.remove("zoom-in");
       sharpSlots[0].classList.remove("zoom-in");
-    }, 2500);
+      frames[0].classList.remove("is-entering");
+    }, enterMs);
 
     document.getElementById("hero-next").addEventListener("click", () => go(1));
     document.getElementById("hero-prev").addEventListener("click", () => go(-1));

@@ -319,9 +319,9 @@ a:hover { text-decoration-color: var(--ink); }
   color: #fff;
   text-align: left;
 }
-.hero-frame.is-current .hero-caption { animation: caption-rise var(--transDur) ease both; }
-@keyframes caption-rise {
-  from { transform: translateY(26px); opacity: 0; }
+.hero-frame.is-entering { animation: frame-rise calc(var(--transDur) * 1.5) ease both; }
+@keyframes frame-rise {
+  from { transform: translateY(32vh); opacity: 0; }
   to { transform: none; opacity: 1; }
 }
 .hero-caption-label {
@@ -829,7 +829,7 @@ a:hover { text-decoration-color: var(--ink); }
   .skip-link { transition: none; }
   .hl.zoom-in { animation: none; }
   .hl, .hero-frame { transition: none; }
-  .hero-frame.is-current .hero-caption { animation: none; }
+  .hero-frame.is-entering { animation: none; }
 }
 
 /* ---------- Pages légales ---------- */

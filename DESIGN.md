@@ -278,3 +278,11 @@ suivant **monte du bas vers le haut** à l'arrivée (`caption-rise` : translateY
 place, durée `--transDur`) pendant que le cadre photo glisse **de la droite vers la gauche**
 (ligne d'images, plus qu'un carrousel) ; l'ancien sort à gauche en disparaissant vite. En mobile
 la barre s'étale en bas de l'écran (12px). `prefers-reduced-motion` : pas d'animations.
+
+**Étape 2.3 (retours Philippe)** : correction du fondu entre deux photos — le film suivant
+est préchargé en AVIF **et** WebP, aux 3 largeurs (800/1600/1920, `imagesrcset`/`imagesizes=100vw`)
+car le `<picture>` sert l'AVIF en priorité : l'image suivante est en cache pendant le fondu, plus
+de flash noir. Mouvement : à l'arrivée sur le site, le cadre titre monte du bas de l'écran
+(`frame-rise` sur `.is-entering`, une seule fois, 1,5 x `--transDur`) ; en navigation, le cadre
+suivant glisse depuis la droite (ligne d'images droite → gauche), l'ancien sort à gauche en
+disparaissant vite. Le titre reste remonté dans le cadre avec la barre de boutons en dessous.
