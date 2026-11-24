@@ -6,6 +6,10 @@
   --accent: #F8AE19;
   --accent-hover: #E29A0D;
   --accent-ink: #9A6500;
+  --focusX: 1;
+  --focusY: 0.5;
+  --focusW: min(34vw, 520px);
+  --focusH: 100%;
   --serif: "Libre Caslon Text", Georgia, "Times New Roman", serif;
   --sans: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
   --container: 1080px;
@@ -228,10 +232,6 @@ a:hover { text-decoration-color: var(--ink); }
   min-height: 480px;
   overflow: hidden;
   background: #0F0F0F;
-  --focusX: 1;
-  --focusY: 0.5;
-  --focusW: min(34vw, 520px);
-  --focusH: 100%;
 }
 .hero-bg, .hero-sharp {
   position: absolute;

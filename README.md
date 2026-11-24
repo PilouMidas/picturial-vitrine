@@ -22,19 +22,27 @@ lightbox restent en place et inertes. Chaque étape suivante (décrite par Phili
 commençant par l'écran d'arrivée) = un commit sur la branche de la PR #1, revu via
 GitHub Pages sur `vibe/vitrine-picturial-075ffb`.
 
-## Choisir où va la zone nette du hero (le « filtre »)
+## Placer le surcadrage (zone nette) — depuis la console, partagé par tous les films
 
-Sur `.hero` dans `assets/css/style.css`, 4 variables règlent la zone nette (le reste de
-l'image reste flou) :
+Les 4 variables vivent sur `:root` (`assets/css/style.css`) : elles s'appliquent à **tous**
+les heros/films (même position partout). Pour régler **depuis la console** (F12 → Console),
+sans toucher au fichier :
 
-- `--focusX` : position horizontale — `0` = bord gauche, `0.5` = centré, `1` = bord droit
-- `--focusY` : position verticale — `0` = haut, `0.5` = centré, `1` = bas
+```js
+setFocus('droite')   // préréglages : 'droite' | 'gauche' | 'centre' | 'haut' | 'bas'
+setFocus(0.8, 0.5, '40vw', '100%')   // ou valeurs brutes : x, y (0..1), largeur, hauteur
+```
+
+Ça pose les variables en inline sur `<html>` → effet immédiat, et comme c'est sur `:root`,
+tous les films (les futurs heros par film) auront le surcadrage au même endroit.
+Pour rendre le réglage permanent : éditer les `--focus*` dans `:root` de
+`assets/css/style.css` (sur la branche) et committer.
+
+- `--focusX` : 0 = bord gauche, 0.5 = centré, 1 = bord droit · `--focusY` : 0 = haut, 1 = bas
 - `--focusW` / `--focusH` : taille de la zone nette (`100%` = pleine largeur/hauteur)
 
-Réglage actuel pour Tristan : `--focusX: 1; --focusH: 100%` → **bande nette pleine hauteur à
-l'extrême droite** de l'image (partie à conserver dans tous les cas), largeur
-`min(34vw, 520px)`. Pour centrer à nouveau : `--focusX: 0.5; --focusH: min(58svh, 560px);
---focusW: min(88vw, calc(var(--focusH) * 16 / 9))`.
+Réglage actuel (Tristan) : `--focusX: 1; --focusH: 100%` → bande nette pleine hauteur à
+l'extrême droite de l'image.
 
 ## Lancer en local
 

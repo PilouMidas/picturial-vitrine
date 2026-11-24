@@ -276,6 +276,36 @@
     updateStills();
   });
 
+  // ---------- Surcadrage (zone nette) : réglable depuis la console, partagé par tous les films ----------
+
+  const FOCUS_PRESETS = {
+    droite: { x: "1", y: "0.5", w: "min(34vw, 520px)", h: "100%" },
+    gauche: { x: "0", y: "0.5", w: "min(34vw, 520px)", h: "100%" },
+    centre: { x: "0.5", y: "0.5", w: "min(88vw, calc(min(58svh, 560px) * 16 / 9))", h: "min(58svh, 560px)" },
+    haut: { x: "0.5", y: "0", w: "100%", h: "min(30svh, 300px)" },
+    bas: { x: "0.5", y: "1", w: "100%", h: "min(30svh, 300px)" }
+  };
+
+  window.setFocus = function (preset, y, w, h) {
+    const style = document.documentElement.style;
+    let p;
+    if (typeof preset === "string" && FOCUS_PRESETS[preset]) {
+      p = FOCUS_PRESETS[preset];
+    } else {
+      p = {
+        x: String(preset),
+        y: String(y == null ? 0.5 : y),
+        w: String(w || "min(34vw, 520px)"),
+        h: String(h || "100%")
+      };
+    }
+    style.setProperty("--focusX", p.x);
+    style.setProperty("--focusY", p.y);
+    style.setProperty("--focusW", p.w);
+    style.setProperty("--focusH", p.h);
+    return p;
+  };
+
   // ---------- Formulaire de contact (mailto, aucune donnée stockée côté serveur) ----------
 
   const form = document.getElementById("contact-form");

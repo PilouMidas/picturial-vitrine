@@ -227,3 +227,9 @@ Tristan : `--focusX: 1`, `--focusH: 100%` → bande nette **pleine hauteur à l'
 header flotte maintenant vraiment sur l'image) ; `object-fit: cover` = zoom automatique
 si l'image n'est pas en 16:9 (Tristan fait 1,9:1, aucun bandeau venant de l'image) ;
 léger **zoom-in à l'arrivée** (`hero-zoom` 1.6s, désactivé si `prefers-reduced-motion`).
+
+**Étape 1.4** : nouvelle image de base Tristan (`tristan_07_web.jpg` → `poster-tristan-*.{avif,webp}`
++ og-image). Le surcadrage devient pilotable depuis la **console** : `setFocus('droite'|'gauche'|'centre'|'haut'|'bas')`
+ou `setFocus(x, y, w, h)` (main.js pose les `--focus*` en inline sur `:root`) ; les variables
+vivent désormais sur `:root` dans le CSS → **même position pour tous les films**. Réglage
+défaut : droite pleine hauteur (`--focusX: 1; --focusH: 100%`).
