@@ -223,6 +223,7 @@ a:hover { text-decoration-color: var(--ink); }
 
 .hero {
   position: relative;
+  height: 100vh;
   height: 100svh;
   min-height: 480px;
   overflow: hidden;
