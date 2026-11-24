@@ -1,8 +1,18 @@
 # Picturial — vitrine (picturial.fr)
 
 Site statique 100 % vidéo, conçu selon [DESIGN.md](DESIGN.md) : sobre et élégant, blanc
-dominant, accent unique `#F8AE19`, serif Fraunces + sans Instrument Sans (auto-hébergées),
-aucun player Vimeo affiché en dur — lecture en lightbox au clic (« Voir le film »).
+dominant, accent unique `#F8AE19`, serif **Libre Caslon Text** + sans Instrument Sans
+(auto-hébergées), aucun player Vimeo affiché en dur — lecture en lightbox au clic
+(« Voir le film »).
+
+Direction graphique (retours Philippe, nov. 2026), inspirée de **Haut et Court** :
+- hero = vidéogramme **plein écran** dès l'arrivée (poster d'Ira, mon amour), bouton
+  « Voir le film » en pastille blanche en bas à gauche (jamais de player en dur)
+- réalisations = **défilement horizontal** (scroll-snap + flèches + compteur), chaque
+  diapositive = vidéogramme + titre + méta + contexte + « Voir le film »
+- logo **horizontal** (oiseau Tomi sur la même ligne, derrière le nom) : `assets/img/logo-picturial-horizontal.{png,webp}`
+  est une **recomposition provisoire** à partir des PNG fournis — remplacer par la version
+  officielle dès réception (mêmes noms de fichiers).
 
 ## Lancer en local
 
@@ -26,8 +36,8 @@ assets/css/fonts.css     @font-face auto-hébergés (woff2, subsets latin / lati
 assets/css/style.css     feuille de style
 assets/js/legal-config.js  CONFIG LÉGALE CENTRALISÉE : à remplir (SIRET, forme juridique, hébergeur, DPO…)
 assets/js/main.js        menu mobile, bandeau consentement RGPD, lightbox Vimeo (bloquée sans accord), formulaire (mailto)
-assets/fonts/            Fraunces + Instrument Sans (woff2)
-assets/img/              affiches AVIF/WebP (800w + 1600w), logos WebP/PNG, Tomi jaune, favicons, og-image
+assets/fonts/            Libre Caslon Text + Instrument Sans (woff2)
+assets/img/              vidéogrammes AVIF/WebP (800w/1600w, +1920w pour le hero), logo horizontal WebP/PNG, favicons, og-image
 ```
 
 ## Conformité légale (LCEN / RGPD)

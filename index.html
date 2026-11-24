@@ -9,7 +9,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon-48.png">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
-  <link rel="preload" href="assets/fonts/Fraunces-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/LibreCaslonText-normal-700-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/InstrumentSans-var-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/fonts.css">
   <link rel="stylesheet" href="assets/css/style.css">
@@ -36,8 +36,8 @@
     <div class="container header-inner">
       <a class="brand" href="#top" aria-label="Picturial — retour en haut de page">
         <picture>
-          <source type="image/webp" srcset="assets/img/logo-picturial-texte.webp">
-          <img src="assets/img/logo-picturial-texte.png" alt="PICTURIAL" width="1077" height="141">
+          <source type="image/webp" srcset="assets/img/logo-picturial-horizontal.webp">
+          <img src="assets/img/logo-picturial-horizontal.png" alt="Picturial" width="1387" height="202">
         </picture>
       </a>
       <nav class="main-nav" aria-label="Navigation principale">
@@ -59,14 +59,21 @@
   </header>
 
   <main id="contenu" tabindex="-1">
-    <section class="hero container" aria-labelledby="hero-title">
-      <p class="eyebrow">
-        <picture class="eyebrow-tomi">
-          <source type="image/webp" srcset="assets/img/tomi-yellow.webp">
-          <img src="assets/img/tomi-yellow.png" alt="" width="601" height="261" aria-hidden="true">
+    <section class="hero" aria-label="Vidéo à la une — Ira, mon amour">
+      <figure class="hero-media">
+        <picture>
+          <source type="image/avif" srcset="assets/img/poster-ira-800.avif 800w, assets/img/poster-ira-1600.avif 1600w, assets/img/poster-ira-1920.avif 1920w" sizes="100vw">
+          <img src="assets/img/poster-ira-1920.webp" srcset="assets/img/poster-ira-800.webp 800w, assets/img/poster-ira-1600.webp 1600w, assets/img/poster-ira-1920.webp 1920w" sizes="100vw" width="1920" height="1080" alt="Vidéo en plein écran : photogramme d'Ira, mon amour — un bus bleu dans une rue de Chișinău, la nuit" fetchpriority="high" decoding="async">
         </picture>
-        Production audiovisuelle &amp; cinéma — Alsace
-      </p>
+      </figure>
+      <a class="hero-play voir-le-film" href="https://vimeo.com/picturial/iramonamour" data-video="933198113" data-hash="8300f40080" data-title="Ira, mon amour" data-url="https://vimeo.com/picturial/iramonamour">
+        <svg viewBox="0 0 12 14" width="11" height="13" aria-hidden="true" focusable="false"><path d="M0 0 L12 7 L0 14 Z" fill="currentColor"/></svg>
+        Voir le film — Ira, mon amour
+      </a>
+    </section>
+
+    <section class="intro container" aria-labelledby="hero-title">
+      <p class="eyebrow">Production audiovisuelle &amp; cinéma — Alsace</p>
       <h1 id="hero-title">Des films engagés qui interrogent <em>notre époque.</em></h1>
       <div class="hero-actions">
         <a class="btn" href="#contact">Discuter d'un projet</a>
@@ -74,98 +81,98 @@
       </div>
     </section>
 
-    <section class="section container" id="realisations" aria-labelledby="realisations-title">
-      <div class="section-head">
+    <section class="section" id="realisations" aria-labelledby="realisations-title">
+      <div class="container section-head">
         <p class="label">Réalisations</p>
         <h2 id="realisations-title">Une sélection de films</h2>
-        <p class="lead">Cinq documentaires récents, produits en Alsace. Chaque film se regarde en intégralité.</p>
+        <p class="lead">Cinq documentaires récents, produits en Alsace. Faites défiler sur le côté pour passer d'un film à l'autre ; chaque film se regarde en intégralité.</p>
       </div>
 
-      <div class="works">
-        <article class="work work-w100">
+      <div class="film-strip" id="film-strip" tabindex="0" role="region" aria-label="Réalisations : faites défiler horizontalement entre les films">
+        <article class="film-slide">
           <button class="poster" type="button" data-video="933198113" data-hash="8300f40080" data-title="Ira, mon amour" data-url="https://vimeo.com/picturial/iramonamour" aria-label="Voir le film : Ira, mon amour">
             <picture>
-              <source type="image/avif" srcset="assets/img/poster-ira-800.avif 800w, assets/img/poster-ira-1600.avif 1600w" sizes="(min-width: 1128px) 1032px, 100vw">
-              <img src="assets/img/poster-ira-800.webp" srcset="assets/img/poster-ira-800.webp 800w, assets/img/poster-ira-1600.webp 1600w" sizes="(min-width: 1128px) 1032px, 100vw" width="1600" height="900" alt="Photogramme d'Ira, mon amour : un bus bleu dans une rue de Chișinău, la nuit" decoding="async">
+              <source type="image/avif" srcset="assets/img/poster-ira-800.avif 800w, assets/img/poster-ira-1600.avif 1600w" sizes="(max-width: 719px) 88vw, min(88vw, 920px)">
+              <img src="assets/img/poster-ira-800.webp" srcset="assets/img/poster-ira-800.webp 800w, assets/img/poster-ira-1600.webp 1600w" sizes="(max-width: 719px) 88vw, min(88vw, 920px)" width="1600" height="900" alt="Photogramme d'Ira, mon amour : un bus bleu dans une rue de Chișinău, la nuit" decoding="async">
             </picture>
           </button>
           <div class="work-info">
             <p class="work-meta">Documentaire · 3 min · 2024 · réal. Philippe Beyer-Hirsch</p>
             <h3>Ira, mon amour</h3>
             <p class="work-line">Dans les rues de Chișinău, une jeune femme part sur les traces de l'histoire familiale de sa meilleure amie.</p>
-            <a class="voir-le-film" href="https://vimeo.com/picturial/iramonamour" data-video="933198113" data-hash="8300f40080" data-title="Ira, mon amour">
+            <a class="voir-le-film" href="https://vimeo.com/picturial/iramonamour" data-video="933198113" data-hash="8300f40080" data-title="Ira, mon amour" data-url="https://vimeo.com/picturial/iramonamour">
               <svg viewBox="0 0 12 14" width="11" height="13" aria-hidden="true" focusable="false"><path d="M0 0 L12 7 L0 14 Z" fill="currentColor"/></svg>
               Voir le film
             </a>
           </div>
         </article>
 
-        <article class="work work-w78">
+        <article class="film-slide">
           <button class="poster" type="button" data-video="774185263" data-hash="440a590aba" data-title="Objet (re)trouvé" data-url="https://vimeo.com/picturial/objetretrouve" aria-label="Voir le film : Objet (re)trouvé">
             <picture>
-              <source type="image/avif" srcset="assets/img/poster-objet-retrouve-800.avif 800w, assets/img/poster-objet-retrouve-1600.avif 1600w" sizes="(max-width: 719px) 100vw, (min-width: 1128px) 806px, 78vw">
-              <img src="assets/img/poster-objet-retrouve-800.webp" srcset="assets/img/poster-objet-retrouve-800.webp 800w, assets/img/poster-objet-retrouve-1600.webp 1600w" sizes="(max-width: 719px) 100vw, (min-width: 1128px) 806px, 78vw" width="1600" height="900" alt="Photogramme d'Objet (re)trouvé : des chaises rouges, le titre du film à l'écran" loading="lazy" decoding="async">
+              <source type="image/avif" srcset="assets/img/poster-objet-retrouve-800.avif 800w, assets/img/poster-objet-retrouve-1600.avif 1600w" sizes="(max-width: 719px) 88vw, min(88vw, 920px)">
+              <img src="assets/img/poster-objet-retrouve-800.webp" srcset="assets/img/poster-objet-retrouve-800.webp 800w, assets/img/poster-objet-retrouve-1600.webp 1600w" sizes="(max-width: 719px) 88vw, min(88vw, 920px)" width="1600" height="900" alt="Photogramme d'Objet (re)trouvé : des chaises rouges, le titre du film à l'écran" loading="lazy" decoding="async">
             </picture>
           </button>
           <div class="work-info">
             <p class="work-meta">Documentaire · 23 min · 2022 · commande France Design Week</p>
             <h3>Objet (re)trouvé</h3>
             <p class="work-line">De délaissés domestiques à mobilier design, l'itinéraire de meubles surcyclés.</p>
-            <a class="voir-le-film" href="https://vimeo.com/picturial/objetretrouve" data-video="774185263" data-hash="440a590aba" data-title="Objet (re)trouvé">
+            <a class="voir-le-film" href="https://vimeo.com/picturial/objetretrouve" data-video="774185263" data-hash="440a590aba" data-title="Objet (re)trouvé" data-url="https://vimeo.com/picturial/objetretrouve">
               <svg viewBox="0 0 12 14" width="11" height="13" aria-hidden="true" focusable="false"><path d="M0 0 L12 7 L0 14 Z" fill="currentColor"/></svg>
               Voir le film
             </a>
           </div>
         </article>
 
-        <article class="work work-w88">
+        <article class="film-slide">
           <button class="poster" type="button" data-video="876004689" data-hash="6995f14855" data-title="Le Blues du poulailler" data-url="https://vimeo.com/picturial/bluesdupoulailler" aria-label="Voir le film : Le Blues du poulailler">
             <picture>
-              <source type="image/avif" srcset="assets/img/poster-blues-du-poulailler-800.avif 800w, assets/img/poster-blues-du-poulailler-1600.avif 1600w" sizes="(max-width: 719px) 100vw, (min-width: 1128px) 908px, 88vw">
-              <img src="assets/img/poster-blues-du-poulailler-800.webp" srcset="assets/img/poster-blues-du-poulailler-800.webp 800w, assets/img/poster-blues-du-poulailler-1600.webp 1600w" sizes="(max-width: 719px) 100vw, (min-width: 1128px) 908px, 88vw" width="1600" height="900" alt="Photogramme du Blues du poulailler : un rapport sur l'épizootie aviaire devant un champ" loading="lazy" decoding="async">
+              <source type="image/avif" srcset="assets/img/poster-blues-du-poulailler-800.avif 800w, assets/img/poster-blues-du-poulailler-1600.avif 1600w" sizes="(max-width: 719px) 88vw, min(88vw, 920px)">
+              <img src="assets/img/poster-blues-du-poulailler-800.webp" srcset="assets/img/poster-blues-du-poulailler-800.webp 800w, assets/img/poster-blues-du-poulailler-1600.webp 1600w" sizes="(max-width: 719px) 88vw, min(88vw, 920px)" width="1600" height="900" alt="Photogramme du Blues du poulailler : un rapport sur l'épizootie aviaire devant un champ" loading="lazy" decoding="async">
             </picture>
           </button>
           <div class="work-info">
             <p class="work-meta">Documentaire · 17 min · 2023 · commande Assemblée nationale</p>
             <h3>Le Blues du poulailler</h3>
             <p class="work-line">Deux députés à la rencontre d'éleveurs et de scientifiques pour comprendre l'épizootie aviaire de 2022.</p>
-            <a class="voir-le-film" href="https://vimeo.com/picturial/bluesdupoulailler" data-video="876004689" data-hash="6995f14855" data-title="Le Blues du poulailler">
+            <a class="voir-le-film" href="https://vimeo.com/picturial/bluesdupoulailler" data-video="876004689" data-hash="6995f14855" data-title="Le Blues du poulailler" data-url="https://vimeo.com/picturial/bluesdupoulailler">
               <svg viewBox="0 0 12 14" width="11" height="13" aria-hidden="true" focusable="false"><path d="M0 0 L12 7 L0 14 Z" fill="currentColor"/></svg>
               Voir le film
             </a>
           </div>
         </article>
 
-        <article class="work work-w70">
+        <article class="film-slide">
           <button class="poster" type="button" data-video="1006856972" data-hash="69c2dffb86" data-title="Récréations" data-url="https://vimeo.com/picturial/recreation" aria-label="Voir le film : Récréations">
             <picture>
-              <source type="image/avif" srcset="assets/img/poster-recreations-800.avif 800w, assets/img/poster-recreations-1600.avif 1600w" sizes="(max-width: 719px) 100vw, (min-width: 1128px) 722px, 70vw">
-              <img src="assets/img/poster-recreations-800.webp" srcset="assets/img/poster-recreations-800.webp 800w, assets/img/poster-recreations-1600.webp 1600w" sizes="(max-width: 719px) 100vw, (min-width: 1128px) 722px, 70vw" width="1600" height="900" alt="Photogramme de Récréations : des chaises d'école empilées, le titre du film à l'écran" loading="lazy" decoding="async">
+              <source type="image/avif" srcset="assets/img/poster-recreations-800.avif 800w, assets/img/poster-recreations-1600.avif 1600w" sizes="(max-width: 719px) 88vw, min(88vw, 920px)">
+              <img src="assets/img/poster-recreations-800.webp" srcset="assets/img/poster-recreations-800.webp 800w, assets/img/poster-recreations-1600.webp 1600w" sizes="(max-width: 719px) 88vw, min(88vw, 920px)" width="1600" height="900" alt="Photogramme de Récréations : des chaises d'école empilées, le titre du film à l'écran" loading="lazy" decoding="async">
             </picture>
           </button>
           <div class="work-info">
             <p class="work-meta">Documentaire · 26 min · 2024 · commande France Design Week</p>
             <h3>Récréations</h3>
             <p class="work-line">Le parcours de cinq chaises d'écoles « abandonnées », adoptées par des particuliers, artisans ou designers.</p>
-            <a class="voir-le-film" href="https://vimeo.com/picturial/recreation" data-video="1006856972" data-hash="69c2dffb86" data-title="Récréations">
+            <a class="voir-le-film" href="https://vimeo.com/picturial/recreation" data-video="1006856972" data-hash="69c2dffb86" data-title="Récréations" data-url="https://vimeo.com/picturial/recreation">
               <svg viewBox="0 0 12 14" width="11" height="13" aria-hidden="true" focusable="false"><path d="M0 0 L12 7 L0 14 Z" fill="currentColor"/></svg>
               Voir le film
             </a>
           </div>
         </article>
 
-        <article class="work work-w92">
+        <article class="film-slide">
           <button class="poster" type="button" data-video="1169950875" data-hash="0b4518e3ef" data-title="Murmures de culture" data-url="https://vimeo.com/1169950875/0b4518e3ef" aria-label="Voir le film : Murmures de culture">
             <picture>
-              <source type="image/avif" srcset="assets/img/poster-murmures-de-culture-800.avif 800w, assets/img/poster-murmures-de-culture-1600.avif 1600w" sizes="(max-width: 719px) 100vw, (min-width: 1128px) 950px, 92vw">
-              <img src="assets/img/poster-murmures-de-culture-800.webp" srcset="assets/img/poster-murmures-de-culture-800.webp 800w, assets/img/poster-murmures-de-culture-1600.webp 1600w" sizes="(max-width: 719px) 100vw, (min-width: 1128px) 950px, 92vw" width="1600" height="900" alt="Photogramme de Murmures de culture : des cercles colorés suspendus devant une fenêtre à vitraux" loading="lazy" decoding="async">
+              <source type="image/avif" srcset="assets/img/poster-murmures-de-culture-800.avif 800w, assets/img/poster-murmures-de-culture-1600.avif 1600w" sizes="(max-width: 719px) 88vw, min(88vw, 920px)">
+              <img src="assets/img/poster-murmures-de-culture-800.webp" srcset="assets/img/poster-murmures-de-culture-800.webp 800w, assets/img/poster-murmures-de-culture-1600.webp 1600w" sizes="(max-width: 719px) 88vw, min(88vw, 920px)" width="1600" height="900" alt="Photogramme de Murmures de culture : des cercles colorés suspendus devant une fenêtre à vitraux" loading="lazy" decoding="async">
             </picture>
           </button>
           <div class="work-info">
             <p class="work-meta">Documentaire · 6 min · 2025 · commande France Design Week</p>
             <h3>Murmures de culture</h3>
             <p class="work-line">Le processus de création d'une nouvelle matière, inspiré par <cite>Le chant du Styrène</cite> d'Alain Resnais.</p>
-            <a class="voir-le-film" href="https://vimeo.com/1169950875/0b4518e3ef" data-video="1169950875" data-hash="0b4518e3ef" data-title="Murmures de culture">
+            <a class="voir-le-film" href="https://vimeo.com/1169950875/0b4518e3ef" data-video="1169950875" data-hash="0b4518e3ef" data-title="Murmures de culture" data-url="https://vimeo.com/1169950875/0b4518e3ef">
               <svg viewBox="0 0 12 14" width="11" height="13" aria-hidden="true" focusable="false"><path d="M0 0 L12 7 L0 14 Z" fill="currentColor"/></svg>
               Voir le film
             </a>
@@ -173,7 +180,17 @@
         </article>
       </div>
 
-      <div class="et-aussi">
+      <div class="container film-nav">
+        <button type="button" class="film-arrow" id="film-prev" aria-label="Film précédent">
+          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><path d="M10 2 L4 8 L10 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <span class="film-count" id="film-count" aria-live="polite">1 / 5</span>
+        <button type="button" class="film-arrow" id="film-next" aria-label="Film suivant">
+          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><path d="M6 2 L12 8 L6 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <div class="et-aussi container">
         <p class="label">Et aussi</p>
         <ul>
           <li><strong>Tristan</strong> — fiction, 14 min, 2024, réal. Mallory Grolleau · prix du public « Piranha Alien d'or », Festival du Film Fantastique de Rouen</li>
@@ -251,8 +268,8 @@
         </div>
         <div class="about-visual">
           <picture>
-            <source type="image/webp" srcset="assets/img/logo-picturial-black.webp">
-            <img src="assets/img/logo-picturial-black.png" width="1077" height="458" alt="Logo Picturial avec Tomi, l'oiseau — Production audiovisuelle &amp; cinéma" loading="lazy" decoding="async">
+            <source type="image/webp" srcset="assets/img/logo-picturial-horizontal.webp">
+            <img src="assets/img/logo-picturial-horizontal.png" width="1387" height="202" alt="Logo Picturial — Tomi, l'oiseau, derrière le nom" loading="lazy" decoding="async">
           </picture>
         </div>
       </div>
@@ -307,8 +324,8 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <picture class="footer-logo">
-        <source type="image/webp" srcset="assets/img/logo-picturial-black.webp">
-        <img src="assets/img/logo-picturial-black.png" width="1077" height="458" alt="Picturial — production audiovisuelle &amp; cinéma" loading="lazy" decoding="async">
+        <source type="image/webp" srcset="assets/img/logo-picturial-horizontal.webp">
+        <img src="assets/img/logo-picturial-horizontal.png" width="1387" height="202" alt="Picturial — production audiovisuelle &amp; cinéma" loading="lazy" decoding="async">
       </picture>
       <nav class="footer-nav" aria-label="Liens légaux">
         <a href="mentions-legales.html">Mentions légales</a>

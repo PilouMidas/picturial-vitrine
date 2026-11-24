@@ -192,6 +192,50 @@
     });
   }
 
+  // ---------- Bande horizontale des réalisations ----------
+
+  const strip = document.getElementById("film-strip");
+  if (strip) {
+    const slides = Array.from(strip.querySelectorAll(".film-slide"));
+    const prevBtn = document.getElementById("film-prev");
+    const nextBtn = document.getElementById("film-next");
+    const countEl = document.getElementById("film-count");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function slideStep() {
+      if (!slides.length) return 0;
+      const styles = getComputedStyle(strip);
+      const gap = parseFloat(styles.columnGap || styles.gap) || 0;
+      return slides[0].getBoundingClientRect().width + gap;
+    }
+
+    function currentIndex() {
+      const step = slideStep() || 1;
+      return Math.min(slides.length - 1, Math.max(0, Math.round(strip.scrollLeft / step)));
+    }
+
+    function updateStrip() {
+      const i = currentIndex();
+      if (countEl) countEl.textContent = (i + 1) + " / " + slides.length;
+      if (prevBtn) prevBtn.disabled = strip.scrollLeft <= 4;
+      if (nextBtn) nextBtn.disabled = strip.scrollLeft >= strip.scrollWidth - strip.clientWidth - 4;
+    }
+
+    if (prevBtn) {
+      prevBtn.addEventListener("click", () => {
+        strip.scrollBy({ left: -slideStep(), behavior: reducedMotion ? "auto" : "smooth" });
+      });
+    }
+    if (nextBtn) {
+      nextBtn.addEventListener("click", () => {
+        strip.scrollBy({ left: slideStep(), behavior: reducedMotion ? "auto" : "smooth" });
+      });
+    }
+    strip.addEventListener("scroll", updateStrip, { passive: true });
+    window.addEventListener("resize", updateStrip);
+    updateStrip();
+  }
+
   // ---------- Formulaire de contact (mailto, aucune donnée stockée côté serveur) ----------
 
   const form = document.getElementById("contact-form");

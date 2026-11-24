@@ -34,7 +34,8 @@ de design ou de contenu doit s'y conformer.
 
 ## 4. Typographie
 
-- Titres : une serif avec caractère — Fraunces (Google Fonts), auto-hébergée en woff2
+- Titres : une serif avec caractère — **Libre Caslon Text** (Google Fonts), auto-hébergée en
+  woff2 (Fraunces écartée en itération 2 : capitales F et J trop « ondulantes » au goût de Philippe)
 - Corps et UI : une sans sobre mais pas Inter — Instrument Sans, auto-hébergée en woff2
 - Échelle : titre hero 48-64px desktop (clamp responsive), h2 ~32px, corps 16-17px, interligne 1.6
 - Un seul graissage fort par bloc visuel ; l'italique serif peut servir de touche signature
@@ -159,3 +160,19 @@ France Télévisions).
   « Gérer mes cookies » en pied de page.
 - Formulaire de contact : case de consentement **non pré-cochée** et obligatoire ; envoi par
   mailto (aucune donnée stockée côté serveur).
+
+## 11. Itération 2 — retours Philippe (24 nov. 2026)
+
+Référence de goût corrigée : **Haut et Court** (la boîte de prod), pas « Oecourt ».
+
+- **Typo** : Fraunces → Libre Caslon Text (F et J droits, plus catalogue de cinéma).
+- **Logo** : version **horizontale** privilégiée (oiseau Tomi sur la même ligne que PICTURIAL,
+  derrière le texte). `logo-picturial-horizontal.{png,webp}` est une recomposition provisoire
+  depuis les PNG fournis ; à remplacer par le fichier officiel. Fini les logos en tout petit :
+  header à hauteur fixe lisible, footer et À propos en grand.
+- **Hero** : vidéogramme **plein écran** dès l'arrivée (style Haut et Court), sans player en
+  dur — pastille « Voir le film — Ira, mon amour » en bas à gauche, lecture en lightbox.
+  L'accroche serif passe en section « intro » juste dessous.
+- **Réalisations** : **défilement horizontal** (scroll-snap + flèches + compteur « 1 / 5 »),
+  une diapositive = vidéogramme + titre + méta + ligne de contexte + « Voir le film ».
+- Moodboard évoqué comme prochaine étape possible (non tranché pour l'instant).
