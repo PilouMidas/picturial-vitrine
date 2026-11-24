@@ -385,7 +385,6 @@
         f.classList.remove("is-current", "is-next", "is-prev", "is-hidden");
         if (i === cur) f.classList.add("is-current");
         else if (i === (cur + 1) % FILMS.length) f.classList.add("is-next");
-        else if (i === (cur - 1 + FILMS.length) % FILMS.length) f.classList.add("is-prev");
         else f.classList.add("is-hidden");
       });
       const f = FILMS[cur];
@@ -446,7 +445,6 @@
     frames.forEach((f) => {
       f.addEventListener("click", () => {
         if (f.classList.contains("is-next")) go(1);
-        else if (f.classList.contains("is-prev")) go(-1);
       });
     });
     document.addEventListener("keydown", (e) => {

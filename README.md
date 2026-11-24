@@ -109,6 +109,10 @@ avec un léger zoom-in (`--zoom`), le cadre titre du film courant sort par la ga
 Compteur « n / 6 » + bouton « Voir le film — {titre} » mis à jour à chaque changement.
 Durée des transitions : `--transDur` (curseur « Durée » dans `?focus=edit`).
 
+Étape 2.1 : le cadre qui sort à gauche/droite disparaît vite (fondu 30 % de `--transDur`
+puis caché), plus de carte du film précédent à gauche (seul le suivant dépasse à droite), et
+les boutons sont une barre blanche bien visible en bas à droite (← · n / 6 · →).
+
 ## Ajouter un film au carrousel hero
 
 Déposer `assets/img/poster-<slug>-{800,1600,1920}.{avif,webp}` et ajouter une entrée dans

@@ -260,3 +260,12 @@ Deux nouvelles variables sur `:root` : `--transDur` (durée du fondu/zoom/exit, 
 flou + **durée** + **zoom**) et les 4 lignes de valeurs CSS copiables incluent désormais
 `--transDur` / `--zoom`. Valeurs verrouillées par Philippe : `--focusX: 0.37; --focusY: 0.5;
 --focusW: 50%; --focusH: 100%; --logoH: 102px; --blur: 2px;` dans `:root`.
+
+**Étape 2.1 (retours Philippe)** : le cadre titre qui sort par la gauche (ou la droite)
+disparaît vite — fondu sur 30 % de `--transDur` puis `visibility: hidden` et
+`pointer-events: none`, aucun fantôme visible pendant la sortie. La carte du film
+précédent n'apparaît plus à gauche du cadre (classe `.is-prev` supprimée) : seul le film
+suivant dépasse à droite, comme sur Haut et Court. Boutons de changement de film bien
+visibles : barre blanche en bas à droite (flèche précédente · compteur « n / 6 » · flèche suivante),
+z-index 46 au-dessus des cadres, même style que le chip « Voir le film » ; en mobile
+(< 720px) la barre remonte au-dessus du chip pour ne pas se chevaucher.
