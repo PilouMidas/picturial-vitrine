@@ -294,3 +294,16 @@ bord gauche exactement sur le bord droit du cadre courant, en bas à droite ; au
 remonte en glissant vers la gauche (diagonale bas-droite → place principale). Miroir en sens
 inverse : `.is-from-left` = `translateX(calc(var(--focusW) * -1))` (bord droit de la carte
 entrante sur le bord gauche du cadre courant).
+
+**Étape 2.5 (retours Philippe)** : plus de superposition — les deux cadres ont désormais des
+coordonnées CSS propres et réglables : cadre en place `--focusX/Y/W/H` (convention gardée),
+cadre à venir `--nextL/--nextT/--nextW/--nextH` en left/top/width/height directs (défauts
+`68.5% / 20% / 40% / 80%` = bord gauche du cadre à venir sur le bord droit du cadre en place,
+en bas à droite). La transition anime la boîte (left/top/width/height) : au clic, la carte
+suivante glisse vers la gauche et grandit jusqu'à prendre exactement la place du cadre courant.
+RÈGLE ABSOLUE retenue : **jamais de mouvement de gauche vers la droite** — l'ancien cadre sort
+toujours par la gauche (`is-exit-left`), et en sens inverse (`←`) la carte entrante arrive par
+le bas (`is-from-bottom`, translateY(10vh)), jamais par la gauche. Panneau `?focus=edit` :
+12 curseurs (X/Y/L/H du cadre + L/T/larg/haut du cadre suivant en % + logo + flou + durée + zoom),
+préréglage « Côte à côte », sortie CSS sur 5 lignes incluant les `--next*`. Console : `setNext(l, t, w, h)`
+/ `setNext()` pour lire.

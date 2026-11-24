@@ -14,6 +14,10 @@
   --blur: 2px;
   --transDur: 0.8s;
   --zoom: 1.05;
+  --nextL: 68.5%;
+  --nextT: 20%;
+  --nextW: 40%;
+  --nextH: 80%;
   --serif: "Libre Caslon Text", Georgia, "Times New Roman", serif;
   --sans: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
   --container: 1080px;
@@ -284,33 +288,33 @@ a:hover { text-decoration-color: var(--ink); }
   width: var(--focusW);
   height: var(--focusH);
   border: 1px solid var(--accent);
-  transform-origin: left center;
   opacity: 0;
   visibility: hidden;
   pointer-events: auto;
-  transition: transform var(--transDur) ease, opacity var(--transDur) ease, visibility 0s linear var(--transDur);
+  transition: left var(--transDur) ease, top var(--transDur) ease, width var(--transDur) ease, height var(--transDur) ease, transform var(--transDur) ease, opacity var(--transDur) ease, visibility 0s linear var(--transDur);
 }
 .hero-frame.is-current,
 .hero-frame.is-next {
   visibility: visible;
-  transition: transform var(--transDur) ease, opacity var(--transDur) ease, visibility 0s;
+  transition: left var(--transDur) ease, top var(--transDur) ease, width var(--transDur) ease, height var(--transDur) ease, transform var(--transDur) ease, opacity var(--transDur) ease, visibility 0s;
 }
-.hero-frame.is-current { opacity: 1; transform: none; }
+.hero-frame.is-current { opacity: 1; }
 .hero-frame.is-next {
+  left: var(--nextL);
+  top: var(--nextT);
+  width: var(--nextW);
+  height: var(--nextH);
   opacity: 0.55;
   cursor: pointer;
-  transform: translateX(var(--focusW)) translateY(10vh) scale(0.8);
 }
-.hero-frame.is-from-left { transform: translateX(calc(var(--focusW) * -1)); opacity: 0; }
-.hero-frame.is-exit-left,
-.hero-frame.is-exit-right {
+.hero-frame.is-from-bottom { transform: translateY(10vh); opacity: 0; }
+.hero-frame.is-exit-left {
+  transform: translateX(-110vw);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   transition: transform var(--transDur) ease, opacity calc(var(--transDur) * 0.3) ease, visibility 0s linear calc(var(--transDur) * 0.3);
 }
-.hero-frame.is-exit-left { transform: translateX(-110vw); }
-.hero-frame.is-exit-right { transform: translateX(110vw); }
 
 .hero-caption {
   position: absolute;
@@ -1080,6 +1084,14 @@ a:hover { text-decoration-color: var(--ink); }
   color: var(--ink);
 }
 .focus-editor-close:hover { background: var(--ink); color: #fff; }
+.focus-editor-sub {
+  margin: 12px 0 0;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-ink);
+}
 .focus-editor label {
   display: grid;
   grid-template-columns: 110px 1fr 44px;

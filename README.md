@@ -26,17 +26,17 @@ GitHub Pages sur `vibe/vitrine-picturial-075ffb`.
 
 **Sans console** : ouvre le site avec `?focus=edit` à la fin de l'URL, ex. en local
 `http://localhost:8000/?focus=edit` (ou `https://.../index.html?focus=edit` en ligne).
-Un panneau « Réglages hero » apparaît en bas à droite avec **8 curseurs** (X, Y, largeur,
+Un panneau « Réglages hero » apparaît en bas à droite avec **12 curseurs** (X, Y, largeur,
 hauteur du cadre net + **taille du logo en px** + **flou en px** autour de la zone nette
 + **durée des transitions** en s + **zoom d'arrivée** en %) + des boutons de préréglage
-(Gauche/Centre/Droite/Haut/Bas). Le curseur logo pilote `--logoH` (taille du logo blanc
+(Gauche/Centre/Droite/Haut/Bas) + 4 curseurs « cadre suivant » en coordonnées CSS directes (L/T/largeur/hauteur en %, variables `--nextL/--nextT/--nextW/--nextH`) + préréglage « Côte à côte » (bord gauche du cadre suivant sur le bord droit du cadre en place). Le curseur logo pilote `--logoH` (taille du logo blanc
 en haut ; en responsive il repasse au coin haut gauche sous 860px), le curseur durée
 pilote `--transDur` (durée du fondu/zoom au changement de film et de l'exit du cadre),
 le curseur zoom pilote `--zoom` (léger zoom-in à l'arrivée et au changement de film).
 Tu bouges un curseur → le cadre jaune et la zone nette suivent en direct. En bas du panneau, les
 valeurs CSS se génèrent toutes seules avec un bouton **« Copier les valeurs CSS »** :
 copie-les et colle-les dans `:root` de `assets/css/style.css` (ou donne-les moi, je
-pousse le commit : les `--focus*` placent le cadre, `--logoH` la taille du logo, `--blur` le flou, `--transDur`/`--zoom` les transitions du carrousel). `F5`
+pousse le commit : les `--focus*` placent le cadre, `--logoH` la taille du logo, `--blur` le flou, `--transDur`/`--zoom` les transitions du carrousel, `--next*` la position du cadre suivant). Console : `setNext(l, t, w, h)` / `setNext()`. Règle absolue : jamais de mouvement gauche→droite (sortie toujours à gauche, entrée inverse par le bas). `F5`
 enlève le panneau.
 
 Alternative console (F12 → Console) :

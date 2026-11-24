@@ -315,6 +315,23 @@
     return p;
   };
 
+  window.setNext = function (l, t, w, h) {
+    const style = document.documentElement.style;
+    if (l === undefined) {
+      const c = getComputedStyle(document.documentElement);
+      return {
+        nextL: c.getPropertyValue("--nextL").trim(),
+        nextT: c.getPropertyValue("--nextT").trim(),
+        nextW: c.getPropertyValue("--nextW").trim(),
+        nextH: c.getPropertyValue("--nextH").trim()
+      };
+    }
+    style.setProperty("--nextL", String(l));
+    style.setProperty("--nextT", String(t == null ? "20%" : t));
+    style.setProperty("--nextW", String(w || "40%"));
+    style.setProperty("--nextH", String(h || "80%"));
+  };
+
   // ---------- Hero étape 2 : carrousel de films plein écran ----------
 
   const FILMS = [
@@ -381,7 +398,7 @@
 
     function paint() {
       frames.forEach((f, i) => {
-        if (f.classList.contains("is-exit-left") || f.classList.contains("is-exit-right")) return;
+        if (f.classList.contains("is-exit-left")) return;
         f.classList.remove("is-current", "is-next", "is-prev", "is-hidden");
         if (i === cur) f.classList.add("is-current");
         else if (i === (cur + 1) % FILMS.length) f.classList.add("is-next");
@@ -428,17 +445,17 @@
       const oldF = frames[cur];
       cur = next;
       const newF = frames[cur];
-      if (dir === -1) newF.classList.add("is-from-left");
+      if (dir === -1) newF.classList.add("is-from-bottom");
       paint();
       oldF.classList.remove("is-hidden");
-      oldF.classList.add(dir === 1 ? "is-exit-left" : "is-exit-right");
+      oldF.classList.add("is-exit-left");
       const durMs = (parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--transDur")) || 0.8) * 1000;
       setTimeout(() => {
         bgSlots.forEach((p) => p.classList.remove("zoom-in"));
         sharpSlots.forEach((p) => p.classList.remove("zoom-in"));
-        oldF.classList.remove("is-exit-left", "is-exit-right");
+        oldF.classList.remove("is-exit-left");
         oldF.classList.add("is-hidden");
-        newF.classList.remove("is-from-left");
+        newF.classList.remove("is-from-bottom");
         animating = false;
         preloadNext();
       }, durMs + 80);
@@ -489,14 +506,20 @@
       '<label>Flou (px) <input type="range" id="fe-blur" min="0" max="20" step="0.5"><span id="fe-blurv"></span></label>' +
       '<label>Durée (s) <input type="range" id="fe-dur" min="0.2" max="2" step="0.1"><span id="fe-durv"></span></label>' +
       '<label>Zoom (%) <input type="range" id="fe-zoom" min="0" max="10" step="0.5"><span id="fe-zoomv"></span></label>' +
+      '<p class="focus-editor-sub">Cadre suivant (\u00e0 venir)</p>' +
+      '<label>Suivant L (%) <input type="range" id="fe-nl" min="0" max="100" step="0.5"><span id="fe-nlv"></span></label>' +
+      '<label>Suivant T (%) <input type="range" id="fe-nt" min="0" max="100" step="0.5"><span id="fe-ntv"></span></label>' +
+      '<label>Suivant larg. (%) <input type="range" id="fe-nw" min="10" max="100" step="1"><span id="fe-nwv"></span></label>' +
+      '<label>Suivant haut. (%) <input type="range" id="fe-nh" min="10" max="100" step="1"><span id="fe-nhv"></span></label>' +
       '<div class="focus-editor-presets">' +
       '<button type="button" data-p="gauche">Gauche</button>' +
       '<button type="button" data-p="centre">Centre</button>' +
       '<button type="button" data-p="droite">Droite</button>' +
       '<button type="button" data-p="haut">Haut</button>' +
       '<button type="button" data-p="bas">Bas</button>' +
+      '<button type="button" data-p="cote">C\u00f4te \u00e0 c\u00f4te</button>' +
       "</div>" +
-      '<textarea id="fe-out" readonly rows="4" aria-label="Valeurs CSS"></textarea>' +
+      '<textarea id="fe-out" readonly rows="5" aria-label="Valeurs CSS"></textarea>' +
       '<button type="button" id="fe-copy" class="focus-editor-copy">Copier les valeurs CSS</button>';
     document.body.appendChild(panel);
 
@@ -508,6 +531,10 @@
     const blur = panel.querySelector("#fe-blur");
     const dur = panel.querySelector("#fe-dur");
     const zoom = panel.querySelector("#fe-zoom");
+    const nl = panel.querySelector("#fe-nl");
+    const nt = panel.querySelector("#fe-nt");
+    const nw = panel.querySelector("#fe-nw");
+    const nh = panel.querySelector("#fe-nh");
     const out = panel.querySelector("#fe-out");
     const labels = {
       x: panel.querySelector("#fe-xv"),
@@ -517,7 +544,11 @@
       logo: panel.querySelector("#fe-logov"),
       blur: panel.querySelector("#fe-blurv"),
       dur: panel.querySelector("#fe-durv"),
-      zoom: panel.querySelector("#fe-zoomv")
+      zoom: panel.querySelector("#fe-zoomv"),
+      nl: panel.querySelector("#fe-nlv"),
+      nt: panel.querySelector("#fe-ntv"),
+      nw: panel.querySelector("#fe-nwv"),
+      nh: panel.querySelector("#fe-nhv")
     };
     const logoImg = document.querySelector(".site-header--overlay .brand img");
 
@@ -541,6 +572,10 @@
       blur.value = readVar("--blur", 6);
       dur.value = readVar("--transDur", 0.8);
       zoom.value = Math.max(0, (readVar("--zoom", 1.05) - 1) * 100);
+      nl.value = readVar("--nextL", 68.5);
+      nt.value = readVar("--nextT", 20);
+      nw.value = readVar("--nextW", 40);
+      nh.value = readVar("--nextH", 80);
       paint();
     }
 
@@ -553,8 +588,13 @@
       labels.blur.textContent = blur.value + "px";
       labels.dur.textContent = dur.value + "s";
       labels.zoom.textContent = zoom.value + "%";
+      labels.nl.textContent = nl.value + "%";
+      labels.nt.textContent = nt.value + "%";
+      labels.nw.textContent = nw.value + "%";
+      labels.nh.textContent = nh.value + "%";
       out.value =
         "--focusX: " + x.value + "; --focusY: " + y.value + "; --focusW: " + w.value + "%; --focusH: " + h.value + "%;\n" +
+        "--nextL: " + nl.value + "%; --nextT: " + nt.value + "%; --nextW: " + nw.value + "%; --nextH: " + nh.value + "%;\n" +
         "--logoH: " + logo.value + "px;\n" +
         "--blur: " + blur.value + "px;\n" +
         "--transDur: " + dur.value + "s; --zoom: " + (1 + parseFloat(zoom.value) / 100).toFixed(2) + ";";
@@ -562,6 +602,7 @@
 
     function apply() {
       setFocus(parseFloat(x.value), parseFloat(y.value), w.value + "%", h.value + "%");
+      setNext(nl.value + "%", nt.value + "%", nw.value + "%", nh.value + "%");
       document.documentElement.style.setProperty("--logoH", logo.value + "px");
       document.documentElement.style.setProperty("--blur", blur.value + "px");
       document.documentElement.style.setProperty("--transDur", dur.value + "s");
@@ -569,10 +610,17 @@
       paint();
     }
 
-    [x, y, w, h, logo, blur, dur, zoom].forEach((s) => s.addEventListener("input", apply));
+    [x, y, w, h, logo, blur, dur, zoom, nl, nt, nw, nh].forEach((s) => s.addEventListener("input", apply));
     panel.querySelectorAll("[data-p]").forEach((b) => {
       b.addEventListener("click", () => {
-        setFocus(b.dataset.p);
+        if (b.dataset.p === "cote") {
+          const fx = readVar("--focusX", 0.37);
+          const fw = readVar("--focusW", 50);
+          const fh = readVar("--focusH", 100);
+          setNext((fx * (100 - fw) + fw).toFixed(1) + "%", "20%", Math.round(fw * 0.8) + "%", Math.round(fh * 0.8) + "%");
+        } else {
+          setFocus(b.dataset.p);
+        }
         refresh();
       });
     });
