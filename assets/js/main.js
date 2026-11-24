@@ -288,6 +288,15 @@
 
   window.setFocus = function (preset, y, w, h) {
     const style = document.documentElement.style;
+    if (preset === undefined) {
+      const c = getComputedStyle(document.documentElement);
+      return {
+        focusX: c.getPropertyValue("--focusX").trim(),
+        focusY: c.getPropertyValue("--focusY").trim(),
+        focusW: c.getPropertyValue("--focusW").trim(),
+        focusH: c.getPropertyValue("--focusH").trim()
+      };
+    }
     let p;
     if (typeof preset === "string" && FOCUS_PRESETS[preset]) {
       p = FOCUS_PRESETS[preset];

@@ -31,6 +31,16 @@ sans toucher au fichier :
 ```js
 setFocus('droite')   // préréglages : 'droite' | 'gauche' | 'centre' | 'haut' | 'bas'
 setFocus(0.8, 0.5, '40vw', '100%')   // ou valeurs brutes : x, y (0..1), largeur, hauteur
+setFocus()           // lire les valeurs actuelles
+```
+
+Ajuster **petit à petit** (coller ce bloc une fois dans la console, puis appeler à volonté) :
+
+```js
+window.nudge = (dx, dy) => { const c = getComputedStyle(document.documentElement), g = k => c.getPropertyValue(k).trim(); setFocus(parseFloat(g('--focusX')) + dx, parseFloat(g('--focusY')) + dy, g('--focusW'), g('--focusH')); };
+window.resize = (w, h) => { const c = getComputedStyle(document.documentElement), g = k => c.getPropertyValue(k).trim(); setFocus(g('--focusX'), g('--focusY'), w, h); };
+// puis :  nudge(0.05, 0)  -> +5% vers la droite   |   nudge(0, -0.05) -> -5% vers le haut
+//         resize('40vw', '80%')  -> change la taille du cadre sans toucher sa position
 ```
 
 Ça pose les variables en inline sur `<html>` → effet immédiat, et comme c'est sur `:root`,
