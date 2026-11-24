@@ -299,8 +299,9 @@ a:hover { text-decoration-color: var(--ink); }
 .hero-frame.is-next {
   opacity: 0.55;
   cursor: pointer;
-  transform: translateX(calc(100vw * (1 - var(--focusX)) + var(--focusW) * (var(--focusX) - 0.8) - 20px)) scale(0.8);
+  transform: translateX(var(--focusW)) translateY(10vh) scale(0.8);
 }
+.hero-frame.is-from-left { transform: translateX(calc(var(--focusW) * -1)); opacity: 0; }
 .hero-frame.is-exit-left,
 .hero-frame.is-exit-right {
   opacity: 0;

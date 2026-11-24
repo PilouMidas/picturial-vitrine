@@ -427,6 +427,8 @@
       frontSlot = back;
       const oldF = frames[cur];
       cur = next;
+      const newF = frames[cur];
+      if (dir === -1) newF.classList.add("is-from-left");
       paint();
       oldF.classList.remove("is-hidden");
       oldF.classList.add(dir === 1 ? "is-exit-left" : "is-exit-right");
@@ -436,6 +438,7 @@
         sharpSlots.forEach((p) => p.classList.remove("zoom-in"));
         oldF.classList.remove("is-exit-left", "is-exit-right");
         oldF.classList.add("is-hidden");
+        newF.classList.remove("is-from-left");
         animating = false;
         preloadNext();
       }, durMs + 80);

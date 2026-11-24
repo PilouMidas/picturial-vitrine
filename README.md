@@ -114,7 +114,7 @@ puis caché), plus de carte du film précédent à gauche (seul le suivant dépa
 les boutons sont dans la barre blanche en bas du cadre, sous le titre remonté
 (`hero-bar` = « Voir le film — {titre} » + ← · n / 6 · →).
 
-Étape 2.2 : le titre du film suivant monte du bas vers le haut à l'arrivée (`caption-rise`)
+Étape 2.2 : le titre du film suivant monte du bas vers le haut à l'arrivée (entrée `frame-rise` au chargement ; en navigation la carte suivante, posée en bas à droite avec son bord gauche sur le bord droit du cadre courant (`translateX(var(--focusW)) translateY(10vh) scale(.8)`), remonte en glissant vers la gauche)
 pendant que le cadre photo glisse de droite à gauche (ligne d'images) ; la barre
 Voir le film + boutons reste en bas du cadre, sous le titre.
 

@@ -286,3 +286,11 @@ de flash noir. Mouvement : à l'arrivée sur le site, le cadre titre monte du ba
 (`frame-rise` sur `.is-entering`, une seule fois, 1,5 x `--transDur`) ; en navigation, le cadre
 suivant glisse depuis la droite (ligne d'images droite → gauche), l'ancien sort à gauche en
 disparaissant vite. Le titre reste remonté dans le cadre avec la barre de boutons en dessous.
+
+**Étape 2.4 (remarque Philippe, cf. Haut et Court)** : le bord droit du cadre en place est
+aussi le bord gauche du cadre à venir — les cartes se touchent comme dans une ligne.
+`.is-next` = `translateX(var(--focusW)) translateY(10vh) scale(0.8)` : la carte suivante a son
+bord gauche exactement sur le bord droit du cadre courant, en bas à droite ; au clic elle
+remonte en glissant vers la gauche (diagonale bas-droite → place principale). Miroir en sens
+inverse : `.is-from-left` = `translateX(calc(var(--focusW) * -1))` (bord droit de la carte
+entrante sur le bord gauche du cadre courant).
