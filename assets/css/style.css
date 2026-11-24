@@ -10,6 +10,7 @@
   --focusY: 0.5;
   --focusW: min(34vw, 520px);
   --focusH: 100%;
+  --logoH: clamp(44px, 8vh, 88px);
   --serif: "Libre Caslon Text", Georgia, "Times New Roman", serif;
   --sans: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
   --container: 1080px;
@@ -114,7 +115,7 @@ a:hover { text-decoration-color: var(--ink); }
   padding-bottom: 8px;
 }
 .site-header.site-header--overlay .brand img {
-  height: clamp(44px, 8vh, 88px);
+  height: var(--logoH);
   width: auto;
 }
 
@@ -722,12 +723,12 @@ a:hover { text-decoration-color: var(--ink); }
 @media (max-width: 860px) {
   .main-nav, .header-cta { display: none; }
   .menu-toggle { display: inline-block; }
+  :root { --logoH: clamp(26px, 6vw, 44px); }
   .site-header.site-header--overlay .header-inner {
     justify-content: flex-start;
     padding-inline: var(--pad-x);
     padding-top: 16px;
   }
-  .site-header.site-header--overlay .brand img { height: clamp(26px, 6vw, 44px); }
 }
 
 @media (max-width: 719px) {

@@ -238,3 +238,7 @@ défaut : droite pleine hauteur (`--focusX: 1; --focusH: 100%`).
 **`?focus=edit`** → panneau « Cadre net » en bas à droite (4 curseurs X/Y/largeur/hauteur
 + préréglages + valeurs CSS copiables). Aucun besoin de la console. Les valeurs restent
 sur `:root` → même placement pour tous les films.
+
+**Étape 1.7** : le panneau `?focus=edit` gagne un curseur **« Logo (px) »** → variable
+`--logoH` sur `:root` (défaut `clamp(44px, 8vh, 88px)`, `clamp(26px, 6vw, 44px)` < 860px).
+Les valeurs copiées incluent `--logoH`. Param accepté aussi : `?edit=1`.

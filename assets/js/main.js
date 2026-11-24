@@ -317,16 +317,18 @@
 
   // ---------- Mode édition visuelle du cadre : ajouter ?focus=edit à l'URL ----------
 
-  if (new URLSearchParams(window.location.search).get("focus") === "edit") {
+  const editParams = new URLSearchParams(window.location.search);
+  if (editParams.get("focus") === "edit" || editParams.get("edit") === "1") {
     const panel = document.createElement("aside");
     panel.className = "focus-editor";
-    panel.setAttribute("aria-label", "Réglage du cadre net");
+    panel.setAttribute("aria-label", "Réglages du hero (cadre net, logo)");
     panel.innerHTML =
-      '<div class="focus-editor-head"><strong>Cadre net</strong><button type="button" class="focus-editor-close">Fermer</button></div>' +
+      '<div class="focus-editor-head"><strong>Réglages hero</strong><button type="button" class="focus-editor-close">Fermer</button></div>' +
       '<label>X (gauche/droite) <input type="range" id="fe-x" min="0" max="1" step="0.01"><span id="fe-xv"></span></label>' +
       '<label>Y (haut/bas) <input type="range" id="fe-y" min="0" max="1" step="0.01"><span id="fe-yv"></span></label>' +
       '<label>Largeur <input type="range" id="fe-w" min="10" max="100" step="1"><span id="fe-wv"></span></label>' +
       '<label>Hauteur <input type="range" id="fe-h" min="10" max="100" step="1"><span id="fe-hv"></span></label>' +
+      '<label>Logo (px) <input type="range" id="fe-logo" min="24" max="200" step="1"><span id="fe-logov"></span></label>' +
       '<div class="focus-editor-presets">' +
       '<button type="button" data-p="gauche">Gauche</button>' +
       '<button type="button" data-p="centre">Centre</button>' +
@@ -334,7 +336,7 @@
       '<button type="button" data-p="haut">Haut</button>' +
       '<button type="button" data-p="bas">Bas</button>' +
       "</div>" +
-      '<textarea id="fe-out" readonly rows="2" aria-label="Valeurs CSS du cadre"></textarea>' +
+      '<textarea id="fe-out" readonly rows="3" aria-label="Valeurs CSS"></textarea>' +
       '<button type="button" id="fe-copy" class="focus-editor-copy">Copier les valeurs CSS</button>';
     document.body.appendChild(panel);
 
@@ -342,13 +344,16 @@
     const y = panel.querySelector("#fe-y");
     const w = panel.querySelector("#fe-w");
     const h = panel.querySelector("#fe-h");
+    const logo = panel.querySelector("#fe-logo");
     const out = panel.querySelector("#fe-out");
     const labels = {
       x: panel.querySelector("#fe-xv"),
       y: panel.querySelector("#fe-yv"),
       w: panel.querySelector("#fe-wv"),
-      h: panel.querySelector("#fe-hv")
+      h: panel.querySelector("#fe-hv"),
+      logo: panel.querySelector("#fe-logov")
     };
+    const logoImg = document.querySelector(".site-header--overlay .brand img");
 
     function readVar(k, fallback) {
       const v = getComputedStyle(document.documentElement).getPropertyValue(k).trim();
@@ -363,6 +368,10 @@
       y.value = readVar("--focusY", 0.5);
       w.value = readVar("--focusW", 34);
       h.value = readVar("--focusH", 100);
+      if (logoImg) {
+        const lh = parseFloat(getComputedStyle(logoImg).height);
+        logo.value = Number.isNaN(lh) ? 64 : Math.min(200, Math.max(24, Math.round(lh)));
+      }
       paint();
     }
 
@@ -371,15 +380,19 @@
       labels.y.textContent = y.value;
       labels.w.textContent = w.value + "%";
       labels.h.textContent = h.value + "%";
-      out.value = "--focusX: " + x.value + "; --focusY: " + y.value + "; --focusW: " + w.value + "%; --focusH: " + h.value + "%;";
+      labels.logo.textContent = logo.value + "px";
+      out.value =
+        "--focusX: " + x.value + "; --focusY: " + y.value + "; --focusW: " + w.value + "%; --focusH: " + h.value + "%;\n" +
+        "--logoH: " + logo.value + "px;";
     }
 
     function apply() {
       setFocus(parseFloat(x.value), parseFloat(y.value), w.value + "%", h.value + "%");
+      document.documentElement.style.setProperty("--logoH", logo.value + "px");
       paint();
     }
 
-    [x, y, w, h].forEach((s) => s.addEventListener("input", apply));
+    [x, y, w, h, logo].forEach((s) => s.addEventListener("input", apply));
     panel.querySelectorAll("[data-p]").forEach((b) => {
       b.addEventListener("click", () => {
         setFocus(b.dataset.p);
