@@ -315,9 +315,14 @@ a:hover { text-decoration-color: var(--ink); }
   position: absolute;
   left: clamp(16px, 3vw, 32px);
   right: clamp(16px, 3vw, 32px);
-  bottom: clamp(16px, 3vw, 32px);
+  bottom: calc(clamp(16px, 3vw, 32px) + 64px);
   color: #fff;
   text-align: left;
+}
+.hero-frame.is-current .hero-caption { animation: caption-rise var(--transDur) ease both; }
+@keyframes caption-rise {
+  from { transform: translateY(26px); opacity: 0; }
+  to { transform: none; opacity: 1; }
 }
 .hero-caption-label {
   font-size: 12.5px;
@@ -339,18 +344,25 @@ a:hover { text-decoration-color: var(--ink); }
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
 }
 
-.hero-nav {
+.hero-bar {
   position: absolute;
-  right: var(--pad-x);
-  bottom: 24px;
+  left: calc((100% - var(--focusW)) * var(--focusX) + clamp(16px, 3vw, 32px));
+  bottom: clamp(16px, 3vw, 32px);
   z-index: 46;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   background: var(--bg);
   border: 1px solid var(--line);
   border-radius: 6px;
-  padding: 5px;
+  padding: 5px 8px 5px 14px;
+}
+.hero-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-left: 1px solid var(--line);
+  padding-left: 8px;
 }
 .hero-arrow {
   width: 40px;
@@ -375,23 +387,17 @@ a:hover { text-decoration-color: var(--ink); }
 }
 
 .hero-play {
-  position: absolute;
-  left: var(--pad-x);
-  bottom: 24px;
-  z-index: 45;
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: 5px;
-  padding: 12px 18px;
+  padding: 9px 10px 9px 0;
   font-size: 14.5px;
   font-weight: 600;
+  color: var(--ink);
   text-decoration: none;
 }
 .hero-play svg { color: var(--accent-ink); }
-.hero-play:hover { border-color: var(--ink); }
+.hero-play:hover { color: var(--accent-ink); }
 
 .intro {
   padding-top: clamp(64px, 9vw, 112px);
@@ -809,7 +815,7 @@ a:hover { text-decoration-color: var(--ink); }
 @media (max-width: 719px) {
   body { font-size: 16px; }
   .hero { --focusW: 78%; min-height: 420px; }
-  .hero-nav { bottom: 78px; }
+  .hero-bar { left: 12px; right: 12px; bottom: 12px; flex-wrap: wrap; }
   .film-slide { width: 88vw; }
   .proof-1, .proof-2, .proof-3 { max-width: 100%; margin-left: 0; }
   .about-grid { grid-template-columns: 1fr; }
@@ -823,6 +829,7 @@ a:hover { text-decoration-color: var(--ink); }
   .skip-link { transition: none; }
   .hl.zoom-in { animation: none; }
   .hl, .hero-frame { transition: none; }
+  .hero-frame.is-current .hero-caption { animation: none; }
 }
 
 /* ---------- Pages légales ---------- */

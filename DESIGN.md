@@ -269,3 +269,12 @@ suivant dépasse à droite, comme sur Haut et Court. Boutons de changement de fi
 visibles : barre blanche en bas à droite (flèche précédente · compteur « n / 6 » · flèche suivante),
 z-index 46 au-dessus des cadres, même style que le chip « Voir le film » ; en mobile
 (< 720px) la barre remonte au-dessus du chip pour ne pas se chevaucher.
+
+**Étape 2.2 (retours Philippe)** : le titre du film est remonté dans l'image (caption relevée
+de ~64px dans le cadre) et les boutons de navigation passent **en dessous**, dans le cadre :
+une seule barre blanche en bas à gauche du cadre (`hero-bar` = chip « Voir le film — {titre} »
++ filet + ← · n / 6 · →), positionnée avec les mêmes `--focus*` que le cadre. Le titre du film
+suivant **monte du bas vers le haut** à l'arrivée (`caption-rise` : translateY(26px)+opacité 0 →
+place, durée `--transDur`) pendant que le cadre photo glisse **de la droite vers la gauche**
+(ligne d'images, plus qu'un carrousel) ; l'ancien sort à gauche en disparaissant vite. En mobile
+la barre s'étale en bas de l'écran (12px). `prefers-reduced-motion` : pas d'animations.

@@ -111,7 +111,12 @@ Durée des transitions : `--transDur` (curseur « Durée » dans `?focus=edit`).
 
 Étape 2.1 : le cadre qui sort à gauche/droite disparaît vite (fondu 30 % de `--transDur`
 puis caché), plus de carte du film précédent à gauche (seul le suivant dépasse à droite), et
-les boutons sont une barre blanche bien visible en bas à droite (← · n / 6 · →).
+les boutons sont dans la barre blanche en bas du cadre, sous le titre remonté
+(`hero-bar` = « Voir le film — {titre} » + ← · n / 6 · →).
+
+Étape 2.2 : le titre du film suivant monte du bas vers le haut à l'arrivée (`caption-rise`)
+pendant que le cadre photo glisse de droite à gauche (ligne d'images) ; la barre
+Voir le film + boutons reste en bas du cadre, sous le titre.
 
 ## Ajouter un film au carrousel hero
 
