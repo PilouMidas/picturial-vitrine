@@ -193,3 +193,16 @@ Référence de goût corrigée : **Haut et Court** (la boîte de prod), pas « O
   Klein, DPO « non désigné » (non requis à ce stade, art. 37 RGPD).
 - **Moodboard** : `moodboard.html` (noindex, lien « Moodboard (interne) » en footer, à retirer
   avant la mise en production).
+
+## 13. Méthode : construction par étapes (24 nov. 2026, 3e salve)
+
+Philippe veut avancer en « vibe coding pur » : il décrit **une étape à la fois**, en
+commençant par ce qu'on voit en arrivant sur le site ; chaque étape est un commit sur la
+branche de la PR, revue en ligne (GitHub Pages sur la branche). Les borders tenus à chaque
+étape : ce fichier + les décisions actées, les interdits anti-slop, les règles légales
+(LCEN/RGPD, bandeau consentement, aucune case pré-cochée), jamais de player en dur,
+contraste ≥ 4,5:1, pas de layout shift, mobile-first.
+
+**Étape 0 faite** : `index.html` réduit à une page blanche (header logo LONG seul, zone
+d'arrivée vide, footer légal complet). Les assets, les pages légales, le consentement et
+la lightbox restent prêts.

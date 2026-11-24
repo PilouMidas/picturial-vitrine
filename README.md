@@ -14,6 +14,14 @@ Direction graphique (retours Philippe, nov. 2026), inspirée de **Haut et Court*
   `assets/img/logo-picturial-long-black.{png,webp}` ; header lisible, footer et À propos en grand
 - hero = **Tristan** en premier film (vidéogramme plein écran + « Voir le film — Tristan »)
 
+## Construction par étapes (vibe coding, nov. 2026)
+
+`index.html` est volontairement réduit à une **page blanche** (étape 0) : header logo seul,
+zone d'arrivée vide, footer légal. Les pages légales, le bandeau de consentement et la
+lightbox restent en place et inertes. Chaque étape suivante (décrite par Philippe, en
+commençant par l'écran d'arrivée) = un commit sur la branche de la PR #1, revu via
+GitHub Pages sur `vibe/vitrine-picturial-075ffb`.
+
 ## Lancer en local
 
 ```sh
