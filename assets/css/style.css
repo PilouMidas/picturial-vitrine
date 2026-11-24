@@ -227,8 +227,10 @@ a:hover { text-decoration-color: var(--ink); }
   min-height: 480px;
   overflow: hidden;
   background: #0F0F0F;
-  --frameH: min(58svh, 560px);
-  --frameW: min(88vw, calc(var(--frameH) * 16 / 9));
+  --focusX: 1;
+  --focusY: 0.5;
+  --focusW: min(34vw, 520px);
+  --focusH: 100%;
 }
 .hero-bg, .hero-sharp {
   position: absolute;
@@ -246,15 +248,19 @@ a:hover { text-decoration-color: var(--ink); }
 .hero-bg img { filter: blur(6px) brightness(0.55); }
 .hero-sharp img {
   filter: brightness(0.72);
-  clip-path: inset(calc((100% - var(--frameH)) / 2) calc((100% - var(--frameW)) / 2));
+  clip-path: inset(
+    calc((100% - var(--focusH)) * (1 - var(--focusY)))
+    calc((100% - var(--focusW)) * (1 - var(--focusX)))
+    calc((100% - var(--focusH)) * var(--focusY))
+    calc((100% - var(--focusW)) * var(--focusX))
+  );
 }
 .hero-frame {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: var(--frameW);
-  height: var(--frameH);
+  left: calc((100% - var(--focusW)) * var(--focusX));
+  top: calc((100% - var(--focusH)) * var(--focusY));
+  width: var(--focusW);
+  height: var(--focusH);
   border: 1px solid var(--accent);
 }
 .hero-caption {
@@ -718,7 +724,7 @@ a:hover { text-decoration-color: var(--ink); }
 
 @media (max-width: 719px) {
   body { font-size: 16px; }
-  .hero { --frameH: min(46svh, 420px); min-height: 420px; }
+  .hero { --focusW: min(56vw, 320px); min-height: 420px; }
   .film-slide { width: 88vw; }
   .proof-1, .proof-2, .proof-3 { max-width: 100%; margin-left: 0; }
   .about-grid { grid-template-columns: 1fr; }

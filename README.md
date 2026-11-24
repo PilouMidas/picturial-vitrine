@@ -22,6 +22,20 @@ lightbox restent en place et inertes. Chaque étape suivante (décrite par Phili
 commençant par l'écran d'arrivée) = un commit sur la branche de la PR #1, revu via
 GitHub Pages sur `vibe/vitrine-picturial-075ffb`.
 
+## Choisir où va la zone nette du hero (le « filtre »)
+
+Sur `.hero` dans `assets/css/style.css`, 4 variables règlent la zone nette (le reste de
+l'image reste flou) :
+
+- `--focusX` : position horizontale — `0` = bord gauche, `0.5` = centré, `1` = bord droit
+- `--focusY` : position verticale — `0` = haut, `0.5` = centré, `1` = bas
+- `--focusW` / `--focusH` : taille de la zone nette (`100%` = pleine largeur/hauteur)
+
+Réglage actuel pour Tristan : `--focusX: 1; --focusH: 100%` → **bande nette pleine hauteur à
+l'extrême droite** de l'image (partie à conserver dans tous les cas), largeur
+`min(34vw, 520px)`. Pour centrer à nouveau : `--focusX: 0.5; --focusH: min(58svh, 560px);
+--focusW: min(88vw, calc(var(--focusH) * 16 / 9))`.
+
 ## Lancer en local
 
 ```sh

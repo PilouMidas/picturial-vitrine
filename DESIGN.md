@@ -216,3 +216,8 @@ Grolleau · fiction · 14 min · 2024 » en blanc. En haut au centre : logo **bl
 responsive il rétrécit progressivement (clamp) et passe en coin haut à gauche (< 860px).
 Petit bouton « Voir le film — Tristan » en bas à gauche (lightbox, consentement requis).
 Pas de menu pour l'instant.
+
+**Étape 1.1 (focus réglable)** : la zone nette n'est plus un cadre centré fixe mais 4
+variables sur `.hero` (`--focusX/--focusY` 0..1, `--focusW/--focusH`, cf. README). Réglage
+Tristan : `--focusX: 1`, `--focusH: 100%` → bande nette **pleine hauteur à l'extrême droite**
+(le sujet à conserver), le reste de l'image reste flou. Le filet accent suit la zone.
