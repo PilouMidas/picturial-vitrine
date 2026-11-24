@@ -18,6 +18,7 @@
   let lastTrigger = null;
 
   const desktopQuery = window.matchMedia("(min-width: 861px)");
+  const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // ---------- Consentement (RGPD) ----------
 
@@ -200,8 +201,6 @@
     const prevBtn = document.getElementById("film-prev");
     const nextBtn = document.getElementById("film-next");
     const countEl = document.getElementById("film-count");
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
     function slideStep() {
       if (!slides.length) return 0;
       const styles = getComputedStyle(strip);
@@ -223,18 +222,59 @@
 
     if (prevBtn) {
       prevBtn.addEventListener("click", () => {
-        strip.scrollBy({ left: -slideStep(), behavior: reducedMotion ? "auto" : "smooth" });
+        strip.scrollBy({ left: -slideStep(), behavior: REDUCED_MOTION ? "auto" : "smooth" });
       });
     }
     if (nextBtn) {
       nextBtn.addEventListener("click", () => {
-        strip.scrollBy({ left: slideStep(), behavior: reducedMotion ? "auto" : "smooth" });
+        strip.scrollBy({ left: slideStep(), behavior: REDUCED_MOTION ? "auto" : "smooth" });
       });
     }
     strip.addEventListener("scroll", updateStrip, { passive: true });
     window.addEventListener("resize", updateStrip);
     updateStrip();
   }
+
+  // ---------- Carrousel de vidéoogrammes à l'intérieur de chaque film ----------
+
+  document.querySelectorAll(".film-slide").forEach((slide) => {
+    const stillStrip = slide.querySelector(".still-strip");
+    if (!stillStrip) return;
+    const stills = Array.from(stillStrip.querySelectorAll(".still"));
+    if (!stills.length) return;
+    const nav = slide.querySelector(".still-nav");
+    const prevBtn = slide.querySelector(".still-prev");
+    const nextBtn = slide.querySelector(".still-next");
+    const countEl = slide.querySelector(".still-count");
+    if (nav && stills.length > 1) nav.hidden = false;
+
+    function stillStep() {
+      const gap = parseFloat(getComputedStyle(stillStrip).columnGap || getComputedStyle(stillStrip).gap) || 0;
+      return stills[0].getBoundingClientRect().width + gap;
+    }
+    function stillIndex() {
+      const step = stillStep() || 1;
+      return Math.min(stills.length - 1, Math.max(0, Math.round(stillStrip.scrollLeft / step)));
+    }
+    function updateStills() {
+      if (countEl) countEl.textContent = (stillIndex() + 1) + " / " + stills.length;
+      if (prevBtn) prevBtn.disabled = stillStrip.scrollLeft <= 4;
+      if (nextBtn) nextBtn.disabled = stillStrip.scrollLeft >= stillStrip.scrollWidth - stillStrip.clientWidth - 4;
+    }
+    if (prevBtn) {
+      prevBtn.addEventListener("click", () => {
+        stillStrip.scrollBy({ left: -stillStep(), behavior: REDUCED_MOTION ? "auto" : "smooth" });
+      });
+    }
+    if (nextBtn) {
+      nextBtn.addEventListener("click", () => {
+        stillStrip.scrollBy({ left: stillStep(), behavior: REDUCED_MOTION ? "auto" : "smooth" });
+      });
+    }
+    stillStrip.addEventListener("scroll", updateStills, { passive: true });
+    window.addEventListener("resize", updateStills);
+    updateStills();
+  });
 
   // ---------- Formulaire de contact (mailto, aucune donnée stockée côté serveur) ----------
 

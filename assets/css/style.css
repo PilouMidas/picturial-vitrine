@@ -311,6 +311,50 @@ a:hover { text-decoration-color: var(--ink); }
 .poster:hover img { filter: brightness(0.96); }
 .poster:active img { filter: brightness(0.92); }
 
+/* ---------- Carrousel de vidéoogrammes par film (imbriqué dans la bande films) ---------- */
+
+.still-strip {
+  display: flex;
+  gap: clamp(12px, 2vw, 24px);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.still-strip::-webkit-scrollbar { display: none; }
+
+.still {
+  flex: 0 0 100%;
+  width: 100%;
+  scroll-snap-align: start;
+}
+
+.still-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+.still-arrow {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  color: var(--ink);
+  cursor: pointer;
+}
+.still-arrow:hover:not(:disabled) { background: var(--ink); color: #fff; }
+.still-arrow:disabled { opacity: 0.35; cursor: default; }
+.still-count {
+  font-size: 12.5px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
 .film-nav {
   display: flex;
   align-items: center;
@@ -714,6 +758,105 @@ a:hover { text-decoration-color: var(--ink); }
   .cookie-actions { flex-direction: row; }
   .cookie-btn { flex: 1; text-align: center; }
 }
+
+/* ---------- Moodboard (page interne) ---------- */
+
+.mood-note {
+  margin-top: 10px;
+  font-size: 13.5px;
+  color: var(--muted);
+}
+.mood h3 {
+  font-size: 1.35rem;
+  margin-top: 56px;
+  margin-bottom: 20px;
+}
+.swatches {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.swatches li {
+  font-size: 13px;
+  color: var(--muted);
+  max-width: 130px;
+}
+.swatch {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+.sw-white { background: #FFFFFF; border: 1px solid var(--line); }
+.sw-ink { background: #1A1A1A; }
+.sw-muted { background: #6B6B6B; }
+.sw-line { background: #E5E5E2; }
+.sw-accent { background: #F8AE19; }
+.sw-accent-ink { background: #9A6500; }
+
+.type-specimen h4 {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: clamp(2rem, 5.5vw, 3.25rem);
+  line-height: 1.14;
+  margin: 0 0 8px;
+}
+.type-specimen .spec-italic {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.3rem, 3vw, 1.75rem);
+  margin: 0 0 20px;
+}
+.type-specimen .spec-sans {
+  font-size: 16.5px;
+  line-height: 1.6;
+  max-width: 60ch;
+  color: var(--ink);
+}
+.type-specimen .spec-meta {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.mood-stills {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 8px;
+}
+.mood-stills::-webkit-scrollbar { display: none; }
+.mood-stills figure {
+  flex: 0 0 auto;
+  width: min(72vw, 420px);
+  margin: 0;
+}
+.mood-stills img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: #F1F1EE;
+}
+.mood-stills figcaption {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.mood-stills figcaption strong {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--ink);
+  display: block;
+}
+.mood-logo img { width: min(420px, 100%); }
 
 /* ---------- Lightbox : repli sans consentement ---------- */
 

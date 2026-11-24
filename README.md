@@ -8,11 +8,11 @@ dominant, accent unique `#F8AE19`, serif **Libre Caslon Text** + sans Instrument
 Direction graphique (retours Philippe, nov. 2026), inspirée de **Haut et Court** :
 - hero = vidéogramme **plein écran** dès l'arrivée (poster d'Ira, mon amour), bouton
   « Voir le film » en pastille blanche en bas à gauche (jamais de player en dur)
-- réalisations = **défilement horizontal** (scroll-snap + flèches + compteur), chaque
-  diapositive = vidéogramme + titre + méta + contexte + « Voir le film »
-- logo **horizontal** (oiseau Tomi sur la même ligne, derrière le nom) : `assets/img/logo-picturial-horizontal.{png,webp}`
-  est une **recomposition provisoire** à partir des PNG fournis — remplacer par la version
-  officielle dès réception (mêmes noms de fichiers).
+- réalisations = **carrousel horizontal film par film**, chaque film contenant son propre
+  **carrousel de vidéoogrammes** (scroll-snap + flèches + compteur, affiché si >1 vidéogramme)
+- logo **LONG horizontal officiel** (oiseau Tomi derrière PICTURIAL, même ligne) :
+  `assets/img/logo-picturial-long-black.{png,webp}` ; header lisible, footer et À propos en grand
+- hero = **Tristan** en premier film (vidéogramme plein écran + « Voir le film — Tristan »)
 
 ## Lancer en local
 
@@ -27,17 +27,26 @@ Aucun build, aucune dépendance : HTML + CSS + JS vanilla.
 ## Structure
 
 ```
-index.html               page unique (hero, réalisations, prestations, preuve, à propos, contact)
+index.html               page unique (hero plein écran Tristan, réalisations en carrousels imbriqués, prestations, preuve, à propos, contact)
+moodboard.html           moodboard interne (noindex, lien en footer — à retirer avant prod)
 mentions-legales.html    LCEN art. 6 (éditeur, hébergeur, PI)
 politique-de-confidentialite.html   RGPD (données, cookies, droits)
 cgu.html                 conditions d'utilisation
 DESIGN.md                design brief (contexte du projet)
 assets/css/fonts.css     @font-face auto-hébergés (woff2, subsets latin / latin-ext)
 assets/css/style.css     feuille de style
-assets/js/legal-config.js  CONFIG LÉGALE CENTRALISÉE : à remplir (SIRET, forme juridique, hébergeur, DPO…)
-assets/js/main.js        menu mobile, bandeau consentement RGPD, lightbox Vimeo (bloquée sans accord), formulaire (mailto)
+assets/js/legal-config.js  CONFIG LÉGALE CENTRALISÉE (remplie : SARL, SIRET 388 235 152 00039, OVHcloud, Christian Klein, DPO non désigné)
+assets/js/main.js        menu mobile, bandeau consentement RGPD, lightbox Vimeo (bloquée sans accord), carrousels films+vidéoogrammes, formulaire (mailto)
 assets/fonts/            Libre Caslon Text + Instrument Sans (woff2)
-assets/img/              vidéogrammes AVIF/WebP (800w/1600w, +1920w pour le hero), logo horizontal WebP/PNG, favicons, og-image
+assets/img/              vidéogrammes AVIF/WebP (800w/1600w, +1920w hero), logo LONG noir WebP/PNG, favicons, og-image
+```
+
+## Ajouter des vidéoogrammes à un film
+
+Chaque film est une diapositive `.film-slide` contenant un `.still-strip` (carrousel de
+vidéogrammes) : déposer `assets/img/poster-<slug>-<n>-{800,1600}.{avif,webp}` puis ajouter un
+élément `.still` dans le `.still-strip` du film dans `index.html`. Flèches et compteur du
+carrousel interne s'activent automatiquement dès qu'il y a plus d'un vidéogramme.
 ```
 
 ## Conformité légale (LCEN / RGPD)
@@ -51,6 +60,7 @@ assets/img/              vidéogrammes AVIF/WebP (800w/1600w, +1920w pour le her
 
 | Film | Player |
 |---|---|
+| Tristan (premier film, hero) | `player.vimeo.com/video/1164957316?h=8c1cfa0fbf` |
 | Ira, mon amour | `player.vimeo.com/video/933198113?h=8300f40080` |
 | Objet (re)trouvé | `player.vimeo.com/video/774185263?h=440a590aba` |
 | Le Blues du poulailler | `player.vimeo.com/video/876004689?h=6995f14855` |

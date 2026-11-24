@@ -176,3 +176,20 @@ Référence de goût corrigée : **Haut et Court** (la boîte de prod), pas « O
 - **Réalisations** : **défilement horizontal** (scroll-snap + flèches + compteur « 1 / 5 »),
   une diapositive = vidéogramme + titre + méta + ligne de contexte + « Voir le film ».
 - Moodboard évoqué comme prochaine étape possible (non tranché pour l'instant).
+
+## 12. Itération 3 — retours Philippe (24 nov. 2026, 2e salve)
+
+- **Tristan premier film** : vidéogramme de Tristan en hero plein écran (chip « Voir le film —
+  Tristan ») et première diapositive des réalisations. Vimeo trouvé : `1164957316?h=8c1cfa0fbf`
+  (845 s ≈ 14 min). Tristan retiré du bloc « Et aussi ».
+- **Logo LONG officiel** reçu (`Logo Picturial Tomi et Texte LONG BLACK.png`) →
+  `logo-picturial-long-black.{png,webp}`, utilisé partout (header, footer, À propos, moodboard).
+- **Carrousel de vidéogrammes par film** : chaque diapositive film contient un `.still-strip`
+  (scroll-snap horizontal + flèches + compteur, affiché seulement s'il y a >1 vidéogramme).
+  Le carrousel externe (films) reste piloté par ses propres flèches. 1 vidéogramme/film pour
+  l'instant ; ajouter des fichiers `poster-<slug>-<n>-*.{avif,webp}` + une entrée `.still`.
+- **Config légale remplie** (`assets/js/legal-config.js`) : SARL, SIRET 388 235 152 00039,
+  hébergeur OVHcloud (2 rue Kellermann, 59100 Roubaix), directeur de la publication Christian
+  Klein, DPO « non désigné » (non requis à ce stade, art. 37 RGPD).
+- **Moodboard** : `moodboard.html` (noindex, lien « Moodboard (interne) » en footer, à retirer
+  avant la mise en production).

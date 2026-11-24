@@ -1,18 +1,18 @@
 window.LEGAL_CONFIG = {
   companyName: "Picturial",
-  legalForm: "[Forme juridique — ex. SAS, SARL, entreprise individuelle]",
-  siret: "[SIRET — 14 chiffres]",
+  legalForm: "SARL",
+  siret: "388 235 152 00039",
   address: "1c rue du Baron Chouard, 67700 Monswiller, France",
   email: "contact@picturial.fr",
   phone: "07 66 74 55 26",
   phoneHref: "+33766745526",
-  publicationDirector: "[Prénom Nom — directeur·rice de la publication]",
-  dpo: "[Délégué à la protection des données — ou « Non désigné »]",
+  publicationDirector: "Christian Klein",
+  dpo: "Non désigné (non requis à ce stade — art. 37 du RGPD)",
   host: {
-    name: "[Nom de l'hébergeur — ex. OVHcloud, Netlify, Vercel]",
-    address: "[Adresse de l'hébergeur]",
-    phone: "[Téléphone de l'hébergeur]",
-    website: "[Site web de l'hébergeur]"
+    name: "OVHcloud SAS",
+    address: "2 rue Kellermann, 59100 Roubaix, France",
+    phone: "+33 9 72 10 10 07",
+    website: "https://www.ovhcloud.com"
   },
   lastUpdate: "24 novembre 2026"
 };
