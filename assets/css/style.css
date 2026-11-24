@@ -94,7 +94,7 @@ a:hover { text-decoration-color: var(--ink); }
 
 /* ---------- Header overlay (étape 1 : logo blanc centré sur l'image) ---------- */
 
-.site-header--overlay {
+.site-header.site-header--overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -103,13 +103,13 @@ a:hover { text-decoration-color: var(--ink); }
   border-bottom: 0;
   z-index: 40;
 }
-.site-header--overlay .header-inner {
+.site-header.site-header--overlay .header-inner {
   justify-content: center;
   min-height: 0;
   padding-top: clamp(16px, 3.5vh, 36px);
   padding-bottom: 8px;
 }
-.site-header--overlay .brand img {
+.site-header.site-header--overlay .brand img {
   height: clamp(44px, 8vh, 88px);
   width: auto;
 }
@@ -244,6 +244,13 @@ a:hover { text-decoration-color: var(--ink); }
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+@keyframes hero-zoom {
+  from { transform: scale(1.045); }
+  to { transform: scale(1); }
+}
+.hero-bg, .hero-sharp {
+  animation: hero-zoom 1.6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 .hero-bg img { filter: blur(6px) brightness(0.55); }
 .hero-sharp img {
@@ -714,12 +721,12 @@ a:hover { text-decoration-color: var(--ink); }
 @media (max-width: 860px) {
   .main-nav, .header-cta { display: none; }
   .menu-toggle { display: inline-block; }
-  .site-header--overlay .header-inner {
+  .site-header.site-header--overlay .header-inner {
     justify-content: flex-start;
     padding-inline: var(--pad-x);
     padding-top: 16px;
   }
-  .site-header--overlay .brand img { height: clamp(26px, 6vw, 44px); }
+  .site-header.site-header--overlay .brand img { height: clamp(26px, 6vw, 44px); }
 }
 
 @media (max-width: 719px) {
@@ -736,6 +743,7 @@ a:hover { text-decoration-color: var(--ink); }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .skip-link { transition: none; }
+  .hero-bg, .hero-sharp { animation: none; }
 }
 
 /* ---------- Pages légales ---------- */

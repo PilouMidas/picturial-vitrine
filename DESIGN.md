@@ -221,3 +221,9 @@ Pas de menu pour l'instant.
 variables sur `.hero` (`--focusX/--focusY` 0..1, `--focusW/--focusH`, cf. README). Réglage
 Tristan : `--focusX: 1`, `--focusH: 100%` → bande nette **pleine hauteur à l'extrême droite**
 (le sujet à conserver), le reste de l'image reste flou. Le filet accent suit la zone.
+
+**Étape 1.2** : correction du bandeau blanc en haut (le header overlay perdition contre
+`.site-header` sticky → spécificité corrigée en `.site-header.site-header--overlay`, le
+header flotte maintenant vraiment sur l'image) ; `object-fit: cover` = zoom automatique
+si l'image n'est pas en 16:9 (Tristan fait 1,9:1, aucun bandeau venant de l'image) ;
+léger **zoom-in à l'arrivée** (`hero-zoom` 1.6s, désactivé si `prefers-reduced-motion`).
