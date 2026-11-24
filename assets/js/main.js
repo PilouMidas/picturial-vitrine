@@ -494,10 +494,10 @@
   const editParams = new URLSearchParams(window.location.search);
   if (editParams.get("focus") === "edit" || editParams.get("edit") === "1") {
     const panel = document.createElement("aside");
-    panel.className = "focus-editor";
+    panel.className = "focus-editor is-collapsed";
     panel.setAttribute("aria-label", "Réglages du hero (cadre net, logo)");
     panel.innerHTML =
-      '<div class="focus-editor-head"><strong>Réglages hero</strong><button type="button" class="focus-editor-close">Fermer</button></div>' +
+      '<div class="focus-editor-head"><strong>Réglages hero</strong><button type="button" class="focus-editor-close" aria-expanded="false">Ouvrir</button></div>' +
       '<label>X (gauche/droite) <input type="range" id="fe-x" min="0" max="1" step="0.01"><span id="fe-xv"></span></label>' +
       '<label>Y (haut/bas) <input type="range" id="fe-y" min="0" max="1" step="0.01"><span id="fe-yv"></span></label>' +
       '<label>Largeur <input type="range" id="fe-w" min="10" max="100" step="1"><span id="fe-wv"></span></label>' +
@@ -624,7 +624,12 @@
         refresh();
       });
     });
-    panel.querySelector(".focus-editor-close").addEventListener("click", () => panel.remove());
+    const toggleBtn = panel.querySelector(".focus-editor-close");
+    toggleBtn.addEventListener("click", () => {
+      const collapsed = panel.classList.toggle("is-collapsed");
+      toggleBtn.textContent = collapsed ? "Ouvrir" : "Replier";
+      toggleBtn.setAttribute("aria-expanded", String(!collapsed));
+    });
     panel.querySelector("#fe-copy").addEventListener("click", () => {
       out.select();
       if (navigator.clipboard && navigator.clipboard.writeText) {

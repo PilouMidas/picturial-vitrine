@@ -307,3 +307,17 @@ le bas (`is-from-bottom`, translateY(10vh)), jamais par la gauche. Panneau `?foc
 12 curseurs (X/Y/L/H du cadre + L/T/larg/haut du cadre suivant en % + logo + flou + durée + zoom),
 préréglage « Côte à côte », sortie CSS sur 5 lignes incluant les `--next*`. Console : `setNext(l, t, w, h)`
 / `setNext()` pour lire.
+
+**Étape 2.6** : le panneau `?focus=edit` ne masque plus la vue — il démarre **replié**
+(petite barre « Réglages hero · Ouvrir » en bas à droite), on clique pour déplier/replier
+(bouton Ouvrir/Replier, `is-collapsed` masque tout sauf l'en-tête). Quand il est ouvert il est
+limité en hauteur (`max-height: calc(100svh - 32px)`, scroll interne) pour ne jamais couvrir
+tout l'écran.
+
+**Étape 2.7** : correction définitive des mouvements gauche→droite. Les cartes cachées
+(`.is-hidden`) sont désormais garées aux coordonnées du cadre à venir (`--next*`) en
+opacity 0 / visibility hidden : `is-hidden` ↔ `is-next` n'est plus qu'un fondu sur place
+(aucun déplacement). Bilan des mouvements restants : cadre suivant → cadre principal =
+boîte `--next*` → `--focus*` (droite→gauche + grandissement) ; ancien cadre = sortie
+`translateX(-110vw)` (gauche) ; sens inverse = entrée par le bas `translateY(10vh)` depuis la
+position `--next*`. **Aucun mouvement gauche→droite nulle part.**

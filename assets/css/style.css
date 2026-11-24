@@ -307,6 +307,16 @@ a:hover { text-decoration-color: var(--ink); }
   opacity: 0.55;
   cursor: pointer;
 }
+.hero-frame.is-hidden {
+  left: var(--nextL);
+  top: var(--nextT);
+  width: var(--nextW);
+  height: var(--nextH);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--transDur) ease, visibility 0s linear var(--transDur);
+}
 .hero-frame.is-from-bottom { transform: translateY(10vh); opacity: 0; }
 .hero-frame.is-exit-left {
   transform: translateX(-110vw);
@@ -1059,6 +1069,9 @@ a:hover { text-decoration-color: var(--ink); }
   bottom: 16px;
   z-index: 96;
   width: 260px;
+  max-height: calc(100vh - 32px);
+  max-height: calc(100svh - 32px);
+  overflow: auto;
   background: var(--bg);
   border: 1px solid var(--line);
   border-radius: 6px;
@@ -1084,6 +1097,8 @@ a:hover { text-decoration-color: var(--ink); }
   color: var(--ink);
 }
 .focus-editor-close:hover { background: var(--ink); color: #fff; }
+.focus-editor.is-collapsed > *:not(.focus-editor-head) { display: none; }
+.focus-editor.is-collapsed { width: auto; }
 .focus-editor-sub {
   margin: 12px 0 0;
   font-size: 11px;
