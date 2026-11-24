@@ -538,3 +538,127 @@ a:hover { text-decoration-color: var(--ink); }
   html { scroll-behavior: auto; }
   .skip-link { transition: none; }
 }
+
+/* ---------- Pages légales ---------- */
+
+.legal { max-width: 760px; }
+.legal h3 {
+  font-size: 1.25rem;
+  margin-top: 44px;
+  margin-bottom: 12px;
+}
+.legal p + p { margin-top: 12px; }
+.legal ul { margin: 12px 0 0; padding-left: 22px; }
+.legal li + li { margin-top: 6px; }
+.legal-updated { margin-top: 10px; font-size: 13.5px; color: var(--muted); }
+
+/* ---------- Footer : liens légaux ---------- */
+
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+  margin-top: 24px;
+  font-size: 14px;
+}
+.footer-cookies {
+  font: inherit;
+  font-size: 14px;
+  color: var(--ink);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
+}
+.footer-cookies:hover { text-decoration-color: var(--ink); }
+
+/* ---------- Case de consentement (jamais pré-cochée) ---------- */
+
+.form-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.form-check input {
+  width: 17px;
+  height: 17px;
+  margin: 3px 0 0;
+  flex: none;
+  accent-color: var(--accent);
+}
+.form-check label {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+/* ---------- Bandeau de consentement (RGPD) ---------- */
+
+.cookie-banner {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 90;
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+  padding: 20px 0;
+}
+.cookie-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px 32px;
+  flex-wrap: wrap;
+}
+.cookie-text {
+  font-size: 14.5px;
+  line-height: 1.55;
+  max-width: 68ch;
+}
+.cookie-actions {
+  display: flex;
+  gap: 12px;
+  flex: none;
+}
+.cookie-btn {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+  border-radius: 5px;
+  padding: 13px 22px;
+  cursor: pointer;
+}
+.cookie-accept {
+  background: var(--accent);
+  color: var(--ink);
+  border: 1px solid var(--accent);
+}
+.cookie-accept:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.cookie-refuse {
+  background: var(--bg);
+  color: var(--ink);
+  border: 1px solid var(--ink);
+}
+.cookie-refuse:hover { background: var(--ink); color: #fff; }
+
+@media (max-width: 719px) {
+  .cookie-inner { flex-direction: column; align-items: stretch; }
+  .cookie-actions { flex-direction: row; }
+  .cookie-btn { flex: 1; text-align: center; }
+}
+
+/* ---------- Lightbox : repli sans consentement ---------- */
+
+.player-fallback {
+  padding: 40px 24px 48px;
+  max-width: 56ch;
+}
+.player-fallback-text { font-size: 15.5px; }
+.player-fallback .btn { margin-top: 20px; }

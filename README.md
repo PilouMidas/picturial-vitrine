@@ -18,13 +18,24 @@ Aucun build, aucune dépendance : HTML + CSS + JS vanilla.
 
 ```
 index.html               page unique (hero, réalisations, prestations, preuve, à propos, contact)
+mentions-legales.html    LCEN art. 6 (éditeur, hébergeur, PI)
+politique-de-confidentialite.html   RGPD (données, cookies, droits)
+cgu.html                 conditions d'utilisation
 DESIGN.md                design brief (contexte du projet)
 assets/css/fonts.css     @font-face auto-hébergés (woff2, subsets latin / latin-ext)
 assets/css/style.css     feuille de style
-assets/js/main.js        menu mobile, lightbox Vimeo, formulaire (mailto)
+assets/js/legal-config.js  CONFIG LÉGALE CENTRALISÉE : à remplir (SIRET, forme juridique, hébergeur, DPO…)
+assets/js/main.js        menu mobile, bandeau consentement RGPD, lightbox Vimeo (bloquée sans accord), formulaire (mailto)
 assets/fonts/            Fraunces + Instrument Sans (woff2)
 assets/img/              affiches AVIF/WebP (800w + 1600w), logos WebP/PNG, Tomi jaune, favicons, og-image
 ```
+
+## Conformité légale (LCEN / RGPD)
+
+- **Pages légales** liées dans le footer de toutes les pages : `mentions-legales.html`, `politique-de-confidentialite.html`, `cgu.html`. Pas de CGV : le site ne vend rien en ligne (vitrine + formulaire de contact).
+- **Infos à renseigner** : une seule source, `assets/js/legal-config.js` (`window.LEGAL_CONFIG`). Les pages légales lisent les champs `[data-legal="…"]` et se remplissent automatiquement. Pré-rempli avec ce qu’on connaît (adresse, email, téléphone) ; à compléter : forme juridique, SIRET, directeur·rice de la publication, DPO, hébergeur.
+- **Cookies** : le site ne dépose aucun cookie propre (pas d’analytics, pas de pub). Seul stockage local : le choix de consentement. Les lecteurs Vimeo (qui peuvent déposer des cookies de tiers) ne se chargent **qu’après acceptation** ; en cas de refus, la lightbox propose un lien direct vers Vimeo. Bandeau avec « Tout accepter » / « Tout refuser » de même niveau visuel, aucun choix pré-sélectionné, modifiable via « Gérer mes cookies » en pied de page.
+- **Formulaire** : case de consentement au traitement de la demande, **jamais pré-cochée**, obligatoire ; envoi par mailto (aucune donnée stockée côté serveur).
 
 ## Vidéos (Vimeo, intégralité en lightbox)
 

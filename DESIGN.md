@@ -143,3 +143,19 @@ France Télévisions).
   contact@picturial.fr
 - **Prestations (types)** : documentaire de création, fiction (courts-métrages), films de
   commande institutionnels & marques
+
+## 10. Conformité légale (LCEN / RGPD) — ajouté après le brief initial
+
+- Pages dédiées liées dans le footer de toutes les pages : `mentions-legales.html` (LCEN art. 6),
+  `politique-de-confidentialite.html` (RGPD), `cgu.html`. Pas de CGV (pas de vente en ligne).
+- Configuration légale centralisée dans `assets/js/legal-config.js` (`window.LEGAL_CONFIG`) :
+  société, forme juridique, SIRET, adresse, email, téléphone, directeur de la publication,
+  DPO, hébergeur, date de mise à jour. Les pages légales se remplissent via les attributs
+  `[data-legal="…"]`.
+- Bandeau de consentement conforme : boutons « Tout accepter » / « Tout refuser » au même
+  niveau visuel, aucun choix pré-sélectionné, aucun script de tracking chargé avant
+  consentement (le site n'en a aucun ; les lecteurs Vimeo ne se chargent qu'après accord,
+  sinon lien direct vers Vimeo). Choix conservé en stockage local, modifiable via
+  « Gérer mes cookies » en pied de page.
+- Formulaire de contact : case de consentement **non pré-cochée** et obligatoire ; envoi par
+  mailto (aucune donnée stockée côté serveur).
