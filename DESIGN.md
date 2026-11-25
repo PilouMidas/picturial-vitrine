@@ -354,3 +354,7 @@ pas des micro-ajustements.
 pas de pilotage des variables ni d'export propre — retenu en option pour les tests rapides de
 texte uniquement), VisBug (pas d'export de diff), visual-editor-skill (orienté agent, pas
 autonome), Pinegrow (desktop proprio payant, exclu par contrainte).
+
+**Étape 3.1** : le chip du hero est à largeur fixe — label constant « Voir le film »
+(le titre du film n'est plus dans le texte visible, donc la cible de clic ne bouge plus ;
+le titre reste en `aria-label` « Voir le film — {titre} » pour l'a11y et la lightbox).

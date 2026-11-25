@@ -410,7 +410,8 @@
       play.dataset.title = f.title;
       play.dataset.url = f.url;
       play.href = f.url;
-      playLabel.textContent = "Voir le film — " + f.title;
+      playLabel.textContent = "Voir le film";
+      play.setAttribute("aria-label", "Voir le film — " + f.title);
       countEl.textContent = cur + 1 + " / " + FILMS.length;
     }
 
