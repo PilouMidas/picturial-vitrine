@@ -661,4 +661,14 @@
       window.location.href = "mailto:contact@picturial.fr?" + params.toString();
     });
   }
+
+  if (new URLSearchParams(window.location.search).get("studio") === "1") {
+    const studioCss = document.createElement("link");
+    studioCss.rel = "stylesheet";
+    studioCss.href = "assets/css/studio.css";
+    document.head.appendChild(studioCss);
+    const studioJs = document.createElement("script");
+    studioJs.src = "assets/js/studio.js";
+    document.body.appendChild(studioJs);
+  }
 })();

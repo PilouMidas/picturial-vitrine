@@ -321,3 +321,36 @@ opacity 0 / visibility hidden : `is-hidden` ↔ `is-next` n'est plus qu'un fondu
 boîte `--next*` → `--focus*` (droite→gauche + grandissement) ; ancien cadre = sortie
 `translateX(-110vw)` (gauche) ; sens inverse = entrée par le bas `translateY(10vh)` depuis la
 position `--next*`. **Aucun mouvement gauche→droite nulle part.**
+
+## 14. Méthode de travail — mode Studio (validée par Philippe)
+
+Objectif : Philippe est acteur de la composition graphique directement dans le navigateur,
+sans instruction textuelle systématique à l'agent, et sans allers-retours commit/push pour chaque
+ajustement.
+
+**Outil** : `?studio=1` sur le site (assets/js/studio.js + assets/css/studio.css, chargés
+dynamiquement UNIQUEMENT avec ce paramétre → aucun effet sur le site public).
+Périmètre étape 1 : les deux cadres du hero + le logo, manipulés via les variables CSS
+existantes (`--focusX/Y/W/H`, `--nextL/T/W/H`, `--logoH`) posées en inline sur `:root`
+(jamais de style inline sur les éléments, jamais de positionnement absolu ajouté).
+Fonctions : sélection souris (clic sur le cadre/logo ou liste des calques), contour + 8 poignées,
+déplacer (drag), redimensionner (poignées, Maj = garder les proportions), flèches clavier
+(1 px, Maj × 10), repères + magnétisme (bords/centre du viewport + **bord partagé entre les deux
+cadres**), inspecteur (valeurs live + saisie exacte), annuler/rétablir (Ctrl+Z / Ctrl+Y),
+reset par élément ou global, masquer l'UI (H), pause des animations du carrousel (défaut ON),
+brouillon auto-sauvegardé en localStorage (`picturial-studio-draft`, restauré à l'ouverture),
+export : bloc CSS des **seules variables modifiées** (diff vs `:root` de style.css) + JSON +
+résumé en français à transmettre à l'agent.
+Le panneau `?focus=edit` (curseurs) reste pour les réglages fins.
+
+**Méthode Git associée** : exploration 100 % locale dans le navigateur (localStorage), aucun
+commit/push automatique. Philippe copie l'export et le transmet → l'agent intègre dans le code
+source, valide (HTML strict, node --check, accolades CSS, 200 locaux) et committe un **jalon**
+sur `vibe/vitrine-picturial-075ffb` (PR #1 conservée). **Push uniquement sur demande explicite**
+(« publie ») ou publication convenue (revue GitHub Pages). Les commits = jalons significatifs,
+pas des micro-ajustements.
+
+**Solutions évaluées et écartées** : designmode.app (extension, édition live en styles inline,
+pas de pilotage des variables ni d'export propre — retenu en option pour les tests rapides de
+texte uniquement), VisBug (pas d'export de diff), visual-editor-skill (orienté agent, pas
+autonome), Pinegrow (desktop proprio payant, exclu par contrainte).

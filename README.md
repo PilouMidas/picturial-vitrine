@@ -36,8 +36,7 @@ le curseur zoom pilote `--zoom` (léger zoom-in à l'arrivée et au changement d
 Tu bouges un curseur → le cadre jaune et la zone nette suivent en direct. En bas du panneau, les
 valeurs CSS se génèrent toutes seules avec un bouton **« Copier les valeurs CSS »** :
 copie-les et colle-les dans `:root` de `assets/css/style.css` (ou donne-les moi, je
-pousse le commit : les `--focus*` placent le cadre, `--logoH` la taille du logo, `--blur` le flou, `--transDur`/`--zoom` les transitions du carrousel, `--next*` la position du cadre suivant). Console : `setNext(l, t, w, h)` / `setNext()`. Règle absolue : jamais de mouvement gauche→droite (sortie toujours à gauche, entrée inverse par le bas). `F5`
-enlève le panneau.
+pousse le commit : les `--focus*` placent le cadre, `--logoH` la taille du logo, `--blur` le flou, `--transDur`/`--zoom` les transitions du carrousel, `--next*` la position du cadre suivant). Console : `setNext(l, t, w, h)` / `setNext()`. Règle absolue : jamais de mouvement gauche→droite (sortie toujours à gauche, entrée inverse par le bas). Le panneau démarre **replié** (bouton « Ouvrir » en bas à droite) pour ne pas masquer la vue ; « Replier » le referme. `F5` enlève le panneau.
 
 Alternative console (F12 → Console) :
 
@@ -122,6 +121,30 @@ Voir le film + boutons reste en bas du cadre, sous le titre.
 
 Déposer `assets/img/poster-<slug>-{800,1600,1920}.{avif,webp}` et ajouter une entrée dans
 `FILMS` (main.js) : la photo du film entre automatiquement dans le carrousel hero.
+
+## Mode Studio `?studio=1` (édition visuelle directe, étape 1 : 2 cadres du hero + logo)
+
+Ouvre le site avec `?studio=1`. `assets/js/studio.js` + `assets/css/studio.css` ne sont chargés
+qu'avec ce paramètre : aucun effet sur le site public. Tout passe par les variables CSS
+existantes posées en inline sur `:root` (`--focusX/Y/W/H`, `--nextL/T/W/H`, `--logoH`).
+
+- **Sélection** : clic sur un cadre / le logo, ou liste des calques (gauche). Contour + 8 poignées.
+- **Déplacer** : drag. **Redimensionner** : poignées (Maj = proportions conservées). **Clavier** :
+  flèches = 1 px (Maj = 10 px) sur l'élément sélectionné.
+- **Repères** : magnétisme sur les bords/centre du viewport et sur le bord de l'autre cadre
+  (règle gravée : bord gauche du cadre à venir = bord droit du cadre en place).
+- **Panneaux** : inspecteur à droite (valeurs live + saisie exacte + boîte en %), barre d'outils
+  en haut : pause des animations (défaut ON), masquer l'UI (H), annuler/rétablir (Ctrl+Z / Ctrl+Y),
+  reset sélection / reset tout, Exporter, Quitter.
+- **Brouillon** : auto-sauvegardé en localStorage (`picturial-studio-draft`), restauré à
+  l'ouverture (bandeau avec date). « Brouillon vidé » = marqué comme intégré côté code.
+- **Exporter** : bloc CSS des seules variables modifiées (`:root { … }` à coller dans
+  `assets/css/style.css`), JSON, et résumé en français à copier-coller à l'agent.
+
+**Méthode Git** : exploration locale uniquement (localStorage) — aucun commit/push automatique.
+Tu colles l'export à l'agent → il intègre, valide et committe un **jalon** sur la branche de la PR #1 ;
+**push uniquement sur demande explicite** (« publie ») ou publication convenue (revue Pages).
+Le panneau `?focus=edit` (curseurs) reste disponible pour les réglages fins.
 
 ## Conformité légale (LCEN / RGPD)
 
