@@ -392,11 +392,12 @@
 
     let swiper = null;
 
-    function sync(first) {
-      cur = swiper.realIndex;
-      const all = swiper.slides;
+    function sync(sw, first) {
+      if (!sw) return;
+      cur = sw.realIndex;
+      const all = sw.slides;
       for (const s of all) s.classList.remove("is-current", "is-next");
-      const a = swiper.activeIndex;
+      const a = sw.activeIndex;
       if (all[a]) all[a].classList.add("is-current");
       if (all[a + 1]) all[a + 1].classList.add("is-next");
       const f = FILMS[cur % FILMS.length];
@@ -428,18 +429,20 @@
       spaceBetween: m0.gap,
       slidesOffsetBefore: m0.L,
       loop: true,
+      initialSlide: 0,
       speed: m0.speed,
       allowSlidePrev: false,
       grabCursor: true,
       navigation: { nextEl: document.getElementById("hero-next") },
       on: {
-        init: function () { sync(true); preloadNext(); },
-        slideChange: function () { sync(false); preloadNext(); },
+        slideChange: function (sw) { sync(sw, false); preloadNext(); },
         tap: function (sw) {
           if (sw.clickedSlideIndex > sw.activeIndex) sw.slideNext();
         }
       }
     });
+    sync(swiper, true);
+    preloadNext();
 
     function applyMeasure() {
       if (!swiper) return;
