@@ -372,3 +372,10 @@ la première carte en fin de ligne + reset sans transition (aucun mouvement gauc
 bouton `←` et touche `←` supprimés — navigation 100 % vers l'avant). La zone nette (`clip-path`)
 et la barre de boutons continuent de suivre `--focus*`. Studio : la cible « cadre à venir » règle
 désormais `--nextGap` (px).
+
+**Étape 3.3 — SWIPE** : glisser horizontalement sur le hero déplace la ligne en direct
+(la ligne suit le doigt, `no-trans` pendant le drag, clampé) ; au relâché, si le geste depasse
+-60 px vers la gauche → avance d'un film (transition normale), sinon la ligne revient à sa
+place. Swipe vers la droite autorisé en rubber-band seulement (jamais de navigation
+gauche→droite). `touch-action: pan-y` sur `.hero` pour que le tactile horizontal soit capté,
+`cursor: grab`, anti-sélection pendant le geste, clic sur la carte suivante toujours actif.

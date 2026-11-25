@@ -237,6 +237,10 @@ a:hover { text-decoration-color: var(--ink); }
   min-height: 480px;
   overflow: hidden;
   background: #0F0F0F;
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .hero-bg, .hero-sharp { position: absolute; inset: 0; }

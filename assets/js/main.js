@@ -376,6 +376,9 @@
     let cur = 0;
     let frontSlot = 0;
     let animating = false;
+    let lineX = 0;
+    let swipe = null;
+    let justSwiped = false;
 
     function numVar(name, fallback) {
       const v = parseFloat(getComputedStyle(rootEl).getPropertyValue(name));
@@ -389,6 +392,7 @@
       const gap = numVar("--nextGap", 0);
       slides.forEach((s) => { s.style.width = W + "px"; });
       const x = Math.round(((ref.width - W) * X - cur * (W + gap)) * 100) / 100;
+      lineX = x;
       line.style.transform = "translateX(" + x + "px)";
     }
 
@@ -499,8 +503,43 @@
     document.getElementById("hero-next").addEventListener("click", goNext);
     slides.forEach((s) => {
       s.addEventListener("click", () => {
+        if (justSwiped) { justSwiped = false; return; }
         if (s.classList.contains("is-next")) goNext();
       });
+    });
+    heroEl.addEventListener("pointerdown", (e) => {
+      if (animating || swipe) return;
+      if (e.target.closest("a, button")) return;
+      swipe = { x: e.clientX, y: e.clientY, base: lineX, moved: false };
+    });
+    window.addEventListener("pointermove", (e) => {
+      if (!swipe) return;
+      const dx = e.clientX - swipe.x;
+      const dy = e.clientY - swipe.y;
+      if (!swipe.moved && Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+      swipe.moved = true;
+      const ref = heroEl.getBoundingClientRect();
+      const W = ref.width * numVar("--focusW", 50) / 100;
+      const gap = numVar("--nextGap", 0);
+      let tx = swipe.base + dx;
+      tx = Math.max(swipe.base - (W + gap), Math.min(swipe.base + 80, tx));
+      line.classList.add("no-trans");
+      line.style.transform = "translateX(" + Math.round(tx * 100) / 100 + "px)";
+    });
+    window.addEventListener("pointerup", (e) => {
+      if (!swipe) return;
+      const dx = e.clientX - swipe.x;
+      if (swipe.moved) justSwiped = true;
+      line.classList.remove("no-trans");
+      if (swipe.moved && dx <= -60) goNext();
+      else placeLine();
+      swipe = null;
+    });
+    window.addEventListener("pointercancel", () => {
+      if (!swipe) return;
+      line.classList.remove("no-trans");
+      placeLine();
+      swipe = null;
     });
     document.addEventListener("keydown", (e) => {
       const t = e.target;
