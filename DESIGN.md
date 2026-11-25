@@ -415,3 +415,8 @@ visible, marge droite incluse) + `line-clamp: 3` avec ellipse UNIQUEMENT dans l'
 regroupés dans `:root` de style.css : `--ficheXvw --ficheStepvw --ficheH --barH --fichePad
 --peekOpacity --bandDur --bandEase --bgDur --btnDur`. Studio retargeté (fiche active / aperçu / logo).
 Vérifié en jsdom à 1280x720 / 1440x810 / 1920x1080 (géométrie conforme, 0 erreur).
+
+**Étape 4.1 (d'après les captures de hautetcourt.com envoyées par Philippe)** : plus de bordure autour
+des fiches (la référence n'a pas de cadre ; le jaune reste sur l'étiquette « Film » et le bouton) ; dans la
+fiche à venir, le bloc texte est décalé vers le bas de `--peekDrop` (3vh) — « titre plus bas » comme sur
+leur capture avec « The last pickpocket in New York ».

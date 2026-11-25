@@ -21,6 +21,7 @@
   --barH: 64px;
   --fichePad: clamp(16px, 2vw, 28px);
   --peekOpacity: 0.55;
+  --peekDrop: 3vh;
   --bandDur: 0.8s;
   --bandEase: cubic-bezier(0.22, 1, 0.36, 1);
   --bgDur: 0.8s;
@@ -310,11 +311,14 @@ a:hover { text-decoration-color: var(--ink); }
   height: 100%;
   padding: var(--fichePad);
   padding-bottom: calc(var(--fichePad) + 56px);
-  border-top: 2px solid var(--accent);
   pointer-events: auto;
   color: #fff;
 }
-.fiche.is-next { opacity: var(--peekOpacity); cursor: pointer; }
+.fiche.is-next {
+  opacity: var(--peekOpacity);
+  cursor: pointer;
+  padding-top: calc(var(--fichePad) + var(--peekDrop));
+}
 .fiche.is-entering { animation: frame-rise calc(var(--transDur) * 1.5) ease both; }
 @keyframes frame-rise {
   from { transform: translateY(32vh); opacity: 0; }
