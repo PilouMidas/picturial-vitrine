@@ -97,15 +97,20 @@ assets/fonts/            Libre Caslon Text + Instrument Sans (woff2)
 assets/img/              vidéogrammes AVIF/WebP (800w/1600w, +1920w hero), logo LONG noir WebP/PNG, favicons, og-image
 ```
 
-## Carrousel du premier écran — bande de fiches Swiper (étape 4)
+## Carrousel du premier écran — double Swiper Core (étape 5)
 
-Image plein écran + bande horizontale de fiches en bas (`.frame-line`, hauteur `--ficheH`, au-dessus
-d'une barre de commandes de hauteur `--barH`). Repères 1440×810 : fiche active x=230px, suivante x=870px.
-Avance = la bande glisse d'une largeur de fiche (`--bandDur` 800ms, `--bandEase` ease-out), fondu des
-deux images (`--bgDur`), boutons de la fiche active en fondu `--btnDur` 400ms. Autoplay 5s, flèches
-prev/next, clavier, swipe, boucle continue (loop). Titres : largeur de fiche fixe (`--ficheStepvw`) ;
-aperçu = largeur réellement visible `100vw - --ficheXvw - --ficheStepvw - --fichePad`, ellipse 3 lignes
-uniquement dans l'aperçu ; actif = pleine largeur de fiche, titre complet.
+Deux instances **Swiper Core** superposées (MIT, `assets/vendor/swiper/swiper-core.min.{js,css}` +
+`LICENSE`, aucun CDN) : un Swiper de **fond** `#hero-bg` en `effect:"fade"` + `fadeEffect:{crossFade:true}`
+(une image plein écran par film, jusque derrière l'en-tête, `allowTouchMove:false`, `loop`), piloté par le
+Swiper des **fiches** `#frame-track` (`slidesPerView:"auto"`, `speed:800`, autoplay 5s, flèches
+prev/next, clavier, swipe, `loop`) via `fond.slideToLoop(fiches.realIndex, 800)` à chaque changement.
+Bande horizontale de fiches en bas (`.frame-line`, hauteur `--ficheH`, au-dessus d'une barre de commandes
+`--barH`). Repères 1440×810 : fiche active x=230px, suivante x=870px. Avance = la bande glisse d'une
+largeur de fiche (`--bandDur` 800ms, `--bandEase` ease-out) pendant que le fond passe en fondu
+(`--bgDur`) ; boutons de la fiche active en fondu `--btnDur` 400ms. Titres : largeur de fiche fixe
+(`--ficheStepvw`) ; aperçu = largeur réellement visible `100vw - --ficheXvw - --ficheStepvw - --fichePad`
+(≈540px à 1440×810), ellipse 3 lignes uniquement dans l'aperçu ; actif = pleine largeur de fiche, titre
+complet. La longueur du titre ne déplace ni la fiche suivante ni les flèches.
 
 **Réglages dans `:root` de `assets/css/style.css`** (à ajuster à l'œil, ou via `?studio=1`) :
 

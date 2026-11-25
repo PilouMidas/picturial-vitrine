@@ -12,7 +12,7 @@
   <link rel="preload" href="assets/fonts/LibreCaslonText-normal-700-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/InstrumentSans-var-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/fonts.css">
-  <link rel="stylesheet" href="assets/vendor/swiper/swiper-bundle.min.css">
+  <link rel="stylesheet" href="assets/vendor/swiper/swiper-core.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Picturial">
@@ -28,7 +28,7 @@
   <meta name="twitter:description" content="Des films engagés qui interrogent notre époque. Documentaires, fiction, films de commande — Alsace, depuis 1988.">
   <meta name="twitter:image" content="https://picturial.fr/assets/img/og-image.jpg">
   <script src="assets/js/legal-config.js" defer></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js" defer></script>
+  <script src="assets/vendor/swiper/swiper-core.min.js" defer></script>
   <script src="assets/js/main.js" defer></script>
 </head>
 <body id="top">
@@ -48,13 +48,8 @@
   <main id="contenu" tabindex="-1">
     <section class="hero" id="hero" aria-label="Films à la une">
       <h1 class="visually-hidden">Picturial — production audiovisuelle &amp; cinéma</h1>
-      <div class="hero-bg">
-        <picture class="hl" id="bg-a"></picture>
-        <picture class="hl" id="bg-b"></picture>
-      </div>
-      <div class="hero-sharp" aria-hidden="true">
-        <picture class="hl" id="sharp-a"></picture>
-        <picture class="hl" id="sharp-b"></picture>
+      <div class="hero-bg swiper" id="hero-bg">
+        <div class="bg-line swiper-wrapper" id="bg-line"></div>
       </div>
       <div class="frame-track swiper" id="frame-track">
         <div class="frame-line swiper-wrapper" id="frame-line"></div>

@@ -332,7 +332,7 @@
     style.setProperty("--nextH", String(h || "80%"));
   };
 
-  // ---------- Hero étape 4 : bande horizontale de fiches (réf. hautetcourt.com 1440x810 : x actif 230px, x suivant 870px) ----------
+  // ---------- Hero étape 5 : double Swiper Core — fond plein écran en fondu (fade crossFade) piloté par la bande de fiches ----------
 
       const FILMS = [
     { slug: "tristan", title: "Tristan", meta: "de Mallory Grolleau · fiction · 14 min · 2024", video: "1164957316", hash: "8c1cfa0fbf", url: "https://vimeo.com/picturial/tristan", h: 1013, alt: "Photogramme de Tristan — Marie-Luce et Bernard en conversation dans leur salon, mur vert pâle" },
@@ -346,11 +346,29 @@
   const heroEl = document.getElementById("hero");
   if (heroEl && window.Swiper) {
     const rootEl = document.documentElement;
+    const bgTrack = document.getElementById("hero-bg");
+    const bgLine = document.getElementById("bg-line");
     const track = document.getElementById("frame-track");
     const line = document.getElementById("frame-line");
-    const bgSlots = [document.getElementById("bg-a"), document.getElementById("bg-b")];
-    const sharpSlots = [document.getElementById("sharp-a"), document.getElementById("sharp-b")];
     const countEl = document.getElementById("hero-count");
+
+    function posterPic(cls, film, withAlt) {
+      const base = "assets/img/poster-" + film.slug + "-";
+      return (
+        '<picture class="bg-layer ' + cls + '">' +
+        '<source type="image/avif" srcset="' + base + '800.avif 800w, ' + base + '1600.avif 1600w, ' + base + '1920.avif 1920w" sizes="100vw">' +
+        '<img src="' + base + '1920.webp" srcset="' + base + '800.webp 800w, ' + base + '1600.webp 1600w, ' + base + '1920.webp 1920w" sizes="100vw" width="1920" height="' + film.h + '" decoding="async"' +
+        (withAlt ? ' alt="' + film.alt + '" fetchpriority="high"' : ' alt=""') +
+        "></picture>"
+      );
+    }
+
+    FILMS.forEach((f, i) => {
+      const slide = document.createElement("div");
+      slide.className = "bg-slide swiper-slide";
+      slide.innerHTML = '<div class="bg-zoom">' + posterPic("bg-blur", f, i === 0) + posterPic("bg-sharp", f, false) + "</div>";
+      bgLine.appendChild(slide);
+    });
 
     FILMS.forEach((f) => {
       const fiche = document.createElement("article");
@@ -366,8 +384,8 @@
     });
     const slides = Array.from(line.children);
 
-    let frontSlot = 0;
     let cur = 0;
+    let M = null;
 
     function numVar(name, fallback) {
       const v = parseFloat(getComputedStyle(rootEl).getPropertyValue(name));
@@ -379,16 +397,15 @@
       return {
         W: ref.width * numVar("--ficheStepvw", 44.44) / 100,
         X: ref.width * numVar("--ficheXvw", 15.97) / 100,
-        speed: numVar("--bandDur", 0.8) * 1000
+        band: numVar("--bandDur", 0.8) * 1000,
+        bg: numVar("--bgDur", 0.8) * 1000
       };
     }
 
-    const m0 = measure();
-    slides.forEach((s) => { s.style.width = m0.W + "px"; });
+    M = measure();
+    slides.forEach((s) => { s.style.width = M.W + "px"; });
 
-    let swiper = null;
-
-    function sync(sw, first) {
+    function sync(sw) {
       if (!sw) return;
       cur = sw.realIndex;
       const all = sw.slides;
@@ -397,110 +414,85 @@
       if (all[a]) all[a].classList.add("is-current");
       if (all[a + 1]) all[a + 1].classList.add("is-next");
       countEl.textContent = (cur + 1) + " / " + FILMS.length;
-      if (first) return;
-      const f = FILMS[cur % FILMS.length];
-      const back = 1 - frontSlot;
-      fillSlot(back, f);
-      bgSlots[back].classList.add("front");
-      sharpSlots[back].classList.add("front");
-      bgSlots[frontSlot].classList.remove("front");
-      sharpSlots[frontSlot].classList.remove("front");
-      frontSlot = back;
     }
 
-    swiper = new Swiper(track, {
+    const fond = new Swiper(bgTrack, {
+      effect: "fade",
+      fadeEffect: { crossFade: true },
+      loop: true,
+      allowTouchMove: false,
+      speed: M.bg
+    });
+
+    const fiches = new Swiper(track, {
       slidesPerView: "auto",
       spaceBetween: 0,
-      slidesOffsetBefore: m0.X,
+      slidesOffsetBefore: M.X,
       loop: true,
       initialSlide: 0,
-      speed: m0.speed,
+      speed: M.band,
       cssEase: getComputedStyle(rootEl).getPropertyValue("--bandEase").trim() || "ease",
       allowSlidePrev: true,
       grabCursor: true,
       autoplay: REDUCED_MOTION ? false : { delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true },
       navigation: { nextEl: document.getElementById("hero-next"), prevEl: document.getElementById("hero-prev") },
       on: {
-        slideChange: function (sw) { sync(sw, false); preloadNext(); },
+        slideChange: function (sw) {
+          sync(sw);
+          fond.slideToLoop(sw.realIndex, M.bg);
+          preloadNext();
+        },
         tap: function (sw) {
           if (sw.clickedSlideIndex > sw.activeIndex) sw.slideNext();
           else if (sw.clickedSlideIndex < sw.activeIndex) sw.slidePrev();
         }
       }
     });
-    window.__heroSwiper = swiper;
-    sync(swiper, true);
+    window.__heroSwiper = fiches;
+    window.__heroFond = fond;
+    sync(fiches);
     preloadNext();
 
     function applyMeasure() {
-      if (!swiper) return;
-      const m = measure();
-      slides.forEach((s) => { s.style.width = m.W + "px"; });
-      swiper.params.slidesOffsetBefore = m.X;
-      swiper.params.speed = m.speed;
-      swiper.update();
+      M = measure();
+      slides.forEach((s) => { s.style.width = M.W + "px"; });
+      fiches.params.slidesOffsetBefore = M.X;
+      fiches.params.speed = M.band;
+      fond.params.speed = M.bg;
+      fiches.update();
+      fond.update();
     }
 
-        function fillSlot(slotIdx, film) {
-  [bgSlots[slotIdx], sharpSlots[slotIdx]].forEach((pic, layerIdx) => {
-    pic.innerHTML = "";
-    const src = document.createElement("source");
-    src.type = "image/avif";
-    src.srcset =
-      "assets/img/poster-" + film.slug + "-800.avif 800w, assets/img/poster-" + film.slug + "-1600.avif 1600w, assets/img/poster-" + film.slug + "-1920.avif 1920w";
-    src.sizes = "100vw";
-    const img = document.createElement("img");
-    img.src = "assets/img/poster-" + film.slug + "-1920.webp";
-    img.srcset =
-      "assets/img/poster-" + film.slug + "-800.webp 800w, assets/img/poster-" + film.slug + "-1600.webp 1600w, assets/img/poster-" + film.slug + "-1920.webp 1920w";
-    img.sizes = "100vw";
-    img.width = 1920;
-    img.height = film.h;
-    img.decoding = "async";
-    if (layerIdx === 0) {
-      img.alt = film.alt;
-      img.setAttribute("fetchpriority", "high");
-    } else {
-      img.alt = "";
+    function preloadNext() {
+      [(cur + 1) % FILMS.length, (cur - 1 + FILMS.length) % FILMS.length].forEach((idx) => {
+        const base = "assets/img/poster-" + FILMS[idx].slug + "-";
+        const av = document.createElement("link");
+        av.rel = "preload";
+        av.as = "image";
+        av.type = "image/avif";
+        av.imagesrcset = base + "800.avif 800w, " + base + "1600.avif 1600w, " + base + "1920.avif 1920w";
+        av.imagesizes = "100vw";
+        document.head.appendChild(av);
+        const im = new Image();
+        im.srcset = base + "800.webp 800w, " + base + "1600.webp 1600w, " + base + "1920.webp 1920w";
+        im.sizes = "100vw";
+        im.src = base + "1920.webp";
+      });
     }
-    pic.appendChild(src);
-    pic.appendChild(img);
-  });
-}
 
-        function preloadNext() {
-  [(cur + 1) % FILMS.length, (cur - 1 + FILMS.length) % FILMS.length].forEach((idx) => {
-    const base = "assets/img/poster-" + FILMS[idx].slug + "-";
-    const av = document.createElement("link");
-    av.rel = "preload";
-    av.as = "image";
-    av.type = "image/avif";
-    av.imagesrcset = base + "800.avif 800w, " + base + "1600.avif 1600w, " + base + "1920.avif 1920w";
-    av.imagesizes = "100vw";
-    document.head.appendChild(av);
-    const im = new Image();
-    im.srcset = base + "800.webp 800w, " + base + "1600.webp 1600w, " + base + "1920.webp 1920w";
-    im.sizes = "100vw";
-    im.src = base + "1920.webp";
-  });
-}
-
-    fillSlot(0, FILMS[0]);
-    bgSlots[0].classList.add("front", "zoom-in");
-    sharpSlots[0].classList.add("front", "zoom-in");
-    slides[0].classList.add("is-entering");
+    fond.slides[fond.activeIndex].classList.add("zoom-in");
+    fiches.slides[fiches.activeIndex].classList.add("is-entering");
     const enterMs = numVar("--transDur", 0.8) * 1500 + 120;
     setTimeout(() => {
-      bgSlots[0].classList.remove("zoom-in");
-      sharpSlots[0].classList.remove("zoom-in");
-      slides[0].classList.remove("is-entering");
+      fond.slides.forEach((s) => s.classList.remove("zoom-in"));
+      fiches.slides.forEach((s) => s.classList.remove("is-entering"));
     }, enterMs);
 
     document.addEventListener("keydown", (e) => {
       const t = e.target;
       if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.tagName === "SELECT")) return;
-      if (e.key === "ArrowRight") swiper.slideNext();
-      else if (e.key === "ArrowLeft") swiper.slidePrev();
+      if (e.key === "ArrowRight") fiches.slideNext();
+      else if (e.key === "ArrowLeft") fiches.slidePrev();
     });
     window.addEventListener("resize", applyMeasure);
     new MutationObserver(applyMeasure).observe(rootEl, { attributes: true, attributeFilter: ["style"] });

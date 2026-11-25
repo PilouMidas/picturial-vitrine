@@ -381,7 +381,7 @@ gauche→droite). `touch-action: pan-y` sur `.hero` pour que le tactile horizont
 `cursor: grab`, anti-sélection pendant le geste, clic sur la carte suivante toujours actif.
 
 **Étape 3.4 — SWIPER (la vraie lib, demandée par Philippe)** : le carrousel hero tourne désormais sur
-**Swiper 14.4.0 auto-hébergé** (`assets/vendor/swiper/swiper-bundle.min.{js,css}`, MIT, aucun CDN).
+**Swiper 14.4.0 Core auto-hébergé** (`assets/vendor/swiper/swiper-core.min.{js,css}` + `LICENSE` MIT conservée avec le code distribué ; bundle généré en local avec esbuild depuis `swiper/core` + modules `Navigation, Autoplay, EffectFade` — 0 € de licence, aucun CDN).
 Structure : `.frame-track.swiper` > `.frame-line.swiper-wrapper` > 6 `.hero-frame.swiper-slide`.
 Config : `slidesPerView: "auto"`, largeur de slide = `--focusW` (px calculés), `slidesOffsetBefore`
 = position gauche du cadre actif (depuis `--focusX`), `spaceBetween` = `--nextGap` (0 = bord partagé),
@@ -420,3 +420,27 @@ Vérifié en jsdom à 1280x720 / 1440x810 / 1920x1080 (géométrie conforme, 0 e
 des fiches (la référence n'a pas de cadre ; le jaune reste sur l'étiquette « Film » et le bouton) ; dans la
 fiche à venir, le bloc texte est décalé vers le bas de `--peekDrop` (3vh) — « titre plus bas » comme sur
 leur capture avec « The last pickpocket in New York ».
+
+**Étape 5 — double Swiper Core (spec Philippe, démos swiperjs.com/demos/220-effect-fade/core et
+/120-slides-per-view-auto/core)** : le hero superpose désormais **deux instances Swiper Core** sur la
+même liste de films, dans le même ordre :
+1. **Fond** `#hero-bg.swiper` : un slide par film (`.bg-slide.swiper-slide` contenant deux couches
+   `.bg-layer` — `.bg-blur` flou + sombre et `.bg-sharp` net recadré par la lentille `--focus*`), plein
+   écran jusque derrière l'en-tête. `effect: "fade"`, `fadeEffect: { crossFade: true }`, `loop: true`,
+   `allowTouchMove: false`, `speed` = `--bgDur`.
+2. **Fiches** `#frame-track.swiper` (inchangé en apparence) : `slidesPerView: "auto"`, `speed: 800`
+   (`--bandDur`), `loop: true`, autoplay unique ici (5s), flèches prev/next + clavier + swipe (tap sur la
+   fiche de droite = suivant). À chaque `slideChange` : `sync()` (classes `is-current`/`is-next`,
+   compteur) puis **`fond.slideToLoop(fiches.realIndex, M.bg)`** — la boucle des deux instances garde la
+   continuité dernier→premier.
+L'en-tête et `.hero-bar` restent en place. Zoom-in d'arrivée sur le slide de fond actif uniquement.
+**Titre à venir** : à 1440×810, fiche active x=230 (`--ficheXvw` 15.97vw), suivante x=870
+(`--ficheStepvw` 44.44vw ≈ 640px) → 570px visibles ; `--fichePad` = `clamp(20px, 2.08vw, 30px)` donc marge
+droite 30px et titre d'aperçu plafonné à `100vw - --ficheXvw - --ficheStepvw - --fichePad` ≈ **540px**,
+`line-clamp: 3` + ellipse uniquement dans l'aperçu (`.fiche.is-next`), titre complet sans limite quand la
+fiche est active. La largeur de fiche est fixée en px (inline) : la longueur du titre ne déplace ni la
+fiche suivante ni les flèches. Réglages dans `:root` : `--ficheXvw --ficheStepvw --fichePad --peekOpacity
+--peekDrop --ficheH --barH --bandDur --bandEase --bgDur --btnDur`. Vérifié en jsdom à 1280×720 /
+1440×810 / 1920×1080 : 2 instances initialisées sans erreur, fond fade/crossFade/allowTouchMove:false,
+fiches speed 800 + autoplay 5000, offsetBefore 230px et slide 640px à 1440, `fond.realIndex` suit
+`fiches.realIndex` via `slideToLoop` (next et prev, boucle comprise).
