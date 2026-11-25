@@ -253,7 +253,7 @@ a:hover { text-decoration-color: var(--ink); }
   height: 100%;
   margin: 0;
   opacity: 0;
-  transition: opacity var(--transDur) ease;
+  transition: opacity calc(var(--transDur) * 0.7) ease;
 }
 .hl.front { opacity: 1; }
 .hl.zoom-in { animation: hero-zoom var(--transDur) ease both; }

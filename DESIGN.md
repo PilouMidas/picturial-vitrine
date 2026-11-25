@@ -391,3 +391,9 @@ gauche→droite, donc pas de slide précédent ni swipe vers la droite), `grabCu
 tactile/souris nativement. `applyMeasure()` recalcule à chaque resize et à chaque changement de
 variables (MutationObserver sur `<html>`) → compatible Studio. Les fonds (fondu + zoom) restent
 nos deux slots `.hl`.
+
+**Étape 3.5** : correction de l'effet « saccadé / fondu moche » signalé par Philippe. Cause :
+au changement de film, trois mouvements se superposaient (glissement de la ligne Swiper +
+zoom-in de la nouvelle photo + fondu). Désormais : au slide, **fondu seul** entre les deux photos
+(durée raccourcie à 0,7 x `--transDur`), le zoom-in `hero-zoom` n'est appliqué qu'à l'arrivée sur
+le site. La ligne Swiper glisse seule, proprement, sur `--transDur`.

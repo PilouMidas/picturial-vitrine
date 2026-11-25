@@ -412,16 +412,11 @@
       if (first) return;
       const back = 1 - frontSlot;
       fillSlot(back, f);
-      bgSlots[back].classList.add("front", "zoom-in");
-      sharpSlots[back].classList.add("front", "zoom-in");
+      bgSlots[back].classList.add("front");
+      sharpSlots[back].classList.add("front");
       bgSlots[frontSlot].classList.remove("front");
       sharpSlots[frontSlot].classList.remove("front");
       frontSlot = back;
-      const durMs = numVar("--transDur", 0.8) * 1000;
-      setTimeout(() => {
-        bgSlots.forEach((p) => p.classList.remove("zoom-in"));
-        sharpSlots.forEach((p) => p.classList.remove("zoom-in"));
-      }, durMs + 80);
     }
 
     swiper = new Swiper(track, {
