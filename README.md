@@ -124,7 +124,12 @@ complet. La longueur du titre ne déplace ni la fiche suivante ni les flèches.
 | `--bandDur` / `--bandEase` | durée et courbe du glissement (800ms ease-out) | |
 | `--bgDur` / `--btnDur` | fondu des images / apparition des boutons | |
 
-La largeur visible du titre à venir se calcule automatiquement : `100vw - --ficheXvw - --ficheStepvw - --fichePad`.
+La largeur visible du titre à venir se calcule automatiquement : `100vw - --ficheXvw - --ficheStepvw - --fichePad`
+(côté JS, des variables px mesurées `--heroW` / `--ficheX` / `--ficheStep` sont posées sur `#hero` pour tenir
+compte de la barre de défilement : le titre ne dépasse jamais du bord droit). La zone nette (non floue) de
+l'image est calée exactement sur la colonne de la fiche active ; verticalement : `--focusY` / `--focusH`.
+Un léger zoom-in (`--zoom`) joue à l'arrivée et à chaque changement de film, pendant le fondu `--bgDur`.
+Le fondu du fond vient du CSS officiel du module fade, embarqué dans `swiper-core.min.css`.
 
 ## Conformité légale (LCEN / RGPD)
 

@@ -388,15 +388,20 @@
     let M = null;
 
     function numVar(name, fallback) {
-      const v = parseFloat(getComputedStyle(rootEl).getPropertyValue(name));
+      const v = parseFloat(getComputedStyle(heroEl).getPropertyValue(name));
       return Number.isNaN(v) ? fallback : v;
     }
 
     function measure() {
       const ref = heroEl.getBoundingClientRect();
+      const W = ref.width * numVar("--ficheStepvw", 44.44) / 100;
+      const X = ref.width * numVar("--ficheXvw", 15.97) / 100;
+      heroEl.style.setProperty("--heroW", ref.width + "px");
+      heroEl.style.setProperty("--ficheStep", W + "px");
+      heroEl.style.setProperty("--ficheX", X + "px");
       return {
-        W: ref.width * numVar("--ficheStepvw", 44.44) / 100,
-        X: ref.width * numVar("--ficheXvw", 15.97) / 100,
+        W: W,
+        X: X,
         band: numVar("--bandDur", 0.8) * 1000,
         bg: numVar("--bgDur", 0.8) * 1000
       };
@@ -421,7 +426,17 @@
       fadeEffect: { crossFade: true },
       loop: true,
       allowTouchMove: false,
-      speed: M.bg
+      speed: M.bg,
+      on: {
+        slideChange: function (sw) {
+          const t = sw.slides[sw.activeIndex];
+          sw.slides.forEach((s) => s.classList.remove("zoom-in"));
+          if (t) {
+            t.classList.add("zoom-in");
+            setTimeout(() => t.classList.remove("zoom-in"), sw.params.speed + 150);
+          }
+        }
+      }
     });
 
     const fiches = new Swiper(track, {
@@ -470,6 +485,7 @@
         av.rel = "preload";
         av.as = "image";
         av.type = "image/avif";
+        av.href = base + "1920.avif";
         av.imagesrcset = base + "800.avif 800w, " + base + "1600.avif 1600w, " + base + "1920.avif 1920w";
         av.imagesizes = "100vw";
         document.head.appendChild(av);
