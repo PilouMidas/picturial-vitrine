@@ -397,3 +397,21 @@ au changement de film, trois mouvements se superposaient (glissement de la ligne
 zoom-in de la nouvelle photo + fondu). Désormais : au slide, **fondu seul** entre les deux photos
 (durée raccourcie à 0,7 x `--transDur`), le zoom-in `hero-zoom` n'est appliqué qu'à l'arrivée sur
 le site. La ligne Swiper glisse seule, proprement, sur `--transDur`.
+
+**Étape 4 — carrousel du premier écran, refonte selon spec Philippe (réf. hautetcourt.com 1440x810)** :
+image plein écran derrière l'en-tête ; dans la moitié basse, une **bande horizontale de fiches**
+(`.fiche.swiper-slide` dans `.frame-line`) : fiche active à x = `--ficheXvw` (15.97vw = 230px à 1440),
+fiche suivante à x = `--ficheXvw` + `--ficheStepvw` (44.44vw = 870px à 1440), en retrait via
+`--peekOpacity`. Avance : Swiper fait glisser la bande d'exactement une largeur de fiche
+(`slidesOffsetBefore` = X, largeur de slide = step, `spaceBetween` 0), `speed` = `--bandDur` (800ms),
+`cssEase` = `--bandEase` (ease-out à l'arrivée), `loop: true` (dernier→premier continu), autoplay 5s
+(désactivé si prefers-reduced-motion), flèches précédent/suivant + clavier + swipe. En même temps, les deux
+images plein écran se croisent en fondu (`--bgDur`) ; les boutons de la fiche active apparaissent
+en `--btnDur` (400ms, `.fiche-actions` en absolute bas = hauteur fixe). **Titres longs** : largeur de
+fiche fixe (indépendante du titre) ; titre actif = `max-width: ficheStepvw - 2*fichePad` sans limite de
+lignes ; titre de l'aperçu = `max-width: 100vw - ficheXvw - ficheStepvw - fichePad` (largeur réellement
+visible, marge droite incluse) + `line-clamp: 3` avec ellipse UNIQUEMENT dans l'aperçu. Le bouton
+« Voir le film » vit dans chaque fiche (lien propre par film, délégation `[data-video]`). Réglages
+regroupés dans `:root` de style.css : `--ficheXvw --ficheStepvw --ficheH --barH --fichePad
+--peekOpacity --bandDur --bandEase --bgDur --btnDur`. Studio retargeté (fiche active / aperçu / logo).
+Vérifié en jsdom à 1280x720 / 1440x810 / 1920x1080 (géométrie conforme, 0 erreur).

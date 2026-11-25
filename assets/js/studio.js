@@ -7,10 +7,12 @@
   function start() {
     const root = document.documentElement;
     const DRAFT_KEY = "picturial-studio-draft";
-    const MANAGED = ["--focusX", "--focusY", "--focusW", "--focusH", "--nextGap", "--logoH"];
+    const MANAGED = ["--ficheXvw", "--ficheStepvw", "--peekOpacity", "--fichePad", "--logoH"];
     const VAR_LABEL = {
-      "--focusX": "X (0..1)", "--focusY": "Y (0..1)", "--focusW": "Largeur %", "--focusH": "Hauteur %",
-      "--nextGap": "Écart px (0 = bord partagé)",
+      "--ficheXvw": "X fiche active (vw)",
+      "--ficheStepvw": "Largeur fiche (vw)",
+      "--peekOpacity": "Opacité aperçu (0..1)",
+      "--fichePad": "Marge intérieure (px)",
       "--logoH": "Hauteur px"
     };
     const heroEl = document.getElementById("hero");
@@ -24,29 +26,21 @@
 
     const TARGETS = [
       {
-        id: "courant", label: "Cadre en place", vars: ["--focusX", "--focusY", "--focusW", "--focusH"],
-        el: function () { return document.querySelector(".hero-frame.is-current"); },
+        id: "fiche-active", label: "Fiche active", vars: ["--ficheXvw", "--ficheStepvw", "--fichePad"],
+        el: function () { return document.querySelector(".fiche.is-current"); },
         boxToVars: function (b, ref) {
-          const w = clamp(b.w, 40, ref.width - 4);
-          const h = clamp(b.h, 40, ref.height - 4);
-          const W = w / ref.width * 100;
-          const H = h / ref.height * 100;
-          const X = (ref.width - w) > 0 ? b.l / (ref.width - w) : 0;
-          const Y = (ref.height - h) > 0 ? b.t / (ref.height - h) : 0;
+          const w = clamp(b.w, 80, ref.width - 4);
           return {
-            "--focusW": pct(W), "--focusH": pct(H),
-            "--focusX": String(clamp(round4(X), 0, 1)), "--focusY": String(clamp(round4(Y), 0, 1))
+            "--ficheXvw": round2(b.l / ref.width * 100) + "vw",
+            "--ficheStepvw": round2(w / ref.width * 100) + "vw"
           };
         }
       },
       {
-        id: "suivant", label: "Cadre à venir", vars: ["--nextGap"],
-        el: function () { return document.querySelector(".hero-frame.is-next"); },
-        boxToVars: function (b) {
-          const curEl = TARGETS[0].el();
-          if (!curEl) return { "--nextGap": "0px" };
-          const cr = curEl.getBoundingClientRect();
-          return { "--nextGap": Math.round(b.l - (cr.left + cr.width)) + "px" };
+        id: "fiche-next", label: "Fiche à venir (aperçu)", vars: ["--peekOpacity"],
+        el: function () { return document.querySelector(".fiche.is-next"); },
+        boxToVars: function (b, ref) {
+          return { "--peekOpacity": String(clamp(round2((ref.height - b.t) / ref.height), 0.1, 1)) };
         }
       },
       {
@@ -413,7 +407,7 @@
 
     document.addEventListener("click", function (e) {
       if (e.target.closest(".studio-toolbar, .studio-layers, .studio-inspector, .studio-export, .studio-banner, .studio-show, .studio-overlay")) return;
-      const f = e.target.closest(".hero-frame");
+      const f = e.target.closest(".fiche");
       if (f) {
         if (f.classList.contains("is-current")) select(TARGETS[0]);
         else if (f.classList.contains("is-next")) select(TARGETS[1]);
@@ -431,10 +425,13 @@
     function parseVar(n, v) {
       v = String(v).trim();
       if (!v) return null;
-      if (n === "--logoH" || n === "--nextGap") return Math.round(parseFloat(v) || 0) + "px";
-      if (n === "--focusX" || n === "--focusY") return String(clamp(parseFloat(v) || 0, 0, 1));
-      if (v.charAt(v.length - 1) === "%") return v;
-      return (parseFloat(v) || 0) + "%";
+      if (n === "--logoH" || n === "--fichePad") return Math.max(8, parseFloat(v) || 0) + "px";
+      if (n === "--peekOpacity") return String(clamp(parseFloat(v) || 0, 0, 1));
+      if (n === "--ficheXvw" || n === "--ficheStepvw") {
+        const n2 = parseFloat(v) || 0;
+        return n2 + (v.trim().endsWith("vw") ? "vw" : "vw");
+      }
+      return v;
     }
 
     function refreshInspector() {

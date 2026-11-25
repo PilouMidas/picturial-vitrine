@@ -97,36 +97,29 @@ assets/fonts/            Libre Caslon Text + Instrument Sans (woff2)
 assets/img/              vidéogrammes AVIF/WebP (800w/1600w, +1920w hero), logo LONG noir WebP/PNG, favicons, og-image
 ```
 
-## Carrousel hero des films — Swiper auto-hébergé (étape 3.4)
+## Carrousel du premier écran — bande de fiches Swiper (étape 4)
 
-Le hero tourne sur **Swiper 14** auto-hébergé (`assets/vendor/swiper/swiper-bundle.min.{js,css}`, MIT) :
-`.frame-track.swiper` > `.frame-line.swiper-wrapper` > 6 slides `.hero-frame.swiper-slide` (tableau
-`FILMS` dans main.js). Géométrie pilotée par nos variables : largeur de slide `--focusW`,
-`slidesOffsetBefore` depuis `--focusX`, `spaceBetween` = `--nextGap` (0 = bord partagé, comme Haut et
-Court), `speed` = `--transDur`. `loop: true`, **`allowSlidePrev: false`** (jamais de mouvement
-gauche→droite), `grabCursor`, flèche `#hero-next`, tap carte de droite, touche →. Swipe tactile natif.
-`applyMeasure()` recalcule au resize et à chaque changement de variables (MutationObserver) → compatible
-Studio. Chip « Voir le film » fixe. Photos : fondu + zoom entre 2 slots, préchargement AVIF/WebP.
+Image plein écran + bande horizontale de fiches en bas (`.frame-line`, hauteur `--ficheH`, au-dessus
+d'une barre de commandes de hauteur `--barH`). Repères 1440×810 : fiche active x=230px, suivante x=870px.
+Avance = la bande glisse d'une largeur de fiche (`--bandDur` 800ms, `--bandEase` ease-out), fondu des
+deux images (`--bgDur`), boutons de la fiche active en fondu `--btnDur` 400ms. Autoplay 5s, flèches
+prev/next, clavier, swipe, boucle continue (loop). Titres : largeur de fiche fixe (`--ficheStepvw`) ;
+aperçu = largeur réellement visible `100vw - --ficheXvw - --ficheStepvw - --fichePad`, ellipse 3 lignes
+uniquement dans l'aperçu ; actif = pleine largeur de fiche, titre complet.
 
-## Ancienne version vanilla (étape 3.2, remplacée)
+**Réglages dans `:root` de `assets/css/style.css`** (à ajuster à l'œil, ou via `?studio=1`) :
 
-Les 6 films du tableau `FILMS` (`assets/js/main.js`) sont des diapositives adjacentes d'une
-ligne horizontale (`.frame-line`, flex) dans `.frame-track` (`overflow: hidden`) : largeur
-`--focusW`, hauteur `--focusH`, position verticale `--focusY`, écart `--nextGap` (défaut `0px` =
-bord du cadre à venir collé sur le bord droit du cadre en place, comme Haut et Court).
-Au clic sur `→` (bouton, carte suivante, ou touche →), la ligne glisse d'une largeur vers la
-gauche (`placeLine()` calcule le `translateX` en px, transition `--transDur`) ; boucle infinie
-par clone de la première carte + reset sans transition. **Navigation uniquement vers l'avant**
-(jamais de mouvement gauche→droite : pas de bouton ←). Compteur « n / 6 » + chip « Voir le
-film » (label fixe, titre en aria-label). Zone nette et barre de boutons suivent `--focus*`.
-Photos : fondu + zoom-in entre deux slots (`--transDur`, `--zoom`), préchargement AVIF/WebP du
-film suivant. `placeLine()` est rappelée au resize et à chaque changement de variables
-(MutationObserver sur `<html>`) → compatible avec le mode Studio.
+| Variable | Rôle | Pour élargir/rendre plus lisible le titre à venir |
+|---|---|---|
+| `--ficheStepvw` | largeur de chaque fiche (= pas de la bande) | augmenter = zone de texte plus large partout |
+| `--ficheXvw` | x de départ de la fiche active | diminuer = décale tout vers la gauche, plus de place à droite pour l'aperçu |
+| `--fichePad` | marge intérieure de la fiche | diminuer = titre plus large |
+| `--peekOpacity` | opacité de la fiche à venir | monter = aperçu plus lisible |
+| `--ficheH` / `--barH` | hauteur de la bande / de la barre de commandes | |
+| `--bandDur` / `--bandEase` | durée et courbe du glissement (800ms ease-out) | |
+| `--bgDur` / `--btnDur` | fondu des images / apparition des boutons | |
 
-## Ajouter un film au carrousel hero
-
-Déposer `assets/img/poster-<slug>-{800,1600,1920}.{avif,webp}` et ajouter une entrée dans
-`FILMS` (main.js).
+La largeur visible du titre à venir se calcule automatiquement : `100vw - --ficheXvw - --ficheStepvw - --fichePad`.
 
 ## Conformité légale (LCEN / RGPD)
 

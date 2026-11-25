@@ -168,11 +168,11 @@
     }
   }
 
-  document.querySelectorAll("[data-video]").forEach((trigger) => {
-    trigger.addEventListener("click", (event) => {
-      event.preventDefault();
-      routeVideo(trigger);
-    });
+  document.addEventListener("click", (event) => {
+    const trigger = event.target.closest("[data-video]");
+    if (!trigger) return;
+    event.preventDefault();
+    routeVideo(trigger);
   });
 
   if (dialog && playerClose) {
@@ -332,9 +332,9 @@
     style.setProperty("--nextH", String(h || "80%"));
   };
 
-  // ---------- Hero : carrousel SWIPER (lib auto-hébergée assets/vendor/swiper, façon Haut et Court) ----------
+  // ---------- Hero étape 4 : bande horizontale de fiches (réf. hautetcourt.com 1440x810 : x actif 230px, x suivant 870px) ----------
 
-    const FILMS = [
+      const FILMS = [
     { slug: "tristan", title: "Tristan", meta: "de Mallory Grolleau · fiction · 14 min · 2024", video: "1164957316", hash: "8c1cfa0fbf", url: "https://vimeo.com/picturial/tristan", h: 1013, alt: "Photogramme de Tristan — Marie-Luce et Bernard en conversation dans leur salon, mur vert pâle" },
     { slug: "ira", title: "Ira, mon amour", meta: "documentaire · 3 min · 2024 · réal. Philippe Beyer-Hirsch", video: "933198113", hash: "8300f40080", url: "https://vimeo.com/picturial/iramonamour", h: 1080, alt: "Photogramme d'Ira, mon amour : un bus bleu dans une rue de Chișinău, la nuit" },
     { slug: "objet-retrouve", title: "Objet (re)trouvé", meta: "documentaire · 23 min · 2022 · France Design Week", video: "774185263", hash: "440a590aba", url: "https://vimeo.com/picturial/objetretrouve", h: 1080, alt: "Photogramme d'Objet (re)trouvé : des chaises rouges, le titre du film à l'écran" },
@@ -350,25 +350,24 @@
     const line = document.getElementById("frame-line");
     const bgSlots = [document.getElementById("bg-a"), document.getElementById("bg-b")];
     const sharpSlots = [document.getElementById("sharp-a"), document.getElementById("sharp-b")];
-    const play = document.getElementById("hero-play");
-    const playLabel = document.getElementById("hero-play-label");
     const countEl = document.getElementById("hero-count");
 
     FILMS.forEach((f) => {
-      const frame = document.createElement("div");
-      frame.className = "hero-frame swiper-slide";
-      frame.innerHTML =
-        '<div class="hero-caption">' +
-        '<p class="hero-caption-label">Film</p>' +
-        "<h2>" + f.title + "</h2>" +
-        '<p class="hero-caption-meta">' + f.meta + "</p>" +
-        "</div>";
-      line.appendChild(frame);
+      const fiche = document.createElement("article");
+      fiche.className = "fiche swiper-slide";
+      fiche.innerHTML =
+        '<p class="fiche-label">Film</p>' +
+        '<h2 class="fiche-title">' + f.title + "</h2>" +
+        '<p class="fiche-meta">' + f.meta + "</p>" +
+        '<div class="fiche-actions"><a class="fiche-play voir-le-film" href="' + f.url + '" data-video="' + f.video + '" data-hash="' + f.hash + '" data-title="' + f.title + '" data-url="' + f.url + '" aria-label="Voir le film — ' + f.title + '">' +
+        '<svg viewBox="0 0 12 14" width="11" height="13" aria-hidden="true" focusable="false"><path d="M0 0 L12 7 L0 14 Z" fill="currentColor"/></svg>' +
+        "<span>Voir le film</span></a></div>";
+      line.appendChild(fiche);
     });
     const slides = Array.from(line.children);
 
-    let cur = 0;
     let frontSlot = 0;
+    let cur = 0;
 
     function numVar(name, fallback) {
       const v = parseFloat(getComputedStyle(rootEl).getPropertyValue(name));
@@ -377,13 +376,10 @@
 
     function measure() {
       const ref = heroEl.getBoundingClientRect();
-      const W = ref.width * numVar("--focusW", 50) / 100;
-      const X = numVar("--focusX", 0.37);
       return {
-        W: W,
-        gap: numVar("--nextGap", 0),
-        L: Math.round((ref.width - W) * X),
-        speed: Math.round(numVar("--transDur", 0.8) * 1000)
+        W: ref.width * numVar("--ficheStepvw", 44.44) / 100,
+        X: ref.width * numVar("--ficheXvw", 15.97) / 100,
+        speed: numVar("--bandDur", 0.8) * 1000
       };
     }
 
@@ -400,16 +396,9 @@
       const a = sw.activeIndex;
       if (all[a]) all[a].classList.add("is-current");
       if (all[a + 1]) all[a + 1].classList.add("is-next");
-      const f = FILMS[cur % FILMS.length];
-      play.dataset.video = f.video;
-      play.dataset.hash = f.hash;
-      play.dataset.title = f.title;
-      play.dataset.url = f.url;
-      play.href = f.url;
-      playLabel.textContent = "Voir le film";
-      play.setAttribute("aria-label", "Voir le film — " + f.title);
       countEl.textContent = (cur + 1) + " / " + FILMS.length;
       if (first) return;
+      const f = FILMS[cur % FILMS.length];
       const back = 1 - frontSlot;
       fillSlot(back, f);
       bgSlots[back].classList.add("front");
@@ -421,21 +410,25 @@
 
     swiper = new Swiper(track, {
       slidesPerView: "auto",
-      spaceBetween: m0.gap,
-      slidesOffsetBefore: m0.L,
+      spaceBetween: 0,
+      slidesOffsetBefore: m0.X,
       loop: true,
       initialSlide: 0,
       speed: m0.speed,
-      allowSlidePrev: false,
+      cssEase: getComputedStyle(rootEl).getPropertyValue("--bandEase").trim() || "ease",
+      allowSlidePrev: true,
       grabCursor: true,
-      navigation: { nextEl: document.getElementById("hero-next") },
+      autoplay: REDUCED_MOTION ? false : { delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true },
+      navigation: { nextEl: document.getElementById("hero-next"), prevEl: document.getElementById("hero-prev") },
       on: {
         slideChange: function (sw) { sync(sw, false); preloadNext(); },
         tap: function (sw) {
           if (sw.clickedSlideIndex > sw.activeIndex) sw.slideNext();
+          else if (sw.clickedSlideIndex < sw.activeIndex) sw.slidePrev();
         }
       }
     });
+    window.__heroSwiper = swiper;
     sync(swiper, true);
     preloadNext();
 
@@ -443,55 +436,54 @@
       if (!swiper) return;
       const m = measure();
       slides.forEach((s) => { s.style.width = m.W + "px"; });
-      swiper.params.spaceBetween = m.gap;
-      swiper.params.slidesOffsetBefore = m.L;
+      swiper.params.slidesOffsetBefore = m.X;
       swiper.params.speed = m.speed;
       swiper.update();
     }
 
         function fillSlot(slotIdx, film) {
-      [bgSlots[slotIdx], sharpSlots[slotIdx]].forEach((pic, layerIdx) => {
-        pic.innerHTML = "";
-        const src = document.createElement("source");
-        src.type = "image/avif";
-        src.srcset =
-          "assets/img/poster-" + film.slug + "-800.avif 800w, assets/img/poster-" + film.slug + "-1600.avif 1600w, assets/img/poster-" + film.slug + "-1920.avif 1920w";
-        src.sizes = "100vw";
-        const img = document.createElement("img");
-        img.src = "assets/img/poster-" + film.slug + "-1920.webp";
-        img.srcset =
-          "assets/img/poster-" + film.slug + "-800.webp 800w, assets/img/poster-" + film.slug + "-1600.webp 1600w, assets/img/poster-" + film.slug + "-1920.webp 1920w";
-        img.sizes = "100vw";
-        img.width = 1920;
-        img.height = film.h;
-        img.decoding = "async";
-        if (layerIdx === 0) {
-          img.alt = film.alt;
-          img.setAttribute("fetchpriority", "high");
-        } else {
-          img.alt = "";
-        }
-        pic.appendChild(src);
-        pic.appendChild(img);
-      });
+  [bgSlots[slotIdx], sharpSlots[slotIdx]].forEach((pic, layerIdx) => {
+    pic.innerHTML = "";
+    const src = document.createElement("source");
+    src.type = "image/avif";
+    src.srcset =
+      "assets/img/poster-" + film.slug + "-800.avif 800w, assets/img/poster-" + film.slug + "-1600.avif 1600w, assets/img/poster-" + film.slug + "-1920.avif 1920w";
+    src.sizes = "100vw";
+    const img = document.createElement("img");
+    img.src = "assets/img/poster-" + film.slug + "-1920.webp";
+    img.srcset =
+      "assets/img/poster-" + film.slug + "-800.webp 800w, assets/img/poster-" + film.slug + "-1600.webp 1600w, assets/img/poster-" + film.slug + "-1920.webp 1920w";
+    img.sizes = "100vw";
+    img.width = 1920;
+    img.height = film.h;
+    img.decoding = "async";
+    if (layerIdx === 0) {
+      img.alt = film.alt;
+      img.setAttribute("fetchpriority", "high");
+    } else {
+      img.alt = "";
     }
+    pic.appendChild(src);
+    pic.appendChild(img);
+  });
+}
 
         function preloadNext() {
-      [(cur + 1) % FILMS.length, (cur - 1 + FILMS.length) % FILMS.length].forEach((idx) => {
-        const base = "assets/img/poster-" + FILMS[idx].slug + "-";
-        const av = document.createElement("link");
-        av.rel = "preload";
-        av.as = "image";
-        av.type = "image/avif";
-        av.imagesrcset = base + "800.avif 800w, " + base + "1600.avif 1600w, " + base + "1920.avif 1920w";
-        av.imagesizes = "100vw";
-        document.head.appendChild(av);
-        const im = new Image();
-        im.srcset = base + "800.webp 800w, " + base + "1600.webp 1600w, " + base + "1920.webp 1920w";
-        im.sizes = "100vw";
-        im.src = base + "1920.webp";
-      });
-    }
+  [(cur + 1) % FILMS.length, (cur - 1 + FILMS.length) % FILMS.length].forEach((idx) => {
+    const base = "assets/img/poster-" + FILMS[idx].slug + "-";
+    const av = document.createElement("link");
+    av.rel = "preload";
+    av.as = "image";
+    av.type = "image/avif";
+    av.imagesrcset = base + "800.avif 800w, " + base + "1600.avif 1600w, " + base + "1920.avif 1920w";
+    av.imagesizes = "100vw";
+    document.head.appendChild(av);
+    const im = new Image();
+    im.srcset = base + "800.webp 800w, " + base + "1600.webp 1600w, " + base + "1920.webp 1920w";
+    im.sizes = "100vw";
+    im.src = base + "1920.webp";
+  });
+}
 
     fillSlot(0, FILMS[0]);
     bgSlots[0].classList.add("front", "zoom-in");
@@ -508,6 +500,7 @@
       const t = e.target;
       if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.tagName === "SELECT")) return;
       if (e.key === "ArrowRight") swiper.slideNext();
+      else if (e.key === "ArrowLeft") swiper.slidePrev();
     });
     window.addEventListener("resize", applyMeasure);
     new MutationObserver(applyMeasure).observe(rootEl, { attributes: true, attributeFilter: ["style"] });
