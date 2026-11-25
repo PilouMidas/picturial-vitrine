@@ -358,3 +358,17 @@ autonome), Pinegrow (desktop proprio payant, exclu par contrainte).
 **Étape 3.1** : le chip du hero est à largeur fixe — label constant « Voir le film »
 (le titre du film n'est plus dans le texte visible, donc la cible de clic ne bouge plus ;
 le titre reste en `aria-label` « Voir le film — {titre} » pour l'a11y et la lightbox).
+
+**Étape 3.2 — carrousel en VRAIE LIGNE (demande Philippe : « exactement comme Haut et Court »)** :
+les 6 cadres sont des diapositives adjacentes d'une ligne horizontale (`.frame-line` en flex,
+`overflow: hidden` sur `.frame-track`) : largeur = `--focusW`, hauteur = `--focusH`, position
+verticale = `--focusY`, écart entre cadres = `--nextGap` (défaut `0px` → **bord droit du cadre en
+place = bord gauche du cadre à venir**, comme chez Haut et Court). Au clic sur `→` (bouton,
+carte suivante, ou flèche droite du clavier), toute la ligne glisse d'exactement une largeur vers
+la gauche (`transform: translateX` calculé en px par `placeLine()`, transition `--transDur`) :
+l'ancien cadre sort par la gauche (coupé par le bord de l'écran), le suivant prend sa place,
+la carte d'après est simplement coupée par le bord droit de l'écran. Boucle infinie par clone de
+la première carte en fin de ligne + reset sans transition (aucun mouvement gauche→droite, donc
+bouton `←` et touche `←` supprimés — navigation 100 % vers l'avant). La zone nette (`clip-path`)
+et la barre de boutons continuent de suivre `--focus*`. Studio : la cible « cadre à venir » règle
+désormais `--nextGap` (px).

@@ -14,10 +14,7 @@
   --blur: 2px;
   --transDur: 0.8s;
   --zoom: 1.05;
-  --nextL: 68.5%;
-  --nextT: 20%;
-  --nextW: 40%;
-  --nextH: 80%;
+  --nextGap: 0px;
   --serif: "Libre Caslon Text", Georgia, "Times New Roman", serif;
   --sans: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
   --container: 1080px;
@@ -279,52 +276,29 @@ a:hover { text-decoration-color: var(--ink); }
   to { transform: scale(1); }
 }
 
-.frame-track { position: absolute; inset: 0; z-index: 40; pointer-events: none; }
+.frame-track { position: absolute; inset: 0; z-index: 40; overflow: hidden; pointer-events: none; }
+
+.frame-line {
+  position: absolute;
+  left: 0;
+  top: calc((100% - var(--focusH)) * var(--focusY));
+  height: var(--focusH);
+  display: flex;
+  align-items: flex-start;
+  transition: transform var(--transDur) ease;
+  will-change: transform;
+}
+.frame-line.no-trans { transition: none; }
 
 .hero-frame {
-  position: absolute;
-  left: calc((100% - var(--focusW)) * var(--focusX));
-  top: calc((100% - var(--focusH)) * var(--focusY));
-  width: var(--focusW);
-  height: var(--focusH);
+  position: relative;
+  flex: 0 0 auto;
+  height: 100%;
   border: 1px solid var(--accent);
-  opacity: 0;
-  visibility: hidden;
+  margin-right: var(--nextGap, 0px);
   pointer-events: auto;
-  transition: left var(--transDur) ease, top var(--transDur) ease, width var(--transDur) ease, height var(--transDur) ease, transform var(--transDur) ease, opacity var(--transDur) ease, visibility 0s linear var(--transDur);
 }
-.hero-frame.is-current,
-.hero-frame.is-next {
-  visibility: visible;
-  transition: left var(--transDur) ease, top var(--transDur) ease, width var(--transDur) ease, height var(--transDur) ease, transform var(--transDur) ease, opacity var(--transDur) ease, visibility 0s;
-}
-.hero-frame.is-current { opacity: 1; }
-.hero-frame.is-next {
-  left: var(--nextL);
-  top: var(--nextT);
-  width: var(--nextW);
-  height: var(--nextH);
-  opacity: 0.55;
-  cursor: pointer;
-}
-.hero-frame.is-hidden {
-  left: var(--nextL);
-  top: var(--nextT);
-  width: var(--nextW);
-  height: var(--nextH);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity var(--transDur) ease, visibility 0s linear var(--transDur);
-}
-.hero-frame.is-from-bottom { transform: translateY(10vh); opacity: 0; }
-.hero-frame.is-exit-left {
-  transform: translateX(-110vw);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: transform var(--transDur) ease, opacity calc(var(--transDur) * 0.3) ease, visibility 0s linear calc(var(--transDur) * 0.3);
-}
+.hero-frame.is-next { cursor: pointer; }
 
 .hero-caption {
   position: absolute;
@@ -843,7 +817,7 @@ a:hover { text-decoration-color: var(--ink); }
   html { scroll-behavior: auto; }
   .skip-link { transition: none; }
   .hl.zoom-in { animation: none; }
-  .hl, .hero-frame { transition: none; }
+  .hl, .frame-line { transition: none; }
   .hero-frame.is-entering { animation: none; }
 }
 

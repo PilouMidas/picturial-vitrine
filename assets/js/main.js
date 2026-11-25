@@ -332,7 +332,7 @@
     style.setProperty("--nextH", String(h || "80%"));
   };
 
-  // ---------- Hero étape 2 : carrousel de films plein écran ----------
+  // ---------- Hero : carrousel en LIGNE de cadres adjacents (façon Haut et Court, 100 % vanilla) ----------
 
   const FILMS = [
     { slug: "tristan", title: "Tristan", meta: "de Mallory Grolleau · fiction · 14 min · 2024", video: "1164957316", hash: "8c1cfa0fbf", url: "https://vimeo.com/picturial/tristan", h: 1013, alt: "Photogramme de Tristan — Marie-Luce et Bernard en conversation dans leur salon, mur vert pâle" },
@@ -345,7 +345,11 @@
 
   const heroEl = document.getElementById("hero");
   if (heroEl) {
+    const rootEl = document.documentElement;
     const track = document.getElementById("frame-track");
+    const line = document.createElement("div");
+    line.className = "frame-line";
+    track.appendChild(line);
     const bgSlots = [document.getElementById("bg-a"), document.getElementById("bg-b")];
     const sharpSlots = [document.getElementById("sharp-a"), document.getElementById("sharp-b")];
     const play = document.getElementById("hero-play");
@@ -361,50 +365,39 @@
         "<h2>" + f.title + "</h2>" +
         '<p class="hero-caption-meta">' + f.meta + "</p>" +
         "</div>";
-      track.appendChild(frame);
+      line.appendChild(frame);
     });
-    const frames = Array.from(track.children);
+    const clone = line.children[0].cloneNode(true);
+    clone.classList.add("is-clone");
+    clone.setAttribute("aria-hidden", "true");
+    line.appendChild(clone);
+    const slides = Array.from(line.children);
 
     let cur = 0;
     let frontSlot = 0;
     let animating = false;
 
-    function fillSlot(slotIdx, film) {
-      [bgSlots[slotIdx], sharpSlots[slotIdx]].forEach((pic, layerIdx) => {
-        pic.innerHTML = "";
-        const src = document.createElement("source");
-        src.type = "image/avif";
-        src.srcset =
-          "assets/img/poster-" + film.slug + "-800.avif 800w, assets/img/poster-" + film.slug + "-1600.avif 1600w, assets/img/poster-" + film.slug + "-1920.avif 1920w";
-        src.sizes = "100vw";
-        const img = document.createElement("img");
-        img.src = "assets/img/poster-" + film.slug + "-1920.webp";
-        img.srcset =
-          "assets/img/poster-" + film.slug + "-800.webp 800w, assets/img/poster-" + film.slug + "-1600.webp 1600w, assets/img/poster-" + film.slug + "-1920.webp 1920w";
-        img.sizes = "100vw";
-        img.width = 1920;
-        img.height = film.h;
-        img.decoding = "async";
-        if (layerIdx === 0) {
-          img.alt = film.alt;
-          img.setAttribute("fetchpriority", "high");
-        } else {
-          img.alt = "";
-        }
-        pic.appendChild(src);
-        pic.appendChild(img);
-      });
+    function numVar(name, fallback) {
+      const v = parseFloat(getComputedStyle(rootEl).getPropertyValue(name));
+      return Number.isNaN(v) ? fallback : v;
+    }
+
+    function placeLine() {
+      const ref = heroEl.getBoundingClientRect();
+      const W = ref.width * numVar("--focusW", 50) / 100;
+      const X = numVar("--focusX", 0.37);
+      const gap = numVar("--nextGap", 0);
+      slides.forEach((s) => { s.style.width = W + "px"; });
+      const x = Math.round(((ref.width - W) * X - cur * (W + gap)) * 100) / 100;
+      line.style.transform = "translateX(" + x + "px)";
     }
 
     function paint() {
-      frames.forEach((f, i) => {
-        if (f.classList.contains("is-exit-left")) return;
-        f.classList.remove("is-current", "is-next", "is-prev", "is-hidden");
-        if (i === cur) f.classList.add("is-current");
-        else if (i === (cur + 1) % FILMS.length) f.classList.add("is-next");
-        else f.classList.add("is-hidden");
+      slides.forEach((s, i) => {
+        s.classList.toggle("is-current", i === cur);
+        s.classList.toggle("is-next", i === cur + 1);
       });
-      const f = FILMS[cur];
+      const f = FILMS[cur % FILMS.length];
       play.dataset.video = f.video;
       play.dataset.hash = f.hash;
       play.dataset.title = f.title;
@@ -412,51 +405,78 @@
       play.href = f.url;
       playLabel.textContent = "Voir le film";
       play.setAttribute("aria-label", "Voir le film — " + f.title);
-      countEl.textContent = cur + 1 + " / " + FILMS.length;
+      countEl.textContent = (cur % FILMS.length) + 1 + " / " + FILMS.length;
     }
 
-    function preloadNext() {
-      [(cur + 1) % FILMS.length, (cur - 1 + FILMS.length) % FILMS.length].forEach((idx) => {
-        const base = "assets/img/poster-" + FILMS[idx].slug + "-";
-        const av = document.createElement("link");
-        av.rel = "preload";
-        av.as = "image";
-        av.type = "image/avif";
-        av.imagesrcset = base + "800.avif 800w, " + base + "1600.avif 1600w, " + base + "1920.avif 1920w";
-        av.imagesizes = "100vw";
-        document.head.appendChild(av);
-        const im = new Image();
-        im.srcset = base + "800.webp 800w, " + base + "1600.webp 1600w, " + base + "1920.webp 1920w";
-        im.sizes = "100vw";
-        im.src = base + "1920.webp";
-      });
-    }
+        function fillSlot(slotIdx, film) {
+          [bgSlots[slotIdx], sharpSlots[slotIdx]].forEach((pic, layerIdx) => {
+            pic.innerHTML = "";
+            const src = document.createElement("source");
+            src.type = "image/avif";
+            src.srcset =
+              "assets/img/poster-" + film.slug + "-800.avif 800w, assets/img/poster-" + film.slug + "-1600.avif 1600w, assets/img/poster-" + film.slug + "-1920.avif 1920w";
+            src.sizes = "100vw";
+            const img = document.createElement("img");
+            img.src = "assets/img/poster-" + film.slug + "-1920.webp";
+            img.srcset =
+              "assets/img/poster-" + film.slug + "-800.webp 800w, assets/img/poster-" + film.slug + "-1600.webp 1600w, assets/img/poster-" + film.slug + "-1920.webp 1920w";
+            img.sizes = "100vw";
+            img.width = 1920;
+            img.height = film.h;
+            img.decoding = "async";
+            if (layerIdx === 0) {
+              img.alt = film.alt;
+              img.setAttribute("fetchpriority", "high");
+            } else {
+              img.alt = "";
+            }
+            pic.appendChild(src);
+            pic.appendChild(img);
+          });
+        }
 
-    function go(dir) {
+        function preloadNext() {
+          [(cur + 1) % FILMS.length, (cur - 1 + FILMS.length) % FILMS.length].forEach((idx) => {
+            const base = "assets/img/poster-" + FILMS[idx].slug + "-";
+            const av = document.createElement("link");
+            av.rel = "preload";
+            av.as = "image";
+            av.type = "image/avif";
+            av.imagesrcset = base + "800.avif 800w, " + base + "1600.avif 1600w, " + base + "1920.avif 1920w";
+            av.imagesizes = "100vw";
+            document.head.appendChild(av);
+            const im = new Image();
+            im.srcset = base + "800.webp 800w, " + base + "1600.webp 1600w, " + base + "1920.webp 1920w";
+            im.sizes = "100vw";
+            im.src = base + "1920.webp";
+          });
+        }
+
+    function goNext() {
       if (animating) return;
       animating = true;
-      const next = (cur + dir + FILMS.length) % FILMS.length;
+      cur++;
       const back = 1 - frontSlot;
-      fillSlot(back, FILMS[next]);
+      fillSlot(back, FILMS[cur % FILMS.length]);
       bgSlots[back].classList.add("front", "zoom-in");
       sharpSlots[back].classList.add("front", "zoom-in");
       bgSlots[frontSlot].classList.remove("front");
       sharpSlots[frontSlot].classList.remove("front");
       frontSlot = back;
-      const oldF = frames[cur];
-      cur = next;
-      const newF = frames[cur];
-      if (dir === -1) newF.classList.add("is-from-bottom");
+      placeLine();
       paint();
-      oldF.classList.remove("is-hidden");
-      oldF.classList.add("is-exit-left");
-      const durMs = (parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--transDur")) || 0.8) * 1000;
+      const durMs = numVar("--transDur", 0.8) * 1000;
       setTimeout(() => {
         bgSlots.forEach((p) => p.classList.remove("zoom-in"));
         sharpSlots.forEach((p) => p.classList.remove("zoom-in"));
-        oldF.classList.remove("is-exit-left");
-        oldF.classList.add("is-hidden");
-        newF.classList.remove("is-from-bottom");
+        if (cur === slides.length - 1) {
+          line.classList.add("no-trans");
+          cur = 0;
+          placeLine();
+          paint();
+          void line.offsetWidth;
+          line.classList.remove("no-trans");
+        }
         animating = false;
         preloadNext();
       }, durMs + 80);
@@ -465,29 +485,30 @@
     fillSlot(0, FILMS[0]);
     bgSlots[0].classList.add("front", "zoom-in");
     sharpSlots[0].classList.add("front", "zoom-in");
-    frames[0].classList.add("is-entering");
+    placeLine();
     paint();
     preloadNext();
-    const enterMs = (parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--transDur")) || 0.8) * 1500 + 120;
+    slides[0].classList.add("is-entering");
+    const enterMs = numVar("--transDur", 0.8) * 1500 + 120;
     setTimeout(() => {
       bgSlots[0].classList.remove("zoom-in");
       sharpSlots[0].classList.remove("zoom-in");
-      frames[0].classList.remove("is-entering");
+      slides[0].classList.remove("is-entering");
     }, enterMs);
 
-    document.getElementById("hero-next").addEventListener("click", () => go(1));
-    document.getElementById("hero-prev").addEventListener("click", () => go(-1));
-    frames.forEach((f) => {
-      f.addEventListener("click", () => {
-        if (f.classList.contains("is-next")) go(1);
+    document.getElementById("hero-next").addEventListener("click", goNext);
+    slides.forEach((s) => {
+      s.addEventListener("click", () => {
+        if (s.classList.contains("is-next")) goNext();
       });
     });
     document.addEventListener("keydown", (e) => {
       const t = e.target;
       if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.tagName === "SELECT")) return;
-      if (e.key === "ArrowRight") go(1);
-      else if (e.key === "ArrowLeft") go(-1);
+      if (e.key === "ArrowRight") goNext();
     });
+    window.addEventListener("resize", placeLine);
+    new MutationObserver(placeLine).observe(rootEl, { attributes: true, attributeFilter: ["style"] });
   }
 
   // ---------- Mode édition visuelle du cadre : ajouter ?focus=edit à l'URL ----------

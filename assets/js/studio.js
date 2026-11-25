@@ -7,10 +7,10 @@
   function start() {
     const root = document.documentElement;
     const DRAFT_KEY = "picturial-studio-draft";
-    const MANAGED = ["--focusX", "--focusY", "--focusW", "--focusH", "--nextL", "--nextT", "--nextW", "--nextH", "--logoH"];
+    const MANAGED = ["--focusX", "--focusY", "--focusW", "--focusH", "--nextGap", "--logoH"];
     const VAR_LABEL = {
       "--focusX": "X (0..1)", "--focusY": "Y (0..1)", "--focusW": "Largeur %", "--focusH": "Hauteur %",
-      "--nextL": "Left %", "--nextT": "Top %", "--nextW": "Largeur %", "--nextH": "Hauteur %",
+      "--nextGap": "Écart px (0 = bord partagé)",
       "--logoH": "Hauteur px"
     };
     const heroEl = document.getElementById("hero");
@@ -40,15 +40,13 @@
         }
       },
       {
-        id: "suivant", label: "Cadre à venir", vars: ["--nextL", "--nextT", "--nextW", "--nextH"],
+        id: "suivant", label: "Cadre à venir", vars: ["--nextGap"],
         el: function () { return document.querySelector(".hero-frame.is-next"); },
-        boxToVars: function (b, ref) {
-          const w = clamp(b.w, 40, ref.width - 4);
-          const h = clamp(b.h, 40, ref.height - 4);
-          return {
-            "--nextL": pct(b.l / ref.width * 100), "--nextT": pct(b.t / ref.height * 100),
-            "--nextW": pct(w / ref.width * 100), "--nextH": pct(h / ref.height * 100)
-          };
+        boxToVars: function (b) {
+          const curEl = TARGETS[0].el();
+          if (!curEl) return { "--nextGap": "0px" };
+          const cr = curEl.getBoundingClientRect();
+          return { "--nextGap": Math.round(b.l - (cr.left + cr.width)) + "px" };
         }
       },
       {
@@ -433,7 +431,7 @@
     function parseVar(n, v) {
       v = String(v).trim();
       if (!v) return null;
-      if (n === "--logoH") return Math.max(8, parseFloat(v) || 0) + "px";
+      if (n === "--logoH" || n === "--nextGap") return Math.round(parseFloat(v) || 0) + "px";
       if (n === "--focusX" || n === "--focusY") return String(clamp(parseFloat(v) || 0, 0, 1));
       if (v.charAt(v.length - 1) === "%") return v;
       return (parseFloat(v) || 0) + "%";

@@ -26,17 +26,17 @@ GitHub Pages sur `vibe/vitrine-picturial-075ffb`.
 
 **Sans console** : ouvre le site avec `?focus=edit` à la fin de l'URL, ex. en local
 `http://localhost:8000/?focus=edit` (ou `https://.../index.html?focus=edit` en ligne).
-Un panneau « Réglages hero » apparaît en bas à droite avec **12 curseurs** (X, Y, largeur,
+Un panneau « Réglages hero » apparaît en bas à droite avec **9 curseurs** (X, Y, largeur,
 hauteur du cadre net + **taille du logo en px** + **flou en px** autour de la zone nette
 + **durée des transitions** en s + **zoom d'arrivée** en %) + des boutons de préréglage
-(Gauche/Centre/Droite/Haut/Bas) + 4 curseurs « cadre suivant » en coordonnées CSS directes (L/T/largeur/hauteur en %, variables `--nextL/--nextT/--nextW/--nextH`) + préréglage « Côte à côte » (bord gauche du cadre suivant sur le bord droit du cadre en place). Le curseur logo pilote `--logoH` (taille du logo blanc
+(Gauche/Centre/Droite/Haut/Bas) + 4 curseurs « cadre suivant » en coordonnées CSS directes (L/T/largeur/hauteur en %, variable `--nextGap` (écart entre les deux cadres, 0 = bord partagé)) + préréglage « Côte à côte » (bord gauche du cadre suivant sur le bord droit du cadre en place). Le curseur logo pilote `--logoH` (taille du logo blanc
 en haut ; en responsive il repasse au coin haut gauche sous 860px), le curseur durée
 pilote `--transDur` (durée du fondu/zoom au changement de film et de l'exit du cadre),
 le curseur zoom pilote `--zoom` (léger zoom-in à l'arrivée et au changement de film).
 Tu bouges un curseur → le cadre jaune et la zone nette suivent en direct. En bas du panneau, les
 valeurs CSS se génèrent toutes seules avec un bouton **« Copier les valeurs CSS »** :
 copie-les et colle-les dans `:root` de `assets/css/style.css` (ou donne-les moi, je
-pousse le commit : les `--focus*` placent le cadre, `--logoH` la taille du logo, `--blur` le flou, `--transDur`/`--zoom` les transitions du carrousel, `--next*` la position du cadre suivant). Console : `setNext(l, t, w, h)` / `setNext()`. Règle absolue : jamais de mouvement gauche→droite (sortie toujours à gauche, entrée inverse par le bas). Le panneau démarre **replié** (bouton « Ouvrir » en bas à droite) pour ne pas masquer la vue ; « Replier » le referme. `F5` enlève le panneau.
+pousse le commit : les `--focus*` placent le cadre, `--logoH` la taille du logo, `--blur` le flou, `--transDur`/`--zoom` les transitions du carrousel, `--nextGap` l'écart entre les deux cadres). Console : `setNext(l, t, w, h)` / `setNext()`. Règle absolue : jamais de mouvement gauche→droite (sortie toujours à gauche, entrée inverse par le bas). Le panneau démarre **replié** (bouton « Ouvrir » en bas à droite) pour ne pas masquer la vue ; « Replier » le referme. `F5` enlève le panneau.
 
 Alternative console (F12 → Console) :
 
@@ -97,54 +97,25 @@ assets/fonts/            Libre Caslon Text + Instrument Sans (woff2)
 assets/img/              vidéogrammes AVIF/WebP (800w/1600w, +1920w hero), logo LONG noir WebP/PNG, favicons, og-image
 ```
 
-## Carrousel hero des films (étape 2)
+## Carrousel hero des films — vraie ligne de cadres (étape 3.2)
 
-Le hero est un carrousel plein écran piloté par le tableau `FILMS` dans `assets/js/main.js`
-(6 films : slug, titre, méta, id/hash Vimeo, URL, hauteur source, alt). Flèche droite /
-flèche gauche (boutons `.hero-nav`, clic sur la carte suivante qui dépasse à droite, ou
-touches ← →) : la photo du film courant fond, celle du suivant prend la place principale
-avec un léger zoom-in (`--zoom`), le cadre titre du film courant sort par la gauche
-(`-110vw`) tandis que le titre du suivant prend exactement sa place (mêmes `--focus*`).
-Compteur « n / 6 » + bouton « Voir le film — {titre} » mis à jour à chaque changement.
-Durée des transitions : `--transDur` (curseur « Durée » dans `?focus=edit`).
-
-Étape 2.1 : le cadre qui sort à gauche/droite disparaît vite (fondu 30 % de `--transDur`
-puis caché), plus de carte du film précédent à gauche (seul le suivant dépasse à droite), et
-les boutons sont dans la barre blanche en bas du cadre, sous le titre remonté
-(`hero-bar` = « Voir le film — {titre} » + ← · n / 6 · →).
-
-Étape 2.2 : le titre du film suivant monte du bas vers le haut à l'arrivée (entrée `frame-rise` au chargement ; en navigation la carte suivante, posée en bas à droite avec son bord gauche sur le bord droit du cadre courant (`translateX(var(--focusW)) translateY(10vh) scale(.8)`), remonte en glissant vers la gauche)
-pendant que le cadre photo glisse de droite à gauche (ligne d'images) ; la barre
-Voir le film + boutons reste en bas du cadre, sous le titre.
+Les 6 films du tableau `FILMS` (`assets/js/main.js`) sont des diapositives adjacentes d'une
+ligne horizontale (`.frame-line`, flex) dans `.frame-track` (`overflow: hidden`) : largeur
+`--focusW`, hauteur `--focusH`, position verticale `--focusY`, écart `--nextGap` (défaut `0px` =
+bord du cadre à venir collé sur le bord droit du cadre en place, comme Haut et Court).
+Au clic sur `→` (bouton, carte suivante, ou touche →), la ligne glisse d'une largeur vers la
+gauche (`placeLine()` calcule le `translateX` en px, transition `--transDur`) ; boucle infinie
+par clone de la première carte + reset sans transition. **Navigation uniquement vers l'avant**
+(jamais de mouvement gauche→droite : pas de bouton ←). Compteur « n / 6 » + chip « Voir le
+film » (label fixe, titre en aria-label). Zone nette et barre de boutons suivent `--focus*`.
+Photos : fondu + zoom-in entre deux slots (`--transDur`, `--zoom`), préchargement AVIF/WebP du
+film suivant. `placeLine()` est rappelée au resize et à chaque changement de variables
+(MutationObserver sur `<html>`) → compatible avec le mode Studio.
 
 ## Ajouter un film au carrousel hero
 
 Déposer `assets/img/poster-<slug>-{800,1600,1920}.{avif,webp}` et ajouter une entrée dans
-`FILMS` (main.js) : la photo du film entre automatiquement dans le carrousel hero.
-
-## Mode Studio `?studio=1` (édition visuelle directe, étape 1 : 2 cadres du hero + logo)
-
-Ouvre le site avec `?studio=1`. `assets/js/studio.js` + `assets/css/studio.css` ne sont chargés
-qu'avec ce paramètre : aucun effet sur le site public. Tout passe par les variables CSS
-existantes posées en inline sur `:root` (`--focusX/Y/W/H`, `--nextL/T/W/H`, `--logoH`).
-
-- **Sélection** : clic sur un cadre / le logo, ou liste des calques (gauche). Contour + 8 poignées.
-- **Déplacer** : drag. **Redimensionner** : poignées (Maj = proportions conservées). **Clavier** :
-  flèches = 1 px (Maj = 10 px) sur l'élément sélectionné.
-- **Repères** : magnétisme sur les bords/centre du viewport et sur le bord de l'autre cadre
-  (règle gravée : bord gauche du cadre à venir = bord droit du cadre en place).
-- **Panneaux** : inspecteur à droite (valeurs live + saisie exacte + boîte en %), barre d'outils
-  en haut : pause des animations (défaut ON), masquer l'UI (H), annuler/rétablir (Ctrl+Z / Ctrl+Y),
-  reset sélection / reset tout, Exporter, Quitter.
-- **Brouillon** : auto-sauvegardé en localStorage (`picturial-studio-draft`), restauré à
-  l'ouverture (bandeau avec date). « Brouillon vidé » = marqué comme intégré côté code.
-- **Exporter** : bloc CSS des seules variables modifiées (`:root { … }` à coller dans
-  `assets/css/style.css`), JSON, et résumé en français à copier-coller à l'agent.
-
-**Méthode Git** : exploration locale uniquement (localStorage) — aucun commit/push automatique.
-Tu colles l'export à l'agent → il intègre, valide et committe un **jalon** sur la branche de la PR #1 ;
-**push uniquement sur demande explicite** (« publie ») ou publication convenue (revue Pages).
-Le panneau `?focus=edit` (curseurs) reste disponible pour les réglages fins.
+`FILMS` (main.js).
 
 ## Conformité légale (LCEN / RGPD)
 
