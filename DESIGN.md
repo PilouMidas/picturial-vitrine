@@ -379,3 +379,15 @@ désormais `--nextGap` (px).
 place. Swipe vers la droite autorisé en rubber-band seulement (jamais de navigation
 gauche→droite). `touch-action: pan-y` sur `.hero` pour que le tactile horizontal soit capté,
 `cursor: grab`, anti-sélection pendant le geste, clic sur la carte suivante toujours actif.
+
+**Étape 3.4 — SWIPER (la vraie lib, demandée par Philippe)** : le carrousel hero tourne désormais sur
+**Swiper 14.4.0 auto-hébergé** (`assets/vendor/swiper/swiper-bundle.min.{js,css}`, MIT, aucun CDN).
+Structure : `.frame-track.swiper` > `.frame-line.swiper-wrapper` > 6 `.hero-frame.swiper-slide`.
+Config : `slidesPerView: "auto"`, largeur de slide = `--focusW` (px calculés), `slidesOffsetBefore`
+= position gauche du cadre actif (depuis `--focusX`), `spaceBetween` = `--nextGap` (0 = bord partagé),
+`speed` = `--transDur`, `loop: true`, **`allowSlidePrev: false`** (règle absolue : jamais de mouvement
+gauche→droite, donc pas de slide précédent ni swipe vers la droite), `grabCursor`, navigation sur
+`#hero-next`, tap sur la carte de droite = slideNext, touche → = slideNext. Swiper gère le swipe
+tactile/souris nativement. `applyMeasure()` recalcule à chaque resize et à chaque changement de
+variables (MutationObserver sur `<html>`) → compatible Studio. Les fonds (fondu + zoom) restent
+nos deux slots `.hl`.

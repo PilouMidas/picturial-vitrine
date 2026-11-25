@@ -97,7 +97,18 @@ assets/fonts/            Libre Caslon Text + Instrument Sans (woff2)
 assets/img/              vidéogrammes AVIF/WebP (800w/1600w, +1920w hero), logo LONG noir WebP/PNG, favicons, og-image
 ```
 
-## Carrousel hero des films — vraie ligne de cadres (étape 3.2)
+## Carrousel hero des films — Swiper auto-hébergé (étape 3.4)
+
+Le hero tourne sur **Swiper 14** auto-hébergé (`assets/vendor/swiper/swiper-bundle.min.{js,css}`, MIT) :
+`.frame-track.swiper` > `.frame-line.swiper-wrapper` > 6 slides `.hero-frame.swiper-slide` (tableau
+`FILMS` dans main.js). Géométrie pilotée par nos variables : largeur de slide `--focusW`,
+`slidesOffsetBefore` depuis `--focusX`, `spaceBetween` = `--nextGap` (0 = bord partagé, comme Haut et
+Court), `speed` = `--transDur`. `loop: true`, **`allowSlidePrev: false`** (jamais de mouvement
+gauche→droite), `grabCursor`, flèche `#hero-next`, tap carte de droite, touche →. Swipe tactile natif.
+`applyMeasure()` recalcule au resize et à chaque changement de variables (MutationObserver) → compatible
+Studio. Chip « Voir le film » fixe. Photos : fondu + zoom entre 2 slots, préchargement AVIF/WebP.
+
+## Ancienne version vanilla (étape 3.2, remplacée)
 
 Les 6 films du tableau `FILMS` (`assets/js/main.js`) sont des diapositives adjacentes d'une
 ligne horizontale (`.frame-line`, flex) dans `.frame-track` (`overflow: hidden`) : largeur

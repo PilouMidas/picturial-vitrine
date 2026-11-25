@@ -332,9 +332,9 @@
     style.setProperty("--nextH", String(h || "80%"));
   };
 
-  // ---------- Hero : carrousel en LIGNE de cadres adjacents (façon Haut et Court, 100 % vanilla) ----------
+  // ---------- Hero : carrousel SWIPER (lib auto-hébergée assets/vendor/swiper, façon Haut et Court) ----------
 
-  const FILMS = [
+    const FILMS = [
     { slug: "tristan", title: "Tristan", meta: "de Mallory Grolleau · fiction · 14 min · 2024", video: "1164957316", hash: "8c1cfa0fbf", url: "https://vimeo.com/picturial/tristan", h: 1013, alt: "Photogramme de Tristan — Marie-Luce et Bernard en conversation dans leur salon, mur vert pâle" },
     { slug: "ira", title: "Ira, mon amour", meta: "documentaire · 3 min · 2024 · réal. Philippe Beyer-Hirsch", video: "933198113", hash: "8300f40080", url: "https://vimeo.com/picturial/iramonamour", h: 1080, alt: "Photogramme d'Ira, mon amour : un bus bleu dans une rue de Chișinău, la nuit" },
     { slug: "objet-retrouve", title: "Objet (re)trouvé", meta: "documentaire · 23 min · 2022 · France Design Week", video: "774185263", hash: "440a590aba", url: "https://vimeo.com/picturial/objetretrouve", h: 1080, alt: "Photogramme d'Objet (re)trouvé : des chaises rouges, le titre du film à l'écran" },
@@ -344,12 +344,10 @@
   ];
 
   const heroEl = document.getElementById("hero");
-  if (heroEl) {
+  if (heroEl && window.Swiper) {
     const rootEl = document.documentElement;
     const track = document.getElementById("frame-track");
-    const line = document.createElement("div");
-    line.className = "frame-line";
-    track.appendChild(line);
+    const line = document.getElementById("frame-line");
     const bgSlots = [document.getElementById("bg-a"), document.getElementById("bg-b")];
     const sharpSlots = [document.getElementById("sharp-a"), document.getElementById("sharp-b")];
     const play = document.getElementById("hero-play");
@@ -358,7 +356,7 @@
 
     FILMS.forEach((f) => {
       const frame = document.createElement("div");
-      frame.className = "hero-frame";
+      frame.className = "hero-frame swiper-slide";
       frame.innerHTML =
         '<div class="hero-caption">' +
         '<p class="hero-caption-label">Film</p>' +
@@ -367,40 +365,40 @@
         "</div>";
       line.appendChild(frame);
     });
-    const clone = line.children[0].cloneNode(true);
-    clone.classList.add("is-clone");
-    clone.setAttribute("aria-hidden", "true");
-    line.appendChild(clone);
     const slides = Array.from(line.children);
 
     let cur = 0;
     let frontSlot = 0;
-    let animating = false;
-    let lineX = 0;
-    let swipe = null;
-    let justSwiped = false;
 
     function numVar(name, fallback) {
       const v = parseFloat(getComputedStyle(rootEl).getPropertyValue(name));
       return Number.isNaN(v) ? fallback : v;
     }
 
-    function placeLine() {
+    function measure() {
       const ref = heroEl.getBoundingClientRect();
       const W = ref.width * numVar("--focusW", 50) / 100;
       const X = numVar("--focusX", 0.37);
-      const gap = numVar("--nextGap", 0);
-      slides.forEach((s) => { s.style.width = W + "px"; });
-      const x = Math.round(((ref.width - W) * X - cur * (W + gap)) * 100) / 100;
-      lineX = x;
-      line.style.transform = "translateX(" + x + "px)";
+      return {
+        W: W,
+        gap: numVar("--nextGap", 0),
+        L: Math.round((ref.width - W) * X),
+        speed: Math.round(numVar("--transDur", 0.8) * 1000)
+      };
     }
 
-    function paint() {
-      slides.forEach((s, i) => {
-        s.classList.toggle("is-current", i === cur);
-        s.classList.toggle("is-next", i === cur + 1);
-      });
+    const m0 = measure();
+    slides.forEach((s) => { s.style.width = m0.W + "px"; });
+
+    let swiper = null;
+
+    function sync(first) {
+      cur = swiper.realIndex;
+      const all = swiper.slides;
+      for (const s of all) s.classList.remove("is-current", "is-next");
+      const a = swiper.activeIndex;
+      if (all[a]) all[a].classList.add("is-current");
+      if (all[a + 1]) all[a + 1].classList.add("is-next");
       const f = FILMS[cur % FILMS.length];
       play.dataset.video = f.video;
       play.dataset.hash = f.hash;
@@ -409,89 +407,97 @@
       play.href = f.url;
       playLabel.textContent = "Voir le film";
       play.setAttribute("aria-label", "Voir le film — " + f.title);
-      countEl.textContent = (cur % FILMS.length) + 1 + " / " + FILMS.length;
-    }
-
-        function fillSlot(slotIdx, film) {
-          [bgSlots[slotIdx], sharpSlots[slotIdx]].forEach((pic, layerIdx) => {
-            pic.innerHTML = "";
-            const src = document.createElement("source");
-            src.type = "image/avif";
-            src.srcset =
-              "assets/img/poster-" + film.slug + "-800.avif 800w, assets/img/poster-" + film.slug + "-1600.avif 1600w, assets/img/poster-" + film.slug + "-1920.avif 1920w";
-            src.sizes = "100vw";
-            const img = document.createElement("img");
-            img.src = "assets/img/poster-" + film.slug + "-1920.webp";
-            img.srcset =
-              "assets/img/poster-" + film.slug + "-800.webp 800w, assets/img/poster-" + film.slug + "-1600.webp 1600w, assets/img/poster-" + film.slug + "-1920.webp 1920w";
-            img.sizes = "100vw";
-            img.width = 1920;
-            img.height = film.h;
-            img.decoding = "async";
-            if (layerIdx === 0) {
-              img.alt = film.alt;
-              img.setAttribute("fetchpriority", "high");
-            } else {
-              img.alt = "";
-            }
-            pic.appendChild(src);
-            pic.appendChild(img);
-          });
-        }
-
-        function preloadNext() {
-          [(cur + 1) % FILMS.length, (cur - 1 + FILMS.length) % FILMS.length].forEach((idx) => {
-            const base = "assets/img/poster-" + FILMS[idx].slug + "-";
-            const av = document.createElement("link");
-            av.rel = "preload";
-            av.as = "image";
-            av.type = "image/avif";
-            av.imagesrcset = base + "800.avif 800w, " + base + "1600.avif 1600w, " + base + "1920.avif 1920w";
-            av.imagesizes = "100vw";
-            document.head.appendChild(av);
-            const im = new Image();
-            im.srcset = base + "800.webp 800w, " + base + "1600.webp 1600w, " + base + "1920.webp 1920w";
-            im.sizes = "100vw";
-            im.src = base + "1920.webp";
-          });
-        }
-
-    function goNext() {
-      if (animating) return;
-      animating = true;
-      cur++;
+      countEl.textContent = (cur + 1) + " / " + FILMS.length;
+      if (first) return;
       const back = 1 - frontSlot;
-      fillSlot(back, FILMS[cur % FILMS.length]);
+      fillSlot(back, f);
       bgSlots[back].classList.add("front", "zoom-in");
       sharpSlots[back].classList.add("front", "zoom-in");
       bgSlots[frontSlot].classList.remove("front");
       sharpSlots[frontSlot].classList.remove("front");
       frontSlot = back;
-      placeLine();
-      paint();
       const durMs = numVar("--transDur", 0.8) * 1000;
       setTimeout(() => {
         bgSlots.forEach((p) => p.classList.remove("zoom-in"));
         sharpSlots.forEach((p) => p.classList.remove("zoom-in"));
-        if (cur === slides.length - 1) {
-          line.classList.add("no-trans");
-          cur = 0;
-          placeLine();
-          paint();
-          void line.offsetWidth;
-          line.classList.remove("no-trans");
-        }
-        animating = false;
-        preloadNext();
       }, durMs + 80);
+    }
+
+    swiper = new Swiper(track, {
+      slidesPerView: "auto",
+      spaceBetween: m0.gap,
+      slidesOffsetBefore: m0.L,
+      loop: true,
+      speed: m0.speed,
+      allowSlidePrev: false,
+      grabCursor: true,
+      navigation: { nextEl: document.getElementById("hero-next") },
+      on: {
+        init: function () { sync(true); preloadNext(); },
+        slideChange: function () { sync(false); preloadNext(); },
+        tap: function (sw) {
+          if (sw.clickedSlideIndex > sw.activeIndex) sw.slideNext();
+        }
+      }
+    });
+
+    function applyMeasure() {
+      if (!swiper) return;
+      const m = measure();
+      slides.forEach((s) => { s.style.width = m.W + "px"; });
+      swiper.params.spaceBetween = m.gap;
+      swiper.params.slidesOffsetBefore = m.L;
+      swiper.params.speed = m.speed;
+      swiper.update();
+    }
+
+        function fillSlot(slotIdx, film) {
+      [bgSlots[slotIdx], sharpSlots[slotIdx]].forEach((pic, layerIdx) => {
+        pic.innerHTML = "";
+        const src = document.createElement("source");
+        src.type = "image/avif";
+        src.srcset =
+          "assets/img/poster-" + film.slug + "-800.avif 800w, assets/img/poster-" + film.slug + "-1600.avif 1600w, assets/img/poster-" + film.slug + "-1920.avif 1920w";
+        src.sizes = "100vw";
+        const img = document.createElement("img");
+        img.src = "assets/img/poster-" + film.slug + "-1920.webp";
+        img.srcset =
+          "assets/img/poster-" + film.slug + "-800.webp 800w, assets/img/poster-" + film.slug + "-1600.webp 1600w, assets/img/poster-" + film.slug + "-1920.webp 1920w";
+        img.sizes = "100vw";
+        img.width = 1920;
+        img.height = film.h;
+        img.decoding = "async";
+        if (layerIdx === 0) {
+          img.alt = film.alt;
+          img.setAttribute("fetchpriority", "high");
+        } else {
+          img.alt = "";
+        }
+        pic.appendChild(src);
+        pic.appendChild(img);
+      });
+    }
+
+        function preloadNext() {
+      [(cur + 1) % FILMS.length, (cur - 1 + FILMS.length) % FILMS.length].forEach((idx) => {
+        const base = "assets/img/poster-" + FILMS[idx].slug + "-";
+        const av = document.createElement("link");
+        av.rel = "preload";
+        av.as = "image";
+        av.type = "image/avif";
+        av.imagesrcset = base + "800.avif 800w, " + base + "1600.avif 1600w, " + base + "1920.avif 1920w";
+        av.imagesizes = "100vw";
+        document.head.appendChild(av);
+        const im = new Image();
+        im.srcset = base + "800.webp 800w, " + base + "1600.webp 1600w, " + base + "1920.webp 1920w";
+        im.sizes = "100vw";
+        im.src = base + "1920.webp";
+      });
     }
 
     fillSlot(0, FILMS[0]);
     bgSlots[0].classList.add("front", "zoom-in");
     sharpSlots[0].classList.add("front", "zoom-in");
-    placeLine();
-    paint();
-    preloadNext();
     slides[0].classList.add("is-entering");
     const enterMs = numVar("--transDur", 0.8) * 1500 + 120;
     setTimeout(() => {
@@ -500,54 +506,13 @@
       slides[0].classList.remove("is-entering");
     }, enterMs);
 
-    document.getElementById("hero-next").addEventListener("click", goNext);
-    slides.forEach((s) => {
-      s.addEventListener("click", () => {
-        if (justSwiped) { justSwiped = false; return; }
-        if (s.classList.contains("is-next")) goNext();
-      });
-    });
-    heroEl.addEventListener("pointerdown", (e) => {
-      if (animating || swipe) return;
-      if (e.target.closest("a, button")) return;
-      swipe = { x: e.clientX, y: e.clientY, base: lineX, moved: false };
-    });
-    window.addEventListener("pointermove", (e) => {
-      if (!swipe) return;
-      const dx = e.clientX - swipe.x;
-      const dy = e.clientY - swipe.y;
-      if (!swipe.moved && Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
-      swipe.moved = true;
-      const ref = heroEl.getBoundingClientRect();
-      const W = ref.width * numVar("--focusW", 50) / 100;
-      const gap = numVar("--nextGap", 0);
-      let tx = swipe.base + dx;
-      tx = Math.max(swipe.base - (W + gap), Math.min(swipe.base + 80, tx));
-      line.classList.add("no-trans");
-      line.style.transform = "translateX(" + Math.round(tx * 100) / 100 + "px)";
-    });
-    window.addEventListener("pointerup", (e) => {
-      if (!swipe) return;
-      const dx = e.clientX - swipe.x;
-      if (swipe.moved) justSwiped = true;
-      line.classList.remove("no-trans");
-      if (swipe.moved && dx <= -60) goNext();
-      else placeLine();
-      swipe = null;
-    });
-    window.addEventListener("pointercancel", () => {
-      if (!swipe) return;
-      line.classList.remove("no-trans");
-      placeLine();
-      swipe = null;
-    });
     document.addEventListener("keydown", (e) => {
       const t = e.target;
       if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.tagName === "SELECT")) return;
-      if (e.key === "ArrowRight") goNext();
+      if (e.key === "ArrowRight") swiper.slideNext();
     });
-    window.addEventListener("resize", placeLine);
-    new MutationObserver(placeLine).observe(rootEl, { attributes: true, attributeFilter: ["style"] });
+    window.addEventListener("resize", applyMeasure);
+    new MutationObserver(applyMeasure).observe(rootEl, { attributes: true, attributeFilter: ["style"] });
   }
 
   // ---------- Mode édition visuelle du cadre : ajouter ?focus=edit à l'URL ----------

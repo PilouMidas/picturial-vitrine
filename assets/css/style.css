@@ -280,7 +280,7 @@ a:hover { text-decoration-color: var(--ink); }
   to { transform: scale(1); }
 }
 
-.frame-track { position: absolute; inset: 0; z-index: 40; overflow: hidden; pointer-events: none; }
+.frame-track { position: absolute; inset: 0; z-index: 40; overflow: hidden; pointer-events: auto; touch-action: pan-y; }
 
 .frame-line {
   position: absolute;
@@ -289,17 +289,15 @@ a:hover { text-decoration-color: var(--ink); }
   height: var(--focusH);
   display: flex;
   align-items: flex-start;
-  transition: transform var(--transDur) ease;
-  will-change: transform;
+  transition-property: transform;
+  transition-timing-function: ease;
 }
-.frame-line.no-trans { transition: none; }
 
 .hero-frame {
   position: relative;
   flex: 0 0 auto;
   height: 100%;
   border: 1px solid var(--accent);
-  margin-right: var(--nextGap, 0px);
   pointer-events: auto;
 }
 .hero-frame.is-next { cursor: pointer; }
@@ -821,7 +819,7 @@ a:hover { text-decoration-color: var(--ink); }
   html { scroll-behavior: auto; }
   .skip-link { transition: none; }
   .hl.zoom-in { animation: none; }
-  .hl, .frame-line { transition: none; }
+  .hl, .frame-line { transition: none !important; }
   .hero-frame.is-entering { animation: none; }
 }
 

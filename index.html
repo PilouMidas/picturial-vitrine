@@ -13,6 +13,7 @@
   <link rel="preload" href="assets/fonts/InstrumentSans-var-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/css/fonts.css">
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/vendor/swiper/swiper-bundle.min.css">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Picturial">
   <meta property="og:title" content="Picturial — Des films engagés qui interrogent notre époque">
@@ -27,6 +28,7 @@
   <meta name="twitter:description" content="Des films engagés qui interrogent notre époque. Documentaires, fiction, films de commande — Alsace, depuis 1988.">
   <meta name="twitter:image" content="https://picturial.fr/assets/img/og-image.jpg">
   <script src="assets/js/legal-config.js" defer></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js" defer></script>
   <script src="assets/js/main.js" defer></script>
 </head>
 <body id="top">
@@ -54,7 +56,9 @@
         <picture class="hl" id="sharp-a"></picture>
         <picture class="hl" id="sharp-b"></picture>
       </div>
-      <div class="frame-track" id="frame-track"></div>
+      <div class="frame-track swiper" id="frame-track">
+        <div class="frame-line swiper-wrapper" id="frame-line"></div>
+      </div>
       <div class="hero-bar">
         <a class="hero-play voir-le-film" id="hero-play" aria-label="Voir le film — Tristan" href="https://vimeo.com/picturial/tristan" data-video="1164957316" data-hash="8c1cfa0fbf" data-title="Tristan" data-url="https://vimeo.com/picturial/tristan">
           <svg viewBox="0 0 12 14" width="11" height="13" aria-hidden="true" focusable="false"><path d="M0 0 L12 7 L0 14 Z" fill="currentColor"/></svg>
