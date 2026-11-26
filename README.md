@@ -132,7 +132,7 @@ complet. La longueur du titre ne déplace ni la fiche suivante ni les flèches.
 | `--barDX` / `--barDY` | décalage de la barre flèches + compteur (Studio) | |
 
 
-- Titres des fiches : police **Fraunces** (variable, self-hostée) — `--serif` reste Libre Caslon Text pour le reste du site.
+- Titres des fiches : `--serif` (Libre Caslon Text), line-height 1.4 + max-height (et non line-clamp) pour ne pas couper les jambages (ex. « J » de « Objet (re)trouvé »).
 - Barre de navigation du hero : flèches seules, fines (1,5px), couleur accent `--accent`, sans boîte ; le compteur 1/6 reste dans le DOM (lecteur d'écran) mais est caché visuellement.
 
 La largeur visible du titre à venir se calcule automatiquement : `100vw - --ficheXvw - --ficheStepvw - --fichePad`

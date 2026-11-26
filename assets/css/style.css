@@ -30,7 +30,7 @@
   --bodyDX: 0px;
   --bodyDY: 0px;
   --actionsDX: 0px;
-  --actionsDY: 0px;
+  --actionsDY: 140px;
   --barDX: 0px;
   --barDY: 0px;
   --bgDur: 1.2s;
@@ -358,12 +358,11 @@ a:hover { text-decoration-color: var(--ink); }
   color: var(--accent);
 }
 .fiche-title {
-  font-family: "Fraunces", var(--serif);
-  font-weight: 620;
-  font-optical-sizing: auto;
+  font-family: var(--serif);
+  font-weight: 700;
   color: #fff;
   font-size: clamp(1.7rem, 3.4vw, 2.9rem);
-  line-height: 1.28;
+  line-height: 1.4;
   margin: 12px 0 10px;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
   overflow-wrap: break-word;
@@ -371,10 +370,9 @@ a:hover { text-decoration-color: var(--ink); }
 }
 .fiche.is-current .fiche-title {
   max-width: calc(var(--ficheStep, var(--ficheStepvw)) - 2 * var(--fichePad));
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: var(--titleLines);
+  max-height: calc(var(--titleLines) * 1.4em + 0.12em);
   overflow: hidden;
+  padding-bottom: 0.12em;
 }
 .fiche.is-next .fiche-title {
   max-width: calc(var(--heroW, 100vw) - var(--ficheX, var(--ficheXvw)) - var(--ficheStep, var(--ficheStepvw)) - var(--fichePad));
