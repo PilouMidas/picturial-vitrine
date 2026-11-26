@@ -118,7 +118,7 @@ complet. La longueur du titre ne déplace ni la fiche suivante ni les flèches.
 |---|---|---|
 | `--ficheStepvw` | largeur de chaque fiche (= pas de la bande) | augmenter = zone de texte plus large partout |
 | `--ficheXvw` | x de départ de la fiche active | diminuer = décale tout vers la gauche, plus de place à droite pour l'aperçu |
-| `--fichePad` | marge intérieure de la fiche | diminuer = titre plus large |
+| `--fichePad` | marge intérieure de la fiche = écart entre le bord gauche de la carte (limite de la zone nette) et le texte | diminuer = titre plus large, texte plus collé au bord |
 | `--peekOpacity` | opacité de la fiche à venir | monter = aperçu plus lisible |
 | `--ficheH` / `--barH` | hauteur de la bande / de la barre de commandes | |
 | `--bandDur` / `--bandEase` | durée et courbe du glissement (800ms ease-out) | |

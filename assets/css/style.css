@@ -19,7 +19,7 @@
   --ficheStepvw: 44.44vw;
   --ficheH: 38vh;
   --barH: 64px;
-  --fichePad: clamp(20px, 2.08vw, 30px);
+  --fichePad: clamp(24px, 2.6vw, 38px);
   --peekOpacity: 0.55;
   --peekDrop: 3vh;
   --bandDur: 0.8s;
@@ -285,9 +285,9 @@ a:hover { text-decoration-color: var(--ink); }
   transition: filter var(--bgDur) ease;
   clip-path: inset(
     calc((100% - var(--focusH)) * (1 - var(--focusY)))
-    calc(100% - var(--ficheX, var(--ficheXvw)) - var(--ficheStep, var(--ficheStepvw)) + var(--fichePad))
+    calc(100% - var(--ficheX, var(--ficheXvw)) - var(--ficheStep, var(--ficheStepvw)))
     calc((100% - var(--focusH)) * var(--focusY))
-    calc(var(--ficheX, var(--ficheXvw)) + var(--fichePad))
+    var(--ficheX, var(--ficheXvw))
   );
 }
 .bg-slide.is-leaving .bg-sharp img { filter: brightness(0.72) blur(var(--fadeBlur)); }
