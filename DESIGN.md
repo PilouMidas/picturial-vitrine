@@ -464,3 +464,17 @@ Vérifié aussi : boucle dernier→premier (6× suivant → « 1 / 6 », `fond.r
    carte active. À droite (aperçu), le clamp 3 lignes sur la largeur visible reste en place.
 Vérifié : fondu 1200ms avec opacités interpolées, blur sortant animé jusqu'à 6px, titre absurde → 3 lignes
 contenues dans la fiche (withinCard), titres réels inchangés (1 ligne), 0 erreur console.
+
+**Étape 5.3 — retours Philippe (vérifiés en Chromium headless 1440×810)** :
+1. **Plus aucun texte à gauche** : `sync()` marque toutes les diapositives d'index < activeIndex avec
+   `.is-past` → `opacity: 0` en `--pastDur` (0,25s). La carte qui sort à gauche s'efface vite (comme à
+   l'étape 2.1) ; au repos, seule la fiche active et l'aperçu à droite sont visibles.
+2. **Montée en diagonale fluide** : `.fiche` transitionne `padding-top` sur `--bandDur`/`--bandEase` —
+   quand la fiche à venir (`--peekDrop` en moins) devient active, elle remonte pendant le glissement
+   horizontal (mouvement combiné, plus « d'abord haut puis gauche »).
+3. **Studio étendu à tous les éléments du hero** : nouvelles cibles déplaçables — bloc texte de la fiche
+   active (`--bodyDX/--bodyDY` via un wrapper `.fiche-body`), bouton « Voir le film » (`--actionsDX/Y`),
+   barre flèches + compteur (`--barDX/Y`), en plus de fiche active / aperçu / logo. 6 calques au total.
+Note : Swiper n'a pas d'interface graphique (c'est une librairie de code) — on utilise déjà exactement le
+montage de ses démos Core officielles (fade crossFade + slidesPerView:auto) ; l'interface visuelle du
+projet, c'est le mode Studio (`?studio=1`).

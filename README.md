@@ -97,7 +97,7 @@ assets/fonts/            Libre Caslon Text + Instrument Sans (woff2)
 assets/img/              vidéogrammes AVIF/WebP (800w/1600w, +1920w hero), logo LONG noir WebP/PNG, favicons, og-image
 ```
 
-## Carrousel du premier écran — double Swiper Core (étape 5)
+## Carrousel du premier écran — double Swiper Core (étapes 5–5.3)
 
 Deux instances **Swiper Core** superposées (MIT, `assets/vendor/swiper/swiper-core.min.{js,css}` +
 `LICENSE`, aucun CDN) : un Swiper de **fond** `#hero-bg` en `effect:"fade"` + `fadeEffect:{crossFade:true}`
@@ -125,6 +125,10 @@ complet. La longueur du titre ne déplace ni la fiche suivante ni les flèches.
 | `--bgDur` / `--btnDur` | fondu des images (1,2s) / apparition des boutons (400ms) | `--bgDur` ↑ = fondu plus lent |
 | `--fadeBlur` | flou ajouté à l'image sortante pendant le fondu (6px) | |
 | `--titleLines` | nombre max de lignes du titre quand la fiche est active (garde-fou, 3) | |
+| `--pastDur` | fondu de disparition de la carte qui sort à gauche (0,25s) | |
+| `--bodyDX` / `--bodyDY` | décalage du bloc texte de la fiche active (Studio) | |
+| `--actionsDX` / `--actionsDY` | décalage du bouton « Voir le film » (Studio) | |
+| `--barDX` / `--barDY` | décalage de la barre flèches + compteur (Studio) | |
 
 La largeur visible du titre à venir se calcule automatiquement : `100vw - --ficheXvw - --ficheStepvw - --fichePad`
 (côté JS, des variables px mesurées `--heroW` / `--ficheX` / `--ficheStep` sont posées sur `#hero` pour tenir

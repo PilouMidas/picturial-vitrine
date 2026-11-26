@@ -374,9 +374,11 @@
       const fiche = document.createElement("article");
       fiche.className = "fiche swiper-slide";
       fiche.innerHTML =
+        '<div class="fiche-body">' +
         '<p class="fiche-label">Film</p>' +
         '<h2 class="fiche-title">' + f.title + "</h2>" +
         '<p class="fiche-meta">' + f.meta + "</p>" +
+        "</div>" +
         '<div class="fiche-actions"><a class="fiche-play voir-le-film" href="' + f.url + '" data-video="' + f.video + '" data-hash="' + f.hash + '" data-title="' + f.title + '" data-url="' + f.url + '" aria-label="Voir le film — ' + f.title + '">' +
         '<svg viewBox="0 0 12 14" width="11" height="13" aria-hidden="true" focusable="false"><path d="M0 0 L12 7 L0 14 Z" fill="currentColor"/></svg>' +
         "<span>Voir le film</span></a></div>";
@@ -414,10 +416,12 @@
       if (!sw) return;
       cur = sw.realIndex;
       const all = sw.slides;
-      for (const s of all) s.classList.remove("is-current", "is-next");
       const a = sw.activeIndex;
-      if (all[a]) all[a].classList.add("is-current");
-      if (all[a + 1]) all[a + 1].classList.add("is-next");
+      for (let i = 0; i < all.length; i++) {
+        all[i].classList.toggle("is-past", i < a);
+        all[i].classList.toggle("is-current", i === a);
+        all[i].classList.toggle("is-next", i === a + 1);
+      }
       countEl.textContent = (cur + 1) + " / " + FILMS.length;
     }
 

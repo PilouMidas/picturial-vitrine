@@ -7,13 +7,19 @@
   function start() {
     const root = document.documentElement;
     const DRAFT_KEY = "picturial-studio-draft";
-    const MANAGED = ["--ficheXvw", "--ficheStepvw", "--peekOpacity", "--fichePad", "--logoH"];
+    const MANAGED = ["--ficheXvw", "--ficheStepvw", "--peekOpacity", "--fichePad", "--logoH", "--bodyDX", "--bodyDY", "--actionsDX", "--actionsDY", "--barDX", "--barDY"];
     const VAR_LABEL = {
       "--ficheXvw": "X fiche active (vw)",
       "--ficheStepvw": "Largeur fiche (vw)",
       "--peekOpacity": "Opacité aperçu (0..1)",
       "--fichePad": "Marge intérieure (px)",
-      "--logoH": "Hauteur px"
+      "--logoH": "Hauteur px",
+      "--bodyDX": "Bloc texte fiche active, décalage X (px)",
+      "--bodyDY": "Bloc texte fiche active, décalage Y (px)",
+      "--actionsDX": "Bouton Voir le film, décalage X (px)",
+      "--actionsDY": "Bouton Voir le film, décalage Y (px)",
+      "--barDX": "Barre flèches, décalage X (px)",
+      "--barDY": "Barre flèches, décalage Y (px)"
     };
     const heroEl = document.getElementById("hero");
 
@@ -47,6 +53,50 @@
         id: "logo", label: "Logo", vars: ["--logoH"],
         el: function () { return document.querySelector(".site-header--overlay .brand img"); },
         boxToVars: function (b) { return { "--logoH": Math.round(clamp(b.h, 16, 400)) + "px" }; }
+      },
+      {
+        id: "fiche-body", label: "Bloc texte (fiche active)", vars: ["--bodyDX", "--bodyDY"],
+        el: function () { return document.querySelector(".fiche.is-current .fiche-body"); },
+        boxToVars: function (b) {
+          const fEl = document.querySelector(".fiche.is-current");
+          const f = fEl.getBoundingClientRect();
+          const padL = parseFloat(getComputedStyle(fEl).paddingLeft) || 0;
+          const padT = parseFloat(getComputedStyle(fEl).paddingTop) || 0;
+          return {
+            "--bodyDX": Math.round(b.l - f.left - padL) + "px",
+            "--bodyDY": Math.round(b.t - f.top - padT) + "px"
+          };
+        }
+      },
+      {
+        id: "fiche-actions", label: "Bouton « Voir le film »", vars: ["--actionsDX", "--actionsDY"],
+        el: function () { return document.querySelector(".fiche.is-current .fiche-actions"); },
+        boxToVars: function (b) {
+          const fEl = document.querySelector(".fiche.is-current");
+          const f = fEl.getBoundingClientRect();
+          const padL = parseFloat(getComputedStyle(fEl).paddingLeft) || 0;
+          const padB = parseFloat(getComputedStyle(fEl).paddingBottom) || 0;
+          return {
+            "--actionsDX": Math.round(b.l - f.left - padL) + "px",
+            "--actionsDY": Math.round(f.bottom - padB - b.bottom) + "px"
+          };
+        }
+      },
+      {
+        id: "hero-bar", label: "Barre flèches + compteur", vars: ["--barDX", "--barDY"],
+        el: function () { return document.querySelector(".hero-bar"); },
+        boxToVars: function (b) {
+          const fEl = document.querySelector(".fiche.is-current");
+          const hero = heroEl.getBoundingClientRect();
+          const f = fEl.getBoundingClientRect();
+          const padL = parseFloat(getComputedStyle(fEl).paddingLeft) || 0;
+          const barH = parseFloat(getComputedStyle(root).getPropertyValue("--barH")) || 64;
+          const baseBottom = (barH - 46) / 2;
+          return {
+            "--barDX": Math.round(b.l - f.left - padL) + "px",
+            "--barDY": Math.round(hero.bottom - baseBottom - b.h - b.t) + "px"
+          };
+        }
       }
     ];
 

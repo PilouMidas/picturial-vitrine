@@ -24,6 +24,13 @@
   --peekDrop: 3vh;
   --bandDur: 0.8s;
   --bandEase: cubic-bezier(0.22, 1, 0.36, 1);
+  --pastDur: 0.25s;
+  --bodyDX: 0px;
+  --bodyDY: 0px;
+  --actionsDX: 0px;
+  --actionsDY: 0px;
+  --barDX: 0px;
+  --barDY: 0px;
   --bgDur: 1.2s;
   --fadeBlur: 6px;
   --btnDur: 0.4s;
@@ -313,12 +320,15 @@ a:hover { text-decoration-color: var(--ink); }
   overflow: hidden;
   pointer-events: auto;
   color: #fff;
+  transition: opacity var(--pastDur) ease, padding-top var(--bandDur) var(--bandEase);
 }
+.fiche-body { margin-left: var(--bodyDX); margin-top: var(--bodyDY); }
 .fiche.is-next {
   opacity: var(--peekOpacity);
   cursor: pointer;
   padding-top: calc(var(--fichePad) + var(--peekDrop));
 }
+.fiche.is-past { opacity: 0; pointer-events: none; }
 .fiche.is-entering { animation: frame-rise calc(var(--transDur) * 1.5) ease both; }
 @keyframes frame-rise {
   from { transform: translateY(32vh); opacity: 0; }
@@ -363,8 +373,8 @@ a:hover { text-decoration-color: var(--ink); }
 }
 .fiche-actions {
   position: absolute;
-  left: var(--fichePad);
-  bottom: var(--fichePad);
+  left: calc(var(--fichePad) + var(--actionsDX));
+  bottom: calc(var(--fichePad) + var(--actionsDY));
   opacity: 0;
   transition: opacity var(--btnDur) ease;
 }
@@ -387,8 +397,8 @@ a:hover { text-decoration-color: var(--ink); }
 
 .hero-bar {
   position: absolute;
-  left: calc(var(--ficheX, var(--ficheXvw)) + var(--fichePad));
-  bottom: calc((var(--barH) - 46px) / 2);
+  left: calc(var(--ficheX, var(--ficheXvw)) + var(--fichePad) + var(--barDX));
+  bottom: calc((var(--barH) - 46px) / 2 + var(--barDY));
   z-index: 46;
   display: flex;
   align-items: center;
@@ -841,7 +851,7 @@ a:hover { text-decoration-color: var(--ink); }
 @media (max-width: 719px) {
   body { font-size: 16px; }
   .hero { --focusW: 78%; min-height: 420px; --ficheXvw: 6vw; --ficheStepvw: 80vw; --ficheH: 32vh; --barH: 56px; }
-  .hero-bar { left: calc(var(--ficheX, var(--ficheXvw)) + 12px); bottom: 8px; }
+  .hero-bar { left: calc(var(--ficheX, var(--ficheXvw)) + 12px + var(--barDX)); bottom: calc(8px + var(--barDY)); }
   .film-slide { width: 88vw; }
   .proof-1, .proof-2, .proof-3 { max-width: 100%; margin-left: 0; }
   .about-grid { grid-template-columns: 1fr; }
@@ -855,6 +865,7 @@ a:hover { text-decoration-color: var(--ink); }
   .skip-link { transition: none; }
   .bg-slide.zoom-in .bg-zoom { animation: none; }
   .bg-sharp img { transition: none; }
+  .fiche { transition: none !important; }
   .hero-bg .swiper-slide, .frame-line { transition: none !important; }
   .fiche.is-entering { animation: none; }
   .fiche-actions { transition: none; }
