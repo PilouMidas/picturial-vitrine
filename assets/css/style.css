@@ -25,6 +25,7 @@
   --bandDur: 0.8s;
   --bandEase: cubic-bezier(0.22, 1, 0.36, 1);
   --pastDur: 0.25s;
+  --liseret: 1px solid rgba(255, 255, 255, 0.85);
   --bodyDX: 0px;
   --bodyDY: 0px;
   --actionsDX: 0px;
@@ -320,6 +321,7 @@ a:hover { text-decoration-color: var(--ink); }
   overflow: hidden;
   pointer-events: auto;
   color: #fff;
+  border: var(--liseret);
   transition: opacity var(--pastDur) ease, padding-top var(--bandDur) var(--bandEase);
 }
 .fiche-body { margin-left: var(--bodyDX); margin-top: var(--bodyDY); }
