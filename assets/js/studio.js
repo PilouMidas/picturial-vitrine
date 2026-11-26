@@ -93,7 +93,7 @@
           const f = fEl.getBoundingClientRect();
           const padL = parseFloat(getComputedStyle(bEl).paddingLeft) || 0;
           const barH = parseFloat(getComputedStyle(root).getPropertyValue("--barH")) || 64;
-          const baseBottom = (barH - 46) / 2;
+          const baseBottom = (barH - 44) / 2;
           return {
             "--barDX": Math.round(b.l - f.left - padL) + "px",
             "--barDY": Math.round(hero.bottom - baseBottom - b.h - b.t) + "px"

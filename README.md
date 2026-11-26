@@ -131,6 +131,10 @@ complet. La longueur du titre ne déplace ni la fiche suivante ni les flèches.
 | `--actionsDX` / `--actionsDY` | décalage du bouton « Voir le film » (Studio) | |
 | `--barDX` / `--barDY` | décalage de la barre flèches + compteur (Studio) | |
 
+
+- Titres des fiches : police **Fraunces** (variable, self-hostée) — `--serif` reste Libre Caslon Text pour le reste du site.
+- Barre de navigation du hero : flèches seules, fines (1,5px), couleur accent `--accent`, sans boîte ; le compteur 1/6 reste dans le DOM (lecteur d'écran) mais est caché visuellement.
+
 La largeur visible du titre à venir se calcule automatiquement : `100vw - --ficheXvw - --ficheStepvw - --fichePad`
 (côté JS, des variables px mesurées `--heroW` / `--ficheX` / `--ficheStep` sont posées sur `#hero` pour tenir
 compte de la barre de défilement : le titre ne dépasse jamais du bord droit). La zone nette (non floue) de

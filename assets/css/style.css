@@ -358,12 +358,13 @@ a:hover { text-decoration-color: var(--ink); }
   color: var(--accent);
 }
 .fiche-title {
-  font-family: var(--serif);
-  font-weight: 700;
+  font-family: "Fraunces", var(--serif);
+  font-weight: 620;
+  font-optical-sizing: auto;
   color: #fff;
   font-size: clamp(1.7rem, 3.4vw, 2.9rem);
-  line-height: 1.15;
-  margin: 10px 0 8px;
+  line-height: 1.28;
+  margin: 12px 0 10px;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
   overflow-wrap: break-word;
   hyphens: auto;
@@ -384,6 +385,7 @@ a:hover { text-decoration-color: var(--ink); }
 }
 .fiche-meta {
   font-size: 15px;
+  margin-top: 6px;
   color: #fff;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
 }
@@ -414,35 +416,32 @@ a:hover { text-decoration-color: var(--ink); }
 .hero-bar {
   position: absolute;
   left: calc(var(--ficheX, var(--ficheXvw)) + var(--fichePad) + var(--barDX));
-  bottom: calc((var(--barH) - 46px) / 2 + var(--barDY));
+  bottom: calc((var(--barH) - 44px) / 2 + var(--barDY));
   z-index: 46;
   display: flex;
   align-items: center;
-  gap: 6px;
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  padding: 5px 8px;
+  gap: 2px;
 }
 .hero-nav {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 }
 .hero-arrow {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border: 0;
   border-radius: 5px;
   background: transparent;
-  color: var(--ink);
+  color: var(--accent);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  transition: color 0.2s ease;
 }
-.hero-arrow:hover { background: var(--accent); color: var(--ink); }
-.hero-arrow:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 1px; }
+.hero-arrow:hover { color: #fff; }
+.hero-arrow:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
 .hero-count {
   color: var(--ink);
   font-size: 13px;
