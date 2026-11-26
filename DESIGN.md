@@ -451,3 +451,16 @@ fiches speed 800 + autoplay 5000, offsetBefore 230px et slide 640px à 1440, `fo
 3. **Titres non axés sur la zone nette** : la lentille `--focusX/--focusW` (18,5%–68,5%) ne coincidait pas avec la colonne de la fiche active. Le clip-path horizontal de `.bg-sharp img` est désormais calé exactement sur la fiche active : `inset(... calc(100% - var(--ficheX) - var(--ficheStep) + var(--fichePad)) ... calc(var(--ficheX) + var(--fichePad)))` — bord gauche de la zone nette = x du titre actif (mesuré identique à 0,02px près à toutes les résolutions). Vertical toujours piloté par `--focusY/--focusH`.
 4. **Zoom-in à chaque changement** : à chaque `slideChange` du Swiper de fond, la diapositive entrante reçoit `.zoom-in` (animation `hero-zoom`, `--zoom` 1.05 → 1 sur la durée du fondu), comme à l'arrivée sur le site.
 Vérifié aussi : boucle dernier→premier (6× suivant → « 1 / 6 », `fond.realIndex` = 0), aucune erreur console.
+
+**Étape 5.2 — retours Philippe (vérifiés en Chromium headless 1440×810)** :
+1. **Fondu ralenti** : `--bgDur` 0.8s → **1.2s** (seule la transition d'image ; la bande de fiches reste à
+   `--bandDur` 800ms).
+2. **Netteté qui baisse doucement sur l'image sortante** : à chaque `slideChange` du fond, la diapositive
+   précédente reçoit `.is-leaving` → `.bg-sharp img` gagne `blur(var(--fadeBlur))` (6px) avec
+   `transition: filter var(--bgDur) ease` — l'image qui disparaît s'estompe en perdant un peu de netteté.
+3. **Garde-fou titre à gauche (fiche active)** : `.fiche` en `overflow: hidden` + titre actif clampé à
+   `--titleLines` (3) lignes avec ellipse, `max-width` = largeur fiche, `overflow-wrap: break-word` +
+   `hyphens: auto` sur tous les titres → un titre trop long ne peut dépasser ni à droite ni en bas de la
+   carte active. À droite (aperçu), le clamp 3 lignes sur la largeur visible reste en place.
+Vérifié : fondu 1200ms avec opacités interpolées, blur sortant animé jusqu'à 6px, titre absurde → 3 lignes
+contenues dans la fiche (withinCard), titres réels inchangés (1 ligne), 0 erreur console.

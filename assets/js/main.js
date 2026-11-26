@@ -429,11 +429,17 @@
       speed: M.bg,
       on: {
         slideChange: function (sw) {
+          sw.slides.forEach((s) => s.classList.remove("zoom-in", "is-leaving"));
+          const ms = sw.params.speed + 150;
+          const p = sw.slides[sw.previousIndex];
+          if (p) {
+            p.classList.add("is-leaving");
+            setTimeout(() => p.classList.remove("is-leaving"), ms);
+          }
           const t = sw.slides[sw.activeIndex];
-          sw.slides.forEach((s) => s.classList.remove("zoom-in"));
           if (t) {
             t.classList.add("zoom-in");
-            setTimeout(() => t.classList.remove("zoom-in"), sw.params.speed + 150);
+            setTimeout(() => t.classList.remove("zoom-in"), ms);
           }
         }
       }

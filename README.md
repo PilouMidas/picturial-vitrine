@@ -122,7 +122,9 @@ complet. La longueur du titre ne déplace ni la fiche suivante ni les flèches.
 | `--peekOpacity` | opacité de la fiche à venir | monter = aperçu plus lisible |
 | `--ficheH` / `--barH` | hauteur de la bande / de la barre de commandes | |
 | `--bandDur` / `--bandEase` | durée et courbe du glissement (800ms ease-out) | |
-| `--bgDur` / `--btnDur` | fondu des images / apparition des boutons | |
+| `--bgDur` / `--btnDur` | fondu des images (1,2s) / apparition des boutons (400ms) | `--bgDur` ↑ = fondu plus lent |
+| `--fadeBlur` | flou ajouté à l'image sortante pendant le fondu (6px) | |
+| `--titleLines` | nombre max de lignes du titre quand la fiche est active (garde-fou, 3) | |
 
 La largeur visible du titre à venir se calcule automatiquement : `100vw - --ficheXvw - --ficheStepvw - --fichePad`
 (côté JS, des variables px mesurées `--heroW` / `--ficheX` / `--ficheStep` sont posées sur `#hero` pour tenir
