@@ -59,9 +59,10 @@
         el: function () { return document.querySelector(".fiche.is-current .fiche-body"); },
         boxToVars: function (b) {
           const fEl = document.querySelector(".fiche.is-current");
+          const bEl = fEl.querySelector(".fiche-body");
           const f = fEl.getBoundingClientRect();
-          const padL = parseFloat(getComputedStyle(fEl).paddingLeft) || 0;
-          const padT = parseFloat(getComputedStyle(fEl).paddingTop) || 0;
+          const padL = parseFloat(getComputedStyle(bEl).paddingLeft) || 0;
+          const padT = parseFloat(getComputedStyle(bEl).paddingTop) || 0;
           return {
             "--bodyDX": Math.round(b.l - f.left - padL) + "px",
             "--bodyDY": Math.round(b.t - f.top - padT) + "px"
@@ -73,12 +74,12 @@
         el: function () { return document.querySelector(".fiche.is-current .fiche-actions"); },
         boxToVars: function (b) {
           const fEl = document.querySelector(".fiche.is-current");
+          const bEl = fEl.querySelector(".fiche-body");
           const f = fEl.getBoundingClientRect();
-          const padL = parseFloat(getComputedStyle(fEl).paddingLeft) || 0;
-          const padB = parseFloat(getComputedStyle(fEl).paddingBottom) || 0;
+          const padL = parseFloat(getComputedStyle(bEl).paddingLeft) || 0;
           return {
             "--actionsDX": Math.round(b.l - f.left - padL) + "px",
-            "--actionsDY": Math.round(f.bottom - padB - b.bottom) + "px"
+            "--actionsDY": Math.round(f.bottom - padL - b.bottom) + "px"
           };
         }
       },
@@ -87,9 +88,10 @@
         el: function () { return document.querySelector(".hero-bar"); },
         boxToVars: function (b) {
           const fEl = document.querySelector(".fiche.is-current");
+          const bEl = fEl.querySelector(".fiche-body");
           const hero = heroEl.getBoundingClientRect();
           const f = fEl.getBoundingClientRect();
-          const padL = parseFloat(getComputedStyle(fEl).paddingLeft) || 0;
+          const padL = parseFloat(getComputedStyle(bEl).paddingLeft) || 0;
           const barH = parseFloat(getComputedStyle(root).getPropertyValue("--barH")) || 64;
           const baseBottom = (barH - 46) / 2;
           return {

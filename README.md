@@ -126,7 +126,7 @@ complet. La longueur du titre ne déplace ni la fiche suivante ni les flèches.
 | `--fadeBlur` | flou ajouté à l'image sortante pendant le fondu (6px) | |
 | `--titleLines` | nombre max de lignes du titre quand la fiche est active (garde-fou, 3) | |
 | `--pastDur` | fondu de disparition de la carte qui sort à gauche (0,25s) | |
-| `--liseret` | liseré des fiches (1px blanc 85%) — `none` pour l'enlever | |
+| `--liseretW` / `--liseretC` | filets verticaux pleine hauteur aux bords des fiches (1px, blanc 85%) — `0px` / `transparent` pour les enlever | |
 | `--bodyDX` / `--bodyDY` | décalage du bloc texte de la fiche active (Studio) | |
 | `--actionsDX` / `--actionsDY` | décalage du bouton « Voir le film » (Studio) | |
 | `--barDX` / `--barDY` | décalage de la barre flèches + compteur (Studio) | |

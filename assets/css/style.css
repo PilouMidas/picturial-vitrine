@@ -25,7 +25,8 @@
   --bandDur: 0.8s;
   --bandEase: cubic-bezier(0.22, 1, 0.36, 1);
   --pastDur: 0.25s;
-  --liseret: 1px solid rgba(255, 255, 255, 0.85);
+  --liseretW: 1px;
+  --liseretC: rgba(255, 255, 255, 0.85);
   --bodyDX: 0px;
   --bodyDY: 0px;
   --actionsDX: 0px;
@@ -316,20 +317,33 @@ a:hover { text-decoration-color: var(--ink); }
   position: relative;
   flex: 0 0 auto;
   height: 100%;
+  pointer-events: auto;
+  color: #fff;
+  transition: opacity var(--pastDur) ease;
+}
+.fiche::before, .fiche::after {
+  content: "";
+  position: absolute;
+  top: calc(100% - 100svh + var(--barH));
+  bottom: calc(-1 * var(--barH));
+  width: var(--liseretW);
+  background: var(--liseretC);
+  pointer-events: none;
+}
+.fiche::before { left: 0; }
+.fiche::after { right: 0; }
+.fiche-body {
+  position: absolute;
+  inset: 0;
   padding: var(--fichePad);
   padding-bottom: calc(var(--fichePad) + 56px);
   overflow: hidden;
-  pointer-events: auto;
-  color: #fff;
-  border: var(--liseret);
-  transition: opacity var(--pastDur) ease, padding-top var(--bandDur) var(--bandEase);
+  margin-left: var(--bodyDX);
+  margin-top: var(--bodyDY);
+  transition: padding-top var(--bandDur) var(--bandEase);
 }
-.fiche-body { margin-left: var(--bodyDX); margin-top: var(--bodyDY); }
-.fiche.is-next {
-  opacity: var(--peekOpacity);
-  cursor: pointer;
-  padding-top: calc(var(--fichePad) + var(--peekDrop));
-}
+.fiche.is-next { opacity: var(--peekOpacity); cursor: pointer; }
+.fiche.is-next .fiche-body { padding-top: calc(var(--fichePad) + var(--peekDrop)); }
 .fiche.is-past { opacity: 0; pointer-events: none; }
 .fiche.is-entering { animation: frame-rise calc(var(--transDur) * 1.5) ease both; }
 @keyframes frame-rise {
@@ -867,7 +881,7 @@ a:hover { text-decoration-color: var(--ink); }
   .skip-link { transition: none; }
   .bg-slide.zoom-in .bg-zoom { animation: none; }
   .bg-sharp img { transition: none; }
-  .fiche { transition: none !important; }
+  .fiche, .fiche-body { transition: none !important; }
   .hero-bg .swiper-slide, .frame-line { transition: none !important; }
   .fiche.is-entering { animation: none; }
   .fiche-actions { transition: none; }
