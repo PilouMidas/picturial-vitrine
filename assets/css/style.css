@@ -15,7 +15,7 @@
   --transDur: 0.8s;
   --zoom: 1.05;
   --nextGap: 0px;
-  --ficheXvw: 15.97vw;
+  --ficheXvw: 19.17vw;
   --ficheStepvw: 44.44vw;
   --ficheH: 38vh;
   --barH: 64px;
@@ -27,12 +27,12 @@
   --pastDur: 0.25s;
   --liseretW: 1px;
   --liseretC: rgba(255, 255, 255, 0.85);
-  --bodyDX: 0px;
-  --bodyDY: 0px;
+  --bodyDX: 3px;
+  --bodyDY: 1px;
   --actionsDX: 0px;
-  --actionsDY: 140px;
-  --barDX: 0px;
-  --barDY: 0px;
+  --actionsDY: 80px;
+  --barDX: -8px;
+  --barDY: 126px;
   --bgDur: 1.2s;
   --fadeBlur: 6px;
   --btnDur: 0.4s;
@@ -358,8 +358,9 @@ a:hover { text-decoration-color: var(--ink); }
   color: var(--accent);
 }
 .fiche-title {
-  font-family: var(--serif);
-  font-weight: 700;
+  font-family: var(--sans);
+  font-weight: 600;
+  letter-spacing: -0.01em;
   color: #fff;
   font-size: clamp(1.7rem, 3.4vw, 2.9rem);
   line-height: 1.4;
