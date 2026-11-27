@@ -70,6 +70,16 @@ Pour rendre le réglage permanent : éditer les `--focus*` dans `:root` de
 Réglage actuel (Tristan) : `--focusX: 1; --focusH: 100%` → bande nette pleine hauteur à
 l'extrême droite de l'image.
 
+## Déploiement — Cloudflare Pages (picturial.fr)
+
+- Connecter ce dépôt : dashboard Cloudflare → Workers & Pages → Create application → Pages → Connect to Git → `PilouMidas/picturial-vitrine`, branche `vibe/vitrine-picturial-075ffb` (ou `main` après merge de la PR). Aucun build : répertoire de sortie `/`.
+- Formulaire de contact : `functions/api/contact.js` sert `POST /api/contact` (le front envoie du JSON et attend `{ "sent": true }`). Dans Settings → Functions du projet Pages, créer le binding **Send email** nommé `SEND_EMAIL` et la variable d'environnement `CONTACT_RECIPIENT` (adresse perso qui reçoit les messages ; défaut `contact@picturial.fr`).
+- Envoi des mails sans clé API : Email Routing sur la zone `picturial.fr` → Email → Email Routing, adresse `contact@picturial.fr` en forward vers l'adresse perso.
+- Domaine : Custom domains → `picturial.fr` et `www.picturial.fr` (CNAME + certificat SSL automatiques).
+- Vimeo : dans les réglages d'embed de chaque vidéo, autoriser les domaines `picturial.fr` et `*.pages.dev`.
+- `_headers` à la racine : en-têtes de sécurité de base (pas de CSP stricte, la one-page embarque CSS/JS inline).
+- Mises à jour : modifier les fichiers, `git add . && git commit && git push` sur la branche suivie par Pages → déploiement automatique.
+
 ## Lancer en local
 
 ```sh
