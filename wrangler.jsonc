@@ -1,0 +1,8 @@
+{
+  "name": "picturial-vitrine",
+  "main": "_worker.js",
+  "compatibility_date": "2025-11-01",
+  "workers_dev": true,
+  "build": { "command": "node build.mjs" },
+  "assets": { "directory": "./dist", "binding": "ASSETS", "run_worker_first": ["/api/contact"] }
+}
