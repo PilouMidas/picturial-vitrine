@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Picturial — Les films</title>
+<link rel="stylesheet" href="assets/vendor/swiper-core.min.css"><link rel="stylesheet" href="style.css">
+<script defer src="assets/vendor/swiper-core.min.js"></script><script defer src="catalogue.js"></script><script defer src="films.js"></script></head>
+<body>
+<a href="#accueil" class="wordmark" aria-label="Picturial, accueil"><img src="assets/img/logo-picturial-stacked-white.webp" alt="Picturial"></a>
+<button type="button" id="menu-toggle" aria-label="Ouvrir le menu" aria-haspopup="dialog" aria-controls="site-menu" aria-expanded="false"><i></i><i></i><i></i></button>
+<dialog id="site-menu" aria-label="Navigation principale"><button id="menu-close" aria-label="Fermer le menu" autofocus>×</button><a class="menu-logo" href="#accueil"><img src="assets/img/logo-picturial-stacked-white.webp" alt="Picturial"></a><div class="menu-links"><a href="#films">Films de fiction</a><a href="#documentaires">Documentaires</a><a href="#captation">Captation vidéo</a><hr><a href="#histoire">Notre histoire</a><a href="#contact">Contact</a></div></dialog><main id="home" aria-label="Les films de Picturial">
+<div id="images" aria-hidden="true"></div>
+
+<section class="swiper" aria-label="Carrousel des films"><div class="swiper-wrapper"></div></section>
+<nav aria-label="Parcourir les films"><button id="prev" aria-label="Film précédent">⟵</button><button id="next" aria-label="Film suivant">⟶</button><div id="pages"></div></nav>
+<p id="status" class="sr" aria-live="polite"></p></main>
+<main id="detail" hidden aria-labelledby="film-title">
+  
+  <section class="film-hero" aria-labelledby="film-title">
+    <div id="stills" tabindex="0" aria-label="Vidéogrammes du film"></div>
+    <header class="film-header"><a href="#accueil" id="return">← Tous les films</a></header>
+    <button id="film-watch" aria-haspopup="dialog"><span class="play-icon" aria-hidden="true">▷</span>Voir le film</button>
+    <div class="film-caption"><p class="kind" id="film-genre"></p><h1 id="film-title" tabindex="-1"></h1><p id="film-credit"></p></div>
+    <div id="gallery-controls"><button aria-label="Image précédente" id="still-prev">←</button><output id="still-count" aria-live="polite"></output><button aria-label="Image suivante" id="still-next">→</button></div>
+  </section>
+  <div id="film-dossier" hidden>
+    <img id="film-poster" hidden alt="">
+    <div class="film-notes">
+      <section id="film-story"><h2>Synopsis</h2><p></p></section>
+      <section id="film-runtime"><h2>Durée</h2><p></p></section>
+      <section id="film-parcours"><h2></h2><ul></ul></section>
+    </div>
+  </div>
+</main>
+<section id="about-strip"><div class="about-logo"><img src="assets/img/logo-picturial-stacked-white.webp" alt="Picturial"></div><div><h2>À propos</h2><p>Implantée en Alsace depuis 1988, Picturial accompagne des auteurs de documentaires et de fiction. Des soirées Thema d’Arte avec Tomi Ungerer aux premiers courts métrages de la nouvelle génération, la société poursuit son travail de production à Monswiller.</p><a class="outline" href="#histoire">Notre histoire et nos films →</a></div></section>
+<main id="editorial" hidden>
+<section id="films" hidden><h1>Films de fiction</h1><div class="catalog-grid"></div></section>
+<section id="documentaires" hidden><h1>Documentaires</h1><div class="catalog-grid"></div><div class="archive-list"></div></section>
+<section id="histoire" hidden><h1>Notre histoire</h1><div class="narrative"><p>Implantée en Alsace depuis sa création en 1988, Picturial a connu plusieurs vies, des films pour les soirées Thema d’Arte dans les années 1990 à la production de films publicitaires et institutionnels ancrés dans son territoire, notamment pour Adidas, BMW ou Heschung.</p><p>Depuis 2022, l’arrivée d’une nouvelle génération au capital a fait renouer l’entreprise avec ses premières amours documentaires. Sous la supervision de Christian Klein, Picturial accompagne l’émergence de nouveaux auteurs et développe des films engagés, portés par le désir d’interroger notre époque. En parallèle, Picturial développe une activité de fiction et produit ses premiers courts-métrages, affirmant ainsi la diversité de son engagement dans la création cinématographique.</p></div><h2>Filmographie</h2><div class="archive-list"></div></section>
+<section id="captation" hidden><h1>Captation vidéo</h1><div class="narrative"><p>Vous organisez une rencontre, un spectacle ou une conférence et vous souhaitez en garder une trace filmée ?</p><p>Précisez le lieu, la date, ce que vous souhaitez filmer et à qui les images sont destinées. Nous pourrons échanger sur le dispositif de prise de vues, le son et le montage.</p><a class="outline" href="#contact">Parler de votre captation →</a></div></section>
+<section id="contact" hidden><h1>Une histoire à raconter ?</h1><p>Écrivez à Picturial.</p><form id="contact-form"><label>Votre nom<input name="nom" maxlength="120" required autocomplete="name"></label><label>Votre adresse e-mail<input name="email" maxlength="254" type="email" required autocomplete="email"></label><label>Votre projet<textarea name="message" maxlength="5000" rows="6" required></textarea></label><small>Picturial utilise ces informations pour répondre à votre demande. <a href="#confidentialite">Confidentialité</a></small><button class="outline" type="submit">Envoyer le message →</button><small id="send-status" role="status" aria-live="polite"></small><a href="mailto:contact@picturial.fr">contact@picturial.fr</a><a href="tel:+33766745526">07 66 74 55 26</a></form></section>
+<section id="confidentialite" hidden><h1>Confidentialité</h1><div class="narrative"><h2>Demandes de contact</h2><p>Picturial SARL, 1c rue du Baron Chouard, 67700 Monswiller, traite votre nom, votre adresse e-mail et votre message pour répondre à votre demande. Ces champs sont nécessaires à son traitement. Selon la demande, le traitement repose sur notre intérêt légitime à répondre aux sollicitations reçues ou sur des démarches précontractuelles à votre initiative.</p><p>Les destinataires sont l’équipe chargée de votre demande et les prestataires techniques intervenant dans sa transmission, dont Cloudflare et Resend.</p><h2>Conservation</h2><p>Les demandes restées sans suite sont supprimées lors de notre revue mensuelle, après douze mois sans échange. Lorsqu’une demande aboutit à un projet, les éléments nécessaires à son suivi sont conservés dans le dossier correspondant.</p><h2>Vos droits</h2><p>Pour demander l’accès, la rectification, l’effacement ou la limitation du traitement, ou exercer votre droit d’opposition ou de portabilité lorsqu’il s’applique, écrivez à <a href="mailto:contact@picturial.fr">contact@picturial.fr</a>. Vous pouvez également adresser une réclamation à la <a href="https://www.cnil.fr/fr/plaintes">CNIL</a>.</p></div></section>
+<section id="mentions" hidden><h1>Mentions légales</h1><div class="narrative"><h2>Éditeur</h2><p>Picturial SARL<br>1c rue du Baron Chouard, 67700 Monswiller<br>SIRET 388 235 152 00039</p><p>Direction de la publication · Christian Klein<br><a href="mailto:contact@picturial.fr">contact@picturial.fr</a></p><h2>Hébergeur</h2><p>Cloudflare, Inc.<br>101 Townsend Street, San Francisco, CA 94107, États-Unis<br><a href="tel:+18889935273">+1 888 993 5273</a></p></div></section></main>
+<footer id="site-footer"><div><h2>Une histoire à raconter ?</h2><a class="outline" href="#contact">Contactez-nous →</a></div><div class="footer-links"><span>© Picturial · Monswiller</span><a href="tel:+33766745526">07 66 74 55 26</a><a href="https://www.instagram.com/picturialprod/">Instagram @picturialprod</a><a href="#mentions">Mentions légales</a><a href="#confidentialite">Confidentialité</a><a href="#accueil">Accueil</a></div></footer>
+<dialog id="player" aria-labelledby="player-title">
+  <header><strong id="player-title"></strong><button id="close-player" autofocus aria-label="Fermer le lecteur">×</button></header>
+  <div id="screen"></div>
+  <footer><a id="vimeo-link">Ouvrir sur Vimeo ↗</a></footer>
+</dialog></body></html>

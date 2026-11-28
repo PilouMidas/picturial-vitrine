@@ -1,0 +1,9 @@
+{
+  "name": "picturial-vitrine",
+  "main": "_worker.js",
+  "compatibility_date": "2025-11-01",
+  "workers_dev": true,
+  "routes": [{ "pattern": "picturial.fr/*", "zone_name": "picturial.fr" }],
+  "build": { "command": "node build.mjs" },
+  "assets": { "directory": "./dist", "binding": "ASSETS", "run_worker_first": ["/api/contact"] }
+}
